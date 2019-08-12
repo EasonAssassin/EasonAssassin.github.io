@@ -515,7 +515,24 @@ hexo d</code></pre><ul>
     coding: git@git.dev.tencent.com:MrEason/MrEason.coding.me.git
     github: git@github.com:EasonAssassin/EasonAssassin.github.io.git
   branch: master
-  message: blog update</code></pre>
+  message: blog update</code></pre><h2 id="6-插入图片"><a href="#6-插入图片" class="headerlink" title="6. 插入图片"></a>6. 插入图片</h2><ul>
+<li>绝对路径</li>
+</ul>
+<pre><code># 新建images目录
+mkdir -p source/images/
+# 在source/images里放置图片
+# markdown中引入图片
+![](/images/sp190812_112915.png)</code></pre><ul>
+<li>相对路径</li>
+</ul>
+<pre><code># 新建文章及相关目录
+hexo new hexo-blog
+# 上述操作会在source/_posts/目录中生成hexo-blog.md和hexo-blog目录
+# 将所需要的图片放入hexo-blog目录，即可使用相对目录
+![](sp190812_160221.png)</code></pre><ul>
+<li>展示效果<br><img src="sp190812_160948.png" alt></li>
+</ul>
+
             </div>
             <hr/>
 
