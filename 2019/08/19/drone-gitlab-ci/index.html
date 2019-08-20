@@ -4,15 +4,16 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Django问题集锦, EasonBlog">
-    <meta name="description" content="Django问题集锦1. Not Found:/favicon.ico
-问题：
+    <meta name="keywords" content="drone-gitlab-ci, EasonBlog">
+    <meta name="description" content="Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
+docker
+docker-compose
 
-&amp;quot;GET /favicon.ico HTTP/1.1&amp;quot; 404 12362
-解决：
+2. 编辑docker-compose.yml
+找到合适的镜像：略
+编辑docker-compose.yml
 
-# 定位django
-pip show django">
+vers">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +21,7 @@ pip show django">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Django问题集锦 | EasonBlog</title>
+    <title>drone-gitlab-ci | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -267,13 +268,13 @@ pip show django">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Django问题集锦
+                        drone-gitlab-ci
                     </div>
                 </div>
             </div>
@@ -384,8 +385,16 @@ pip show django">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/django/" target="_blank">
-                                <span class="chip bg-color">django</span>
+                            <a href="/tags/drone/" target="_blank">
+                                <span class="chip bg-color">drone</span>
+                            </a>
+                        
+                            <a href="/tags/gitlab/" target="_blank">
+                                <span class="chip bg-color">gitlab</span>
+                            </a>
+                        
+                            <a href="/tags/CICD/" target="_blank">
+                                <span class="chip bg-color">CICD</span>
                             </a>
                         
                     </div>
@@ -393,22 +402,13 @@ pip show django">
                 </div>
                 <div class="col s5 right-align">
                     
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/web后端/" class="post-category" target="_blank">
-                                web后端
-                            </a>
-                        
-                    </div>
-                    
                 </div>
             </div>
 
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2017-05-29
+                    2019-08-19
                 </div>
 
                 
@@ -424,17 +424,233 @@ pip show django">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Django问题集锦"><a href="#Django问题集锦" class="headerlink" title="Django问题集锦"></a>Django问题集锦</h1><h2 id="1-Not-Found-favicon-ico"><a href="#1-Not-Found-favicon-ico" class="headerlink" title="1. Not Found:/favicon.ico"></a>1. Not Found:/favicon.ico</h2><ul>
-<li>问题：</li>
+                <h1 id="Drone-Gitlab构建轻量化CICD平台"><a href="#Drone-Gitlab构建轻量化CICD平台" class="headerlink" title="Drone+Gitlab构建轻量化CICD平台"></a>Drone+Gitlab构建轻量化CICD平台</h1><h2 id="1-安装docker环境"><a href="#1-安装docker环境" class="headerlink" title="1. 安装docker环境"></a>1. 安装docker环境</h2><ul>
+<li>docker</li>
+<li>docker-compose</li>
 </ul>
-<pre><code>&quot;GET /favicon.ico HTTP/1.1&quot; 404 12362</code></pre><ul>
-<li>解决：</li>
+<h2 id="2-编辑docker-compose-yml"><a href="#2-编辑docker-compose-yml" class="headerlink" title="2. 编辑docker-compose.yml"></a>2. 编辑docker-compose.yml</h2><ul>
+<li>找到合适的镜像：略</li>
+<li>编辑docker-compose.yml</li>
 </ul>
-<pre><code># 定位django
-pip show django
-&gt;&gt; Location: /root/.virtualenvs/django/lib/python3.7/site-packages
-# 拷贝favicon.ico至指定目录
-cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /root/.virtualenvs/django/lib/python3.7/site-packages/django/contrib/admin/static/admin/img/</code></pre>
+<pre><code>version: &quot;2&quot;
+
+services:
+  redis:
+    restart: always
+    container_name: drone-redis
+    image: sameersbn/redis:4.0.9-2
+    command:
+    - --loglevel warning
+    volumes:
+    - /srv/docker/gitlab/redis:/var/lib/redis:Z
+
+  postgresql:
+    restart: always
+    container_name: drone-postgresql
+    image: sameersbn/postgresql:10-2
+    volumes:
+    - /srv/docker/gitlab/postgresql:/var/lib/postgresql:Z
+    environment:
+    - DB_USER=gitlab
+    - DB_PASS=password
+    - DB_NAME=gitlabhq_production
+    - DB_EXTENSION=pg_trgm
+
+  gitlab:
+    restart: always
+    container_name: drone-gitlab
+    image: sameersbn/gitlab:12.1.6
+    depends_on:
+    - redis
+    - postgresql
+    ports:
+    - &quot;10080:80&quot;
+    - &quot;10022:22&quot;
+    volumes:
+    - /srv/docker/gitlab/gitlab:/home/git/data:Z
+    environment:
+    - DEBUG=false
+
+    - DB_ADAPTER=postgresql
+    - DB_HOST=postgresql
+    - DB_PORT=5432
+    - DB_USER=gitlab
+    - DB_PASS=password
+    - DB_NAME=gitlabhq_production
+
+    - REDIS_HOST=redis
+    - REDIS_PORT=6379
+
+    - TZ=Asia/Kolkata
+    - GITLAB_TIMEZONE=Kolkata
+
+    - GITLAB_HTTPS=false
+    - SSL_SELF_SIGNED=false
+
+    - GITLAB_HOST=10.21.198.68
+    - GITLAB_PORT=10080
+    - GITLAB_SSH_PORT=10022
+    - GITLAB_RELATIVE_URL_ROOT=
+    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
+    - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
+    - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
+
+    - GITLAB_ROOT_PASSWORD=Changeme_123
+    - GITLAB_ROOT_EMAIL=sunyan@huayun.com
+
+    - GITLAB_NOTIFY_ON_BROKEN_BUILDS=true
+    - GITLAB_NOTIFY_PUSHER=false
+
+    - GITLAB_EMAIL=notifications@example.com
+    - GITLAB_EMAIL_REPLY_TO=noreply@example.com
+    - GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com
+
+    - GITLAB_BACKUP_SCHEDULE=daily
+    - GITLAB_BACKUP_TIME=01:00
+
+    - SMTP_ENABLED=false
+    - SMTP_DOMAIN=huayun.com
+    - SMTP_HOST=smtp.huayun.com
+    - SMTP_PORT=587
+    - SMTP_USER=sunyan@huayun.com
+    - SMTP_PASS=Hi!fellow-0422
+    - SMTP_STARTTLS=true
+    - SMTP_AUTHENTICATION=login
+
+    - IMAP_ENABLED=false
+    - IMAP_HOST=imap.gmail.com
+    - IMAP_PORT=993
+    - IMAP_USER=mailer@example.com
+    - IMAP_PASS=password
+    - IMAP_SSL=true
+    - IMAP_STARTTLS=false
+
+    - OAUTH_ENABLED=false
+    - OAUTH_AUTO_SIGN_IN_WITH_PROVIDER=
+    - OAUTH_ALLOW_SSO=
+    - OAUTH_BLOCK_AUTO_CREATED_USERS=true
+    - OAUTH_AUTO_LINK_LDAP_USER=false
+    - OAUTH_AUTO_LINK_SAML_USER=false
+    - OAUTH_EXTERNAL_PROVIDERS=
+
+    - OAUTH_CAS3_LABEL=cas3
+    - OAUTH_CAS3_SERVER=
+    - OAUTH_CAS3_DISABLE_SSL_VERIFICATION=false
+    - OAUTH_CAS3_LOGIN_URL=/cas/login
+    - OAUTH_CAS3_VALIDATE_URL=/cas/p3/serviceValidate
+    - OAUTH_CAS3_LOGOUT_URL=/cas/logout
+
+    - OAUTH_GOOGLE_API_KEY=
+    - OAUTH_GOOGLE_APP_SECRET=
+    - OAUTH_GOOGLE_RESTRICT_DOMAIN=
+
+    - OAUTH_FACEBOOK_API_KEY=
+    - OAUTH_FACEBOOK_APP_SECRET=
+
+    - OAUTH_TWITTER_API_KEY=
+    - OAUTH_TWITTER_APP_SECRET=
+
+    - OAUTH_GITHUB_API_KEY=
+    - OAUTH_GITHUB_APP_SECRET=
+    - OAUTH_GITHUB_URL=
+    - OAUTH_GITHUB_VERIFY_SSL=
+
+    - OAUTH_GITLAB_API_KEY=
+    - OAUTH_GITLAB_APP_SECRET=
+
+    - OAUTH_BITBUCKET_API_KEY=
+    - OAUTH_BITBUCKET_APP_SECRET=
+
+    - OAUTH_SAML_ASSERTION_CONSUMER_SERVICE_URL=
+    - OAUTH_SAML_IDP_CERT_FINGERPRINT=
+    - OAUTH_SAML_IDP_SSO_TARGET_URL=
+    - OAUTH_SAML_ISSUER=
+    - OAUTH_SAML_LABEL=&quot;Our SAML Provider&quot;
+    - OAUTH_SAML_NAME_IDENTIFIER_FORMAT=urn:oasis:names:tc:SAML:2.0:nameid-format:transient
+    - OAUTH_SAML_GROUPS_ATTRIBUTE=
+    - OAUTH_SAML_EXTERNAL_GROUPS=
+    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_EMAIL=
+    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_NAME=
+    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_USERNAME=
+    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_FIRST_NAME=
+    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_LAST_NAME=
+
+    - OAUTH_CROWD_SERVER_URL=
+    - OAUTH_CROWD_APP_NAME=
+    - OAUTH_CROWD_APP_PASSWORD=
+
+    - OAUTH_AUTH0_CLIENT_ID=
+    - OAUTH_AUTH0_CLIENT_SECRET=
+    - OAUTH_AUTH0_DOMAIN=
+
+    - OAUTH_AZURE_API_KEY=
+    - OAUTH_AZURE_API_SECRET=
+    - OAUTH_AZURE_TENANT_ID=
+
+  # drone server container
+  drone-server:
+    # 偷懒直接使用官方镜像，Alpine Linux编译的容器体积是最小的
+    image: drone/drone:alpine
+    container_name: drone-server  # 容器别名
+    restart: always # 每次启动Docker会自启动容器
+    ports:
+      - 8000:8000
+      - 9000:9000
+    volumes:        # 映射容器里面的目录到本机，格式：本机目录:容器目录
+      - ./drone:/var/lib/drone
+      - /var/run/docker.sock:/var/run/docker.sock 
+    restart: always
+    environment:    # 容器里面的环境变量
+      - DRONE_HOST=http://10.21.198.68:8000 # 设置Drone的域名，要和上面配置GitLab的Application时的域名保持一致
+      - DRONE_ADMIN=drone,mrsun,root    # Drone的管理员
+      - DRONE_DEBUG=true              # Debug 模式，调试的时候可以打开，默认是关闭的
+      - DRONE_OPEN=true               # 启用Drone
+      - DRONE_GITLAB=true                                                     # 启用Drone的GitLab服务，默认是关闭的
+      - DRONE_GITLAB_URL=http://10.21.198.68:10080    # 设置GitLab的域名
+      - DRONE_GITLAB_CLIENT=85a8361781b0a4cd1b586dd3f1afe4bbadbf8784b69d29a150849bd1da947b3f # GitLab的Application中的key
+      - DRONE_GITLAB_SECRET=656d7296b1d30eaa6c00d913cb001a810694d3f9fd09ac8a31ea6ac96ead76ed # GitLab的Application中的secret
+      - DRONE_SECRET=&quot;my-drone&quot;       # Drone Server和Drone Agent通信加密
+  drone-agent:
+    image: drone/agent:alpine
+    container_name: drone-agent
+    restart: always
+    depends_on:
+      - drone-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # Drone Agent 需要用到Docker来实例化容器
+    environment:
+      - DRONE_DEBUG=true
+      - DRONE_SERVER=drone-server:9000
+      - DRONE_SECRET=&quot;my-drone&quot;</code></pre><h2 id="3-配置Gtilab"><a href="#3-配置Gtilab" class="headerlink" title="3. 配置Gtilab"></a>3. 配置Gtilab</h2><ul>
+<li><p><code>个人头像</code>–&gt;<code>settings</code>–&gt;<code>Applications</code></p>
+<ul>
+<li><code>Redirect URI</code>对应docker-compose.yml中的<code>{DRONE_HOST}/authorize</code><br><img src="sp190819_175809.png" alt></li>
+</ul>
+</li>
+<li><p><code>保存</code>：</p>
+<ul>
+<li><code>Application ID</code>对应dcoker-compose.yml中的<code>DRONE_GITLAB_CLIENT</code></li>
+<li><code>Secret</code>对应docker-compose.yml中的<code>DRONE_GITLAB_SECRET</code></li>
+</ul>
+</li>
+<li><p><code>Admin Area</code>（小扳手标识）–&gt;<code>Settings</code>–&gt;<code>Network</code>–&gt;<code>Outbound requests</code>–&gt;勾选<code>Allow requests to the local network from hooks and services</code></p>
+</li>
+</ul>
+<p><img src="sp190820_104625" alt></p>
+<h2 id="4-使用"><a href="#4-使用" class="headerlink" title="4. 使用"></a>4. 使用</h2><ul>
+<li>Drone平台：<code>http://{IP:port}</code></li>
+<li>第一次登录会先跳转至Gitlab初始化root账户的密码修改，其后通过root/password的方式登录，跳转到Drone平台</li>
+<li>Drone平台会自动同步Gitlab上的项目，并在drone平台上予以激活，便可通过代码提交，触发drone pipeline</li>
+<li>在项目根目录编写<code>.drone.yml</code></li>
+</ul>
+<p><strong>.drone.yml</strong></p>
+<pre><code>pipeline:
+  build:        # step name
+    image: node # use docker image
+    commands:
+      - npm install     # install node project vendor
+      - npm run build   # build static files</code></pre><p><img src="sp190820_105449.png" alt></p>
+
             </div>
             <hr/>
 
@@ -592,9 +808,9 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Django问题集锦》
+                    《drone-gitlab-ci》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2017/05/29/django-issues/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/08/19/drone-gitlab-ci/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -634,9 +850,10 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2019/08/19/drone-gitlab-ci/">
                     <div class="card-image">
@@ -662,9 +879,9 @@ vers
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-08-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-user fa-fw"></i>
@@ -673,6 +890,7 @@ vers
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -699,36 +917,38 @@ vers
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2017/05/26/hexo-blog/">
+                <a href="/2017/05/29/django-issues/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="使用coding+hexo搭建博客">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Django问题集锦">
                         
-                        <span class="card-title">使用coding+hexo搭建博客</span>
+                        <span class="card-title">Django问题集锦</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            使用coding+hexo搭建博客
-本篇主要介绍使用腾讯coding平台，结合hexo搭建博客
+                            Django问题集锦1. Not Found:/favicon.ico
+问题：
 
-1. 创建coding账号
-注册地址：https://coding.net/register
-coding web ide：https://s
+&quot;GET /favicon.ico HTTP/1.1&quot; 404 12362
+解决：
+
+# 定位django
+pip show django
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-05-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-05-29
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/web前端/" class="post-category" target="_blank">
-                                    web前端
+                            <a href="/categories/web后端/" class="post-category" target="_blank">
+                                    web后端
                                 </a>
                             
                             
@@ -738,12 +958,8 @@ coding web ide：https://s
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/hexo/" target="_blank">
-                        <span class="chip bg-color">hexo</span>
-                    </a>
-                    
-                    <a href="/tags/blog/" target="_blank">
-                        <span class="chip bg-color">blog</span>
+                    <a href="/tags/django/" target="_blank">
+                        <span class="chip bg-color">django</span>
                     </a>
                     
                 </div>
