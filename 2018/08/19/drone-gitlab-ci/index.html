@@ -686,6 +686,43 @@ server {
 }</code></pre><blockquote>
 <p>修改 server_name 和 $drone_port 为正确的值即可，最后记得别忘了重启 Nginx 服务。这样我们就能直接使用 <a href="http://IP-Addr" target="_blank" rel="noopener">http://IP-Addr</a> 来访问 drone 了。</p>
 </blockquote>
+<h2 id="6-推送镜像至私有仓库"><a href="#6-推送镜像至私有仓库" class="headerlink" title="6. 推送镜像至私有仓库"></a>6. 推送镜像至私有仓库</h2><ul>
+<li>编写.drone.yml</li>
+</ul>
+<pre><code>pipeline:
+  prepare:
+    image: golang:1.10
+    group: build
+    commands:
+      - make prepare
+  build_linux_amd64:
+    image: golang:1.10
+    group: build
+    environment:
+      - GOOS=linux
+      - GOARCH=amd64
+      - CGO_ENABLED=0
+    commands:
+      - make build
+  docker_golang:
+    image: plugins/docker
+    secrets: [ docker_username, docker_password ]
+    repo: 172.16.24.66/dev/golang-http
+    registry: 172.16.24.66
+    insecure: true
+    dockerfile: Dockerfile
+    default_tags: true
+    when:
+      event: [ push, tag ]</code></pre><ul>
+<li>配置drone平台的secret</li>
+</ul>
+<blockquote>
+<p>因为不想将镜像仓库的用户名和密码以明文的形式暴露在pipeline中，所以可以在drone平台上进行配置</p>
+</blockquote>
+<p><img src="sp190822_163624.png" alt><br><img src="sp190822_163734.png" alt></p>
+<blockquote>
+<p>注意：平时需要push镜像到私有https的仓库，需要配置hosts docker相关的证书，而通过drone平台的插件则不需要，很棒！！</p>
+</blockquote>
 
             </div>
             <hr/>
