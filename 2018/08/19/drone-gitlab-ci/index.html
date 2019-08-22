@@ -683,7 +683,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Host $http_host;
     }
-}</code></pre>
+}</code></pre><blockquote>
+<p>修改 server_name 和 $drone_port 为正确的值即可，最后记得别忘了重启 Nginx 服务。这样我们就能直接使用 <a href="http://IP-Addr" target="_blank" rel="noopener">http://IP-Addr</a> 来访问 drone 了。</p>
+</blockquote>
+
             </div>
             <hr/>
 
