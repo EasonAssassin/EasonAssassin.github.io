@@ -1,0 +1,15 @@
+version: "2.3"
+
+#networks:
+#  haven:
+#    external:
+#      name: haven
+
+services:
+  docs:
+    image: littlstar/docker-docsify
+    container_name: docs
+    volumes:
+      - ./docs:/usr/local/docsify
+    ports:
+      - 3199:3000
