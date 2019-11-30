@@ -1252,7 +1252,7 @@ UDP  10.96.0.10:53 rr
   -&gt; 10.244.4.5:53                Masq    1      0          0
 
 # 验证使用ipvs模式
-curl localhost:10249/proxyMode</code></pre><h3 id="6-2-部署calico网络插件"><a href="#6-2-部署calico网络插件" class="headerlink" title="6.2 部署calico网络插件"></a>6.2 部署calico网络插件</h3><blockquote>
+curl localhost:10249/proxyMode</code></pre><h3 id="5-2-部署calico网络插件"><a href="#5-2-部署calico网络插件" class="headerlink" title="5.2 部署calico网络插件"></a>5.2 部署calico网络插件</h3><blockquote>
 <p>Calico 是一款纯 Layer 3 的网络，其好处是它整合了各种云原生平台(Docker、Mesos 与 OpenStack 等)，且 Calico 不采用 vSwitch，而是在每个 Kubernetes 节点使用 vRouter 功能，并通过 Linux Kernel 既有的 L3 forwarding 功能，而当资料中心复杂度增加时，Calico 也可以利用 BGP route reflector 來达成。<br>Calico 官方提供了 Kubernetes resources YAML 文件来快速以容器方式部署网络插件至所有节点上，因此只需要在k8s-m1使用 kubeclt 执行下面指令來建立：</p>
 </blockquote>
 <pre><code># 拉取镜像，否则需要翻墙下载镜像
@@ -1292,7 +1292,7 @@ k8s-n2   (unknown)   10.21.198.134/24
 k8s-n3   (unknown)   10.21.198.142/24</code></pre><ul>
 <li>完成后,通过检查节点是否不再是NotReady,以及 Pod 是否不再是Pending</li>
 </ul>
-<h3 id="6-3-部署KubeDNS"><a href="#6-3-部署KubeDNS" class="headerlink" title="6.3 部署KubeDNS"></a>6.3 部署KubeDNS</h3><blockquote>
+<h3 id="5-3-部署KubeDNS"><a href="#5-3-部署KubeDNS" class="headerlink" title="5.3 部署KubeDNS"></a>5.3 部署KubeDNS</h3><blockquote>
 <p>Kube DNS是Kubernetes集群内部Pod之间互相沟通的重要Addon，它允许Pod可以通过Domain Name方式来连接Service，其主要由Kube DNS与Sky DNS组合而成，通过Kube DNS监听Service与Endpoint变化，来提供给Sky DNS资讯，已更新解析位址。</p>
 </blockquote>
 <pre><code># 创建KubeDNS
@@ -1317,10 +1317,10 @@ spec:
   restartPolicy: Always
 EOF
 
-kubectl exec -ti busybox -- nslookup kubernetes</code></pre><h2 id="7-Kubernets-Extra-Addons部署"><a href="#7-Kubernets-Extra-Addons部署" class="headerlink" title="7. Kubernets Extra Addons部署"></a>7. Kubernets Extra Addons部署</h2><blockquote>
+kubectl exec -ti busybox -- nslookup kubernetes</code></pre><h2 id="6-Kubernets-Extra-Addons部署"><a href="#6-Kubernets-Extra-Addons部署" class="headerlink" title="6. Kubernets Extra Addons部署"></a>6. Kubernets Extra Addons部署</h2><blockquote>
 <p>本届介绍官方常用的额外Addons，比如Dashboard等（其余Addons待补充）</p>
 </blockquote>
-<h3 id="7-1-Dashboard"><a href="#7-1-Dashboard" class="headerlink" title="7.1 Dashboard"></a>7.1 Dashboard</h3><blockquote>
+<h3 id="6-1-Dashboard"><a href="#6-1-Dashboard" class="headerlink" title="6.1 Dashboard"></a>6.1 Dashboard</h3><blockquote>
 <p>Dashboard是Kubernetes社区官方开发的仪表板,有了仪表板后管理者就能够通过Web-based方式来管理Kubernetes集群,除了提升管理方便,也让资源视觉化,让人更直觉看见系统资讯的呈现结果。</p>
 </blockquote>
 <ul>
