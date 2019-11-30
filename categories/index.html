@@ -314,10 +314,19 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 </a>
                 
                 
-                <a href="/categories/cicd/" title="cicd: 1">
+                <a href="/categories/cicd/" title="cicd: 2">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
                             style="background-color: #D5F5E3;">cicd
+                        <span class="tag-length">2</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/k8s/" title="k8s: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #E8F8F5;">k8s
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -364,7 +373,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                     color: '#3C4858'
                 }
             },
-            indicator: [{"name":"web前端","max":2},{"name":"web后端","max":2},{"name":"cicd","max":2}],
+            indicator: [{"name":"web前端","max":3},{"name":"web后端","max":3},{"name":"cicd","max":3},{"name":"k8s","max":3}],
             nameGap: 5,
             center: ['50%','55%'],
             radius: '66%'
@@ -375,7 +384,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data : [
                 {
-                    value : [1,1,1],
+                    value : [1,1,2,1],
                     name : 'Number of Categories'
                 }
             ]

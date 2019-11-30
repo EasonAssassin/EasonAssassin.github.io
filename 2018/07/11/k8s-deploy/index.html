@@ -1,0 +1,1852 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="高可用（离线版无etcd证书）K8S v1.12.3版本部署, EasonBlog">
+    <meta name="description" content="高可用（离线版无etcd证书）K8S v1.12.3版本部署
+此版本安装不需要连外网，所有配置文件及镜像均来自内网habor：172.16.24.66;适用于3(master)+3(node)模式，以及3节点master、node重叠模式；">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>高可用（离线版无etcd证书）K8S v1.12.3版本部署 | EasonBlog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+</head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">EasonBlog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>Index</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>Tags</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>Categories</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>Archives</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>About</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>Friends</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="Search"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">EasonBlog</div>
+        <div class="logo-desc">
+            
+            Love MaMin
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                Index
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                Tags
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                Categories
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                Archives
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                About
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                Friends
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        高可用（离线版无etcd证书）K8S v1.12.3版本部署
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/k8s/" target="_blank">
+                                <span class="chip bg-color">k8s</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/k8s/" class="post-category" target="_blank">
+                                k8s
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-07-11
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="高可用（离线版无etcd证书）K8S-v1-12-3版本部署"><a href="#高可用（离线版无etcd证书）K8S-v1-12-3版本部署" class="headerlink" title="高可用（离线版无etcd证书）K8S v1.12.3版本部署"></a>高可用（离线版无etcd证书）K8S v1.12.3版本部署</h1><blockquote>
+<p>此版本安装不需要连外网，所有配置文件及镜像均来自内网habor：<code>172.16.24.66</code>;<br>适用于3(master)+3(node)模式，以及3节点master、node重叠模式；<br>本次实验以master、node重叠模式举例</p>
+</blockquote>
+<h2 id="1-环境介绍及说明"><a href="#1-环境介绍及说明" class="headerlink" title="1. 环境介绍及说明"></a>1. 环境介绍及说明</h2><blockquote>
+<p>本文命令除了升级内核及安装依赖包以外，其他所有命令都在第一个master节点<strong>k8s-m1</strong>机器上执行</p>
+</blockquote>
+<ul>
+<li>版本说明：<ul>
+<li>Kubernetes v1.12.3</li>
+<li>CNI v0.7.1</li>
+<li>Etcd v3.3.9</li>
+<li>Flannel v0.10.0 或者 Calico v3.1.3</li>
+<li>Docker CE latest version(18.09)</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>兼容k8s v1.12.1和v1.12.3；<br>不建议用docker 18.05 , docker CE 18.05有bind mount的bug</p>
+</blockquote>
+<ul>
+<li>网络信息：<ul>
+<li>Cluster IP CIDR: 10.244.0.0/16</li>
+<li>Service Cluster IP CIDR: 10.96.0.0/12</li>
+<li>Service DNS IP: 10.96.0.10</li>
+<li>DNS DN: cluster.local</li>
+<li>Kubernetes API VIP: 10.21.198.109</li>
+<li>Kubernetes Ingress VIP: 10.21.198.147</li>
+</ul>
+</li>
+</ul>
+<p><img src="1.png" alt></p>
+<ul>
+<li>节点信息：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">IP</th>
+<th align="right">HostName</th>
+<th align="center">CPU</th>
+<th align="center">Memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">10.21.198.106</td>
+<td align="right">K8S-M1</td>
+<td align="center">4</td>
+<td align="center">8G</td>
+</tr>
+<tr>
+<td align="left">10.21.198.119</td>
+<td align="right">K8S-M2</td>
+<td align="center">4</td>
+<td align="center">8G</td>
+</tr>
+<tr>
+<td align="left">10.21.198.126</td>
+<td align="right">K8S-M3</td>
+<td align="center">4</td>
+<td align="center">8G</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>VIP为<code>10.21.198.109</code>，由所有master节点的keepalived+haproxy来选择VIP的归属保持高可用</p>
+</blockquote>
+<h2 id="2-基础配置及准备"><a href="#2-基础配置及准备" class="headerlink" title="2. 基础配置及准备"></a>2. 基础配置及准备</h2><blockquote>
+<p>注意：该节操作需要所有节点都执行</p>
+</blockquote>
+<ul>
+<li>修改hostname：<code>hostnamectl set-hostname k8s-m1</code></li>
+<li>各节点配置hosts：</li>
+</ul>
+<pre><code>cat &gt; /etc/hosts &lt;&lt;EOF
+127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1 localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.21.198.106 k8s-m1
+10.21.198.119 k8s-m2
+10.21.198.126 k8s-m3
+
+EOF</code></pre><ul>
+<li>k8s-m1节点到其他节点互信：</li>
+</ul>
+<pre><code>ssh-keygen -f /root/.ssh/id_rsa -N &#39;&#39;
+
+for host in k8s-m1 k8s-m2 k8s-m3;
+do
+ssh-copy-id -i ~/.ssh/id_rsa.pub $host;
+done</code></pre><ul>
+<li>关闭防火墙与SELinux</li>
+</ul>
+<blockquote>
+<p>若不关闭，后续K8S 挂载目录时可能报错<code>Permission denied</code></p>
+</blockquote>
+<pre><code>systemctl disable --now firewalld NetworkManager
+setenforce 0
+sed -ri &#39;/^[^#]*SELINUX=/s#=.+$#=disabled#&#39; /etc/selinux/config</code></pre><ul>
+<li>关闭 dnsmasq (可选)<blockquote>
+<p>linux 系统开启了 dnsmasq 后(如 GUI 环境)，将系统 DNS Server 设置为 127.0.0.1，这会导致 docker 容器无法解析域名，需要关闭它</p>
+</blockquote>
+</li>
+</ul>
+<pre><code>systemctl disable --now dnsmasq</code></pre><ul>
+<li>关闭swap<blockquote>
+<p>Kubernetes v1.8+要求关闭系统Swap,若不关闭则需要修改kubelet设定参数( –fail-swap-on 设置为 false 来忽略 swap on),在所有机器使用以下指令关闭swap并注释掉/etc/fstab中swap的行：</p>
+</blockquote>
+</li>
+</ul>
+<pre><code>swapoff -a &amp;&amp; sysctl -w vm.swappiness=0
+sed -ri &#39;/^[^#]*swap/s@^@#@&#39; /etc/fstab</code></pre><ul>
+<li>升级系统</li>
+</ul>
+<pre><code>yum install epel-release -y
+yum install wget git  jq psmisc -y
+# 下面这步暂时略过，且没发现什么问题
+# yum update -y --exclude=kernel*</code></pre><ul>
+<li><strong>升级内核</strong></li>
+</ul>
+<blockquote>
+<p><strong>此步骤可以略过，先跳到安装ipvs步骤。目前因为没有经过业务测试，暂未发现问题</strong><br>因为目前市面上包管理下内核版本会很低,安装docker后无论centos还是ubuntu会有如下bug,4.15的内核依然存在：<code>kernel:unregister_netdevice: waiting for lo to become free. Usage count = 1</code></p>
+</blockquote>
+<pre><code># 安装perl内核依赖
+[ ! -f /usr/bin/perl ] &amp;&amp; yum install perl -y
+# 导入elrepo的key并安装 elrepo 源
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-2.el7.elrepo.noarch.rpm
+# 查看可用的内核
+yum --disablerepo=&quot;*&quot; --enablerepo=&quot;elrepo-kernel&quot; list available  --showduplicates</code></pre><blockquote>
+<p>注意：ipvs依赖于nf_conntrack_ipv4内核模块,4.19包括之后内核里改名为nf_conntrack,但是kube-proxy的代码里没有加判断一直用的nf_conntrack_ipv4,所以这里安装4.18版本的内核；<br>详情参考：<a href="https://github.com/Lentil1016/kubeadm-ha/issues/19" target="_blank" rel="noopener">https://github.com/Lentil1016/kubeadm-ha/issues/19</a></p>
+</blockquote>
+<pre><code>export Kernel_Version=4.18.9-1
+wget  http://mirror.rc.usf.edu/compute_lock/elrepo/kernel/el7/x86_64/RPMS/kernel-ml{,-devel}-${Kernel_Version}.el7.elrepo.x86_64.rpm
+rpm -Uvh kernel-ml*
+# 检查这个内核里是否有这个内核模块
+find /lib/modules -name &#39;*nf_conntrack_ipv4*&#39; -type f
+
+# 修改内核启动顺序,默认启动的顺序应该为1,升级以后内核是往前面插入,为0
+grub2-set-default  0 &amp;&amp; grub2-mkconfig -o /etc/grub2.cfg
+# 确认下是否启动默认内核指向上面安装的内核
+grubby --default-kernel
+# 重启加载新内核
+reboot
+
+# 测试加载模块
+modprobe nf_conntrack_ipv4</code></pre><ul>
+<li>所有机器安装ipvs(1.11后使用ipvs,性能甩iptables几条街)</li>
+</ul>
+<pre><code>yum install ipvsadm ipset sysstat conntrack libseccomp wget -y</code></pre><ul>
+<li>所有机器选择需要开机加载的内核模块,以下是 ipvs 模式需要加载的模块并设置开机自动加载</li>
+</ul>
+<pre><code># 创建
+:&gt; /etc/modules-load.d/ipvs.conf
+
+module=(
+  ip_vs
+  ip_vs_lc
+  ip_vs_wlc
+  ip_vs_rr
+  ip_vs_wrr
+  ip_vs_lblc
+  ip_vs_lblcr
+  ip_vs_dh
+  ip_vs_sh
+  ip_vs_fo
+  ip_vs_nq
+  ip_vs_sed
+  ip_vs_ftp
+  )
+
+for kernel_module in ${module[@]}
+do
+  /sbin/modinfo -F filename $kernel_module |&amp; grep -qv ERROR &amp;&amp; echo $kernel_module &gt;&gt; /etc/modules-load.d/ipvs.conf || :
+done
+# 启动并设置自启
+systemctl enable --now systemd-modules-load.service</code></pre><ul>
+<li>所有机器需要设定/etc/sysctl.d/k8s.conf的系统参数</li>
+</ul>
+<pre><code>cat &lt;&lt;EOF &gt; /etc/sysctl.d/k8s.conf
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+fs.may_detach_mounts = 1
+vm.overcommit_memory=1
+vm.panic_on_oom=0
+fs.inotify.max_user_watches=89100
+fs.file-max=52706963
+fs.nr_open=52706963
+net.netfilter.nf_conntrack_max=2310720
+EOF
+
+sysctl --system</code></pre><ul>
+<li>所有机器需要安装Docker CE<blockquote>
+<p>此处利用docker的官方安装脚本来安装一次来添加repo,然后查询可用的docker版本,选择你要安装的k8s版本支持的docker版本即可</p>
+</blockquote>
+</li>
+</ul>
+<pre><code>curl -fsSL &quot;https://get.docker.com/&quot; | bash -s -- --mirror Aliyun &amp;&amp; yum autoremove docker-ce -y
+yum install -y docker-ce</code></pre><ul>
+<li>所有机器配置加速源</li>
+</ul>
+<pre><code>mkdir -p /etc/docker/
+cat&gt;/etc/docker/daemon.json&lt;&lt;EOF
+{
+  &quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;]
+}
+EOF</code></pre><ul>
+<li>设置docker开机启动及命令补全</li>
+</ul>
+<pre><code>yum install -y epel-release bash-completion &amp;&amp; cp /usr/share/bash-completion/completions/docker /etc/bash_completion.d/
+systemctl enable --now docker</code></pre><ul>
+<li>设置ntp</li>
+</ul>
+<pre><code>yum install -y ntpdate
+# 设置每分钟同步
+cat &lt;&lt;&quot;EOF&quot; &gt;&gt; /var/spool/cron/root
+*/1 * * * * /usr/sbin/ntpdate -u cn.pool.ntp.org &gt;&gt; /var/log/ntpdate.log 2&gt;&amp;1
+EOF</code></pre><ul>
+<li>在k8s-m1上声明变量</li>
+</ul>
+<blockquote>
+<p>因为后续全部会在k8s-m1节点上操作，将所需的变量提前写到一个文件里，后续只要source一下，就可以通用地使用后续命令；<br>注意3节点（master和node重合）版本只需将node ip写成master ip即可。</p>
+</blockquote>
+<p><strong>cluster.source</strong></p>
+<pre><code># 声明集群成员信息
+declare -A MasterArray otherMaster NodeArray
+MasterArray=([&#39;k8s-m1&#39;]=10.21.198.106 [&#39;k8s-m2&#39;]=10.21.198.119 [&#39;k8s-m3&#39;]=10.21.198.126)
+otherMaster=([&#39;k8s-m2&#39;]=10.21.198.119 [&#39;k8s-m3&#39;]=10.21.198.126)
+NodeArray=([&#39;k8s-n1&#39;]=10.21.198.106 [&#39;k8s-n2&#39;]=10.21.198.119 [&#39;k8s-n3&#39;]=10.21.198.126)
+
+export         VIP=10.21.198.109
+export INGRESS_VIP=10.130.224.10
+[ &quot;${#MasterArray[@]}&quot; -eq 1 ]  &amp;&amp; export VIP=${MasterArray[@]} || export API_PORT=8443
+export KUBE_APISERVER=https://${VIP}:${API_PORT:-6443}
+
+#声明需要安装的的k8s版本
+export KUBE_VERSION=v1.12.3
+
+# 网卡名
+export interface=eth0
+
+export K8S_DIR=/etc/kubernetes
+export PKI_DIR=${K8S_DIR}/pki
+export ETCD_SSL=/etc/etcd/ssl
+export MANIFESTS_DIR=/etc/kubernetes/manifests/
+# cni
+export CNI_URL=&quot;https://github.com/containernetworking/plugins/releases/download&quot;
+export CNI_VERSION=v0.7.1
+# cfssl
+export CFSSL_URL=&quot;https://pkg.cfssl.org/R1.2&quot;
+# etcd
+export ETCD_version=v3.3.9</code></pre><ul>
+<li>配置docker harbor</li>
+</ul>
+<blockquote>
+<p>因为后续所有的二进制文件、镜像等都是从公司内部docker harbor中拉取的，故需要在k8s-m1上进行相关配置（如需权限，请联系harbor管理员）；<br>此举可以避免翻墙下载包的问题，但有时异地传输镜像速度很慢，目前已有无锡、深圳两个harbor环境；<br>该harbor证书的获取查看附件。</p>
+</blockquote>
+<pre><code>for NODE in &quot;${MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${NODE} &quot;mkdir -p /etc/docker/certs.d/172.16.24.66/&quot;
+    scp ca.crt ${NODE}:/etc/docker/certs.d/172.16.24.66/
+done</code></pre><ul>
+<li>k8s-m1上下载二进制包</li>
+</ul>
+<pre><code># 下载镜像
+docker pull 172.16.24.66/k8s-v1.11.3/k8s-bin-full-no-etcdca:v1.12.3
+# 开启容器并设置9600秒后删除
+docker run --rm -d --name temp 172.16.24.66/k8s-v1.11.3/k8s-bin-full-no-etcdca:v1.12.3 sleep 9600
+# 拷贝所需文件
+cd ~
+docker cp temp:/kubernetes-bin/kubernetes-server-linux-amd64.tar.gz .
+# 解压
+tar -zxvf kubernetes-server-linux-amd64.tar.gz --strip-components=3 -C /usr/local/bin kubernetes/server/bin/kube{let,ctl,-apiserver,-controller-manager,-scheduler,-proxy}</code></pre><ul>
+<li>k8s-m1上分发master相关组件到其他master上</li>
+</ul>
+<pre><code>for NODE in &quot;${!otherMaster[@]}&quot;; do
+    echo &quot;--- $NODE ${otherMaster[$NODE]} ---&quot;
+    scp /usr/local/bin/kube{let,ctl,-apiserver,-controller-manager,-scheduler,-proxy} ${otherMaster[$NODE]}:/usr/local/bin/ 
+done</code></pre><ul>
+<li>k8s-m1上分发node的kubernetes二进制文件</li>
+</ul>
+<pre><code>for NODE in &quot;${!NodeArray[@]}&quot;; do
+    echo &quot;--- $NODE ${NodeArray[$NODE]} ---&quot;
+    scp /usr/local/bin/kube{let,-proxy} ${NodeArray[$NODE]}:/usr/local/bin/ 
+done</code></pre><ul>
+<li>k8s-m1上下载Kubernetes CNI 二进制文件并分发</li>
+</ul>
+<pre><code>mkdir -p /opt/cni/bin
+docker cp temp:/kubernetes-cni/cni-plugins-amd64-v0.7.1.tgz .
+tar -zxvf cni-plugins-amd64-v0.7.1.tgz -C /opt/cni/bin
+
+# 分发cni文件到各master
+for NODE in &quot;${!otherMaster[@]}&quot;; do
+    echo &quot;--- $NODE ${otherMaster[$NODE]} ---&quot;
+    ssh ${otherMaster[$NODE]} &#39;mkdir -p /opt/cni/bin&#39;
+    scp /opt/cni/bin/* ${otherMaster[$NODE]}:/opt/cni/bin/
+done</code></pre><ul>
+<li>k8s-m1上安装CFSSL工具，用來建立 TLS Certificates</li>
+</ul>
+<pre><code>docker cp temp:/kubernetes-cfssl/cfssl /usr/local/bin/
+docker cp temp:/kubernetes-cfssl/cfssljson /usr/local/bin/</code></pre><ul>
+<li>k8s-m1上获取后续部署相关配置文件</li>
+</ul>
+<blockquote>
+<p>已将所有相关配置文件放置gerrit上，包括制作证书需要的json文件及部署插件相关的yml文件等</p>
+</blockquote>
+<pre><code>cd ~
+docker cp temp:/k8s-manual-files .</code></pre><h2 id="3-建立集群CA-keys-与Certificates"><a href="#3-建立集群CA-keys-与Certificates" class="headerlink" title="3. 建立集群CA keys 与Certificates"></a>3. 建立集群CA keys 与Certificates</h2><blockquote>
+<p>此节需要生成多个组件的Certificates，包括Etcd、Kubernetes等，每个集群都会有一个根数位凭证认证机构(Root Certificate Authority)被用在认证API Server 与Kubelet 端的凭证。<br>CA JSON档的CN(Common Name)与O(Organization)等内容是会影响Kubernetes组件认证的。<br>CN Common Name, apiserver 会从证书中提取该字段作为请求的用户名 (User Name)<br>O Organization, apiserver 会从证书中提取该字段作为请求用户所属的组 (Group)<br>CA (Certificate Authority) 是自签名的根证书，用来签名后续创建的其它证书。</p>
+</blockquote>
+<ul>
+<li>Etcd组件CA</li>
+</ul>
+<blockquote>
+<p>Etcd：用来保存集群所有状态的 Key/Value 存储系统,所有 Kubernetes 组件会通过 API Server 来跟 Etcd 进行沟通从而保存或读取资源状态。<br>本文etcd跑在3台master节点上。</p>
+</blockquote>
+<ul>
+<li>Etcd 二进制文件</li>
+</ul>
+<pre><code>cd ~/k8s-manual-files
+docker cp temp:/kubernetes-etcd/etcd-v3.3.9-linux-amd64.tar.gz .
+# 解压至目录
+tar -zxvf etcd-v3.3.9-linux-amd64.tar.gz --strip-components=1 -C /usr/local/bin etcd-${ETCD_version}-linux-amd64/etcd{,ctl}
+# 分发etcd的二进制文件到其他master上
+for NODE in &quot;${!otherMaster[@]}&quot;; do
+    echo &quot;--- $NODE ${otherMaster[$NODE]} ---&quot;
+    scp /usr/local/bin/etcd* ${otherMaster[$NODE]}:/usr/local/bin/
+done
+# 修改etcd配置文件
+cd ~/k8s-manual-files/master/
+etcd_servers=$( xargs -n1&lt;&lt;&lt;${MasterArray[@]} | sort | sed &#39;s#^#http://#;s#$#:2379#;$s#\n##&#39; | paste -d, -s - )
+etcd_initial_cluster=$( for i in ${!MasterArray[@]};do  echo $i=http://${MasterArray[$i]}:2380; done | sort | paste -d, -s - )
+
+sed -ri &quot;/initial-cluster:/s#&#39;.+&#39;#&#39;${etcd_initial_cluster}&#39;#&quot; etc/etcd/config.yml
+# 分发systemd和配置文件至所有master节点
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &quot;mkdir -p $MANIFESTS_DIR /etc/etcd /var/lib/etcd&quot;
+    scp systemd/etcd.service ${MasterArray[$NODE]}:/usr/lib/systemd/system/etcd.service
+    scp etc/etcd/config.yml ${MasterArray[$NODE]}:/etc/etcd/etcd.config.yml
+    ssh ${MasterArray[$NODE]} &quot;sed -i &quot;s/{HOSTNAME}/$NODE/g&quot; /etc/etcd/etcd.config.yml&quot;
+    ssh ${MasterArray[$NODE]} &quot;sed -i &quot;s/{PUBLIC_IP}/${MasterArray[$NODE]}/g&quot; /etc/etcd/etcd.config.yml&quot;
+    ssh ${MasterArray[$NODE]} &#39;systemctl daemon-reload&#39;
+done
+# 启动并设置开机自启
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &#39;systemctl enable --now etcd&#39; &amp;
+done</code></pre><blockquote>
+<p>第一个master节点启动时可能会卡住，原因是等待其它节点的 etcd 加入集群，过一阵子重新restart一下即可</p>
+</blockquote>
+<pre><code># 验证etcd集群
+etcdctl cluster-health</code></pre><ul>
+<li>Kubernetes CA</li>
+</ul>
+<blockquote>
+<p>为确保安全，kubernetes 系统各组件需要使用 x509 证书对通信进行加密和认证。</p>
+</blockquote>
+<pre><code># 在k8s-m1建立pki文件夹,并生成根CA凭证用于签署其它的k8s证书
+mkdir -p ${PKI_DIR}
+cd ~/k8s-manual-files/pki
+cfssl gencert -initca ca-csr.json | cfssljson -bare ${PKI_DIR}/ca
+ls ${PKI_DIR}/ca*.pem</code></pre><ul>
+<li>API Server Certificate</li>
+</ul>
+<blockquote>
+<p>此凭证将被用于API Server和Kubelet Client通信使用,使用下面命令生成kube-apiserver凭证</p>
+</blockquote>
+<pre><code>cfssl gencert \
+  -ca=${PKI_DIR}/ca.pem \
+  -ca-key=${PKI_DIR}/ca-key.pem \
+  -config=ca-config.json \
+  -hostname=10.96.0.1,${VIP},127.0.0.1,kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster,kubernetes.default.svc.cluster.local,$(xargs -n1&lt;&lt;&lt;${MasterArray[@]} | sort  | paste -d, -s -) \
+  -profile=kubernetes \
+  apiserver-csr.json | cfssljson -bare ${PKI_DIR}/apiserver</code></pre><blockquote>
+<p>这边-hostname的10.96.0.1是Cluster IP的Kubernetes端点(默认占用第一个ip,用于给集群里的pod要调用Kubernetes的API server);<br>kubernetes.default为Kubernets DN。<br>如果使用域名可以加上域名<br>如果后续master节点扩容此处可以多预留ip到证书里</p>
+</blockquote>
+<ul>
+<li>Front Proxy Certificate</li>
+</ul>
+<blockquote>
+<p>此凭证将被用于Authenticating Proxy的功能上,而该功能主要是提供API Aggregation的认证。使用下面命令生成CA:</p>
+</blockquote>
+<pre><code>cfssl gencert \
+  -initca front-proxy-ca-csr.json | cfssljson -bare ${PKI_DIR}/front-proxy-ca
+
+# 为API server生成front-proxy-client凭证
+cfssl gencert \
+  -ca=${PKI_DIR}/front-proxy-ca.pem \
+  -ca-key=${PKI_DIR}/front-proxy-ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  front-proxy-client-csr.json | cfssljson -bare ${PKI_DIR}/front-proxy-client</code></pre><ul>
+<li>kubectl的参数意义</li>
+</ul>
+<blockquote>
+<p>接下来会利用相关组件的证书和kubectl生成相应的kubeconfig文件，所以先介绍下各个参数；<br>–certificate-authority：验证根证书；<br>–client-certificate、–client-key：生成的 组件证书和私钥，连接 kube-apiserver 时会用到<br>–embed-certs=true：将 ca.pem 和 组件.pem 证书内容嵌入到生成的 kubeconfig 文件中(不加时，写入的是证书文件路径)</p>
+</blockquote>
+<ul>
+<li>Controller Manager Certificate</li>
+</ul>
+<blockquote>
+<p>凭证会建立system:kube-controller-manager的使用者(凭证 CN),并被绑定在RBAC Cluster Role中的system:kube-controller-manager来让Controller Manager 元件能够存取需要的API object。</p>
+</blockquote>
+<pre><code>cfssl gencert \
+  -ca=${PKI_DIR}/ca.pem \
+  -ca-key=${PKI_DIR}/ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  manager-csr.json | cfssljson -bare ${PKI_DIR}/controller-manager
+
+# 利用kubectl生成Controller Manager的kubeconfig文件：
+# controller-manager set cluster
+kubectl config set-cluster kubernetes \
+    --certificate-authority=${PKI_DIR}/ca.pem \
+    --embed-certs=true \
+    --server=${KUBE_APISERVER} \
+    --kubeconfig=${K8S_DIR}/controller-manager.kubeconfig
+
+# controller-manager set credentials
+
+kubectl config set-credentials system:kube-controller-manager \
+    --client-certificate=${PKI_DIR}/controller-manager.pem \
+    --client-key=${PKI_DIR}/controller-manager-key.pem \
+    --embed-certs=true \
+    --kubeconfig=${K8S_DIR}/controller-manager.kubeconfig
+
+# controller-manager set context
+
+kubectl config set-context system:kube-controller-manager@kubernetes \
+    --cluster=kubernetes \
+    --user=system:kube-controller-manager \
+    --kubeconfig=${K8S_DIR}/controller-manager.kubeconfig
+
+# controller-manager set default context
+
+kubectl config use-context system:kube-controller-manager@kubernetes \
+    --kubeconfig=${K8S_DIR}/controller-manager.kubeconfig</code></pre><ul>
+<li>Scheduler Certificate</li>
+</ul>
+<blockquote>
+<p>凭证会建立system:kube-scheduler的使用者(凭证 CN),并被绑定在 RBAC Cluster Role 中的system:kube-scheduler来让 Scheduler 元件能够存取需要的 API object。</p>
+</blockquote>
+<pre><code>cfssl gencert \
+  -ca=${PKI_DIR}/ca.pem \
+  -ca-key=${PKI_DIR}/ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  scheduler-csr.json | cfssljson -bare ${PKI_DIR}/scheduler
+
+# 利用kubectl生成Scheduler的kubeconfig文件
+# scheduler set cluster
+
+kubectl config set-cluster kubernetes \
+    --certificate-authority=${PKI_DIR}/ca.pem \
+    --embed-certs=true \
+    --server=${KUBE_APISERVER} \
+    --kubeconfig=${K8S_DIR}/scheduler.kubeconfig
+
+# scheduler set credentials
+
+kubectl config set-credentials system:kube-scheduler \
+    --client-certificate=${PKI_DIR}/scheduler.pem \
+    --client-key=${PKI_DIR}/scheduler-key.pem \
+    --embed-certs=true \
+    --kubeconfig=${K8S_DIR}/scheduler.kubeconfig
+
+# scheduler set context
+
+kubectl config set-context system:kube-scheduler@kubernetes \
+    --cluster=kubernetes \
+    --user=system:kube-scheduler \
+    --kubeconfig=${K8S_DIR}/scheduler.kubeconfig
+
+# scheduler use default context
+
+kubectl config use-context system:kube-scheduler@kubernetes \
+    --kubeconfig=${K8S_DIR}/scheduler.kubeconfig</code></pre><ul>
+<li>Admin Certificate</li>
+</ul>
+<blockquote>
+<p>Admin 被用来绑定 RBAC Cluster Role 中 cluster-admin,当想要(最常见的就是使用kubectl)操作所有 Kubernetes 集群功能时,就必须利用这边生成的 kubeconfig 文件。</p>
+</blockquote>
+<p>查看admin-csr.json文件</p>
+<pre><code>{
+  &quot;CN&quot;: &quot;admin&quot;,
+  &quot;key&quot;: {
+    &quot;algo&quot;: &quot;rsa&quot;,
+    &quot;size&quot;: 2048
+  },
+  &quot;names&quot;: [
+    {
+      &quot;C&quot;: &quot;CN&quot;,
+      &quot;ST&quot;: &quot;Hangzhou&quot;,
+      &quot;L&quot;: &quot;Hangzhou&quot;,
+      &quot;O&quot;: &quot;system:masters&quot;,
+      &quot;OU&quot;: &quot;Kubernetes-manual&quot;
+    }
+  ]
+}</code></pre><blockquote>
+<p>O 为 system:masters，kube-apiserver 收到该证书后将请求的 Group 设置为 system:masters<br>预定义的 ClusterRoleBinding cluster-admin 将 Group system:masters 与 Role cluster-admin 绑定，该 Role 授予所有 API的权限<br>该证书只会被 kubectl 当做 client 证书使用，所以 hosts 字段为空或者不写</p>
+</blockquote>
+<pre><code>cfssl gencert \
+  -ca=${PKI_DIR}/ca.pem \
+  -ca-key=${PKI_DIR}/ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  admin-csr.json | cfssljson -bare ${PKI_DIR}/admin</code></pre><blockquote>
+<p>kubectl 默认从 ~/.kube/config 文件读取 kube-apiserver 地址、证书、用户名等信息</p>
+</blockquote>
+<p>利用kubectl生成 Admin 的kubeconfig文件</p>
+<pre><code># admin set cluster
+kubectl config set-cluster kubernetes \
+    --certificate-authority=${PKI_DIR}/ca.pem \
+    --embed-certs=true \
+    --server=${KUBE_APISERVER} \
+    --kubeconfig=${K8S_DIR}/admin.kubeconfig
+
+# admin set credentials
+kubectl config set-credentials kubernetes-admin \
+    --client-certificate=${PKI_DIR}/admin.pem \
+    --client-key=${PKI_DIR}/admin-key.pem \
+    --embed-certs=true \
+    --kubeconfig=${K8S_DIR}/admin.kubeconfig
+
+# admin set context
+kubectl config set-context kubernetes-admin@kubernetes \
+    --cluster=kubernetes \
+    --user=kubernetes-admin \
+    --kubeconfig=${K8S_DIR}/admin.kubeconfig
+
+# admin set default context
+kubectl config use-context kubernetes-admin@kubernetes \
+    --kubeconfig=${K8S_DIR}/admin.kubeconfig</code></pre><ul>
+<li>Master Kubelet Certificate</li>
+</ul>
+<blockquote>
+<p>使用 Node authorizer 来让节点的 kubelet 能够存取如 services、endpoints 等 API,而使用 Node authorizer 需定义system:nodesCLusterRole(凭证的 Organization),并且包含system:node:<nodename>的使用者名称(凭证的 Common Name)</nodename></p>
+</blockquote>
+<pre><code># 在k8s-m1节点生成所有 master 节点的 kubelet 凭证,这边通过下面命令來生成：
+cd ~/k8s-manual-files/pki
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ---&quot;
+    \cp kubelet-csr.json kubelet-$NODE-csr.json;
+    # 依据节点修改-hostname与$NODE
+    sed -i &quot;s/\$NODE/$NODE/g&quot; kubelet-$NODE-csr.json;
+    cfssl gencert \
+      -ca=${PKI_DIR}/ca.pem \
+      -ca-key=${PKI_DIR}/ca-key.pem \
+      -config=ca-config.json \
+      -hostname=$NODE \
+      -profile=kubernetes \
+      kubelet-$NODE-csr.json | cfssljson -bare ${PKI_DIR}/kubelet-$NODE;
+    rm -f kubelet-$NODE-csr.json
+  done
+
+# 分发kubelet凭证至所有master节点
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &quot;mkdir -p ${PKI_DIR}&quot;
+    scp ${PKI_DIR}/ca.pem ${MasterArray[$NODE]}:${PKI_DIR}/ca.pem
+    scp ${PKI_DIR}/kubelet-$NODE-key.pem ${MasterArray[$NODE]}:${PKI_DIR}/kubelet-key.pem
+    scp ${PKI_DIR}/kubelet-$NODE.pem ${MasterArray[$NODE]}:${PKI_DIR}/kubelet.pem
+    rm -f ${PKI_DIR}/kubelet-$NODE-key.pem ${PKI_DIR}/kubelet-$NODE.pem
+done
+
+# 在k8s-m1执行以下命令给所有master生成kubelet的kubeconfig文件
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ---&quot;
+    ssh ${MasterArray[$NODE]} &quot;cd ${PKI_DIR} &amp;&amp; \
+      kubectl config set-cluster kubernetes \
+        --certificate-authority=${PKI_DIR}/ca.pem \
+        --embed-certs=true \
+        --server=${KUBE_APISERVER} \
+        --kubeconfig=${K8S_DIR}/kubelet.kubeconfig &amp;&amp; \
+      kubectl config set-credentials system:node:${NODE} \
+        --client-certificate=${PKI_DIR}/kubelet.pem \
+        --client-key=${PKI_DIR}/kubelet-key.pem \
+        --embed-certs=true \
+        --kubeconfig=${K8S_DIR}/kubelet.kubeconfig &amp;&amp; \
+      kubectl config set-context system:node:${NODE}@kubernetes \
+        --cluster=kubernetes \
+        --user=system:node:${NODE} \
+        --kubeconfig=${K8S_DIR}/kubelet.kubeconfig &amp;&amp; \
+      kubectl config use-context system:node:${NODE}@kubernetes \
+        --kubeconfig=${K8S_DIR}/kubelet.kubeconfig&quot;
+done</code></pre><ul>
+<li>Service Account Key</li>
+</ul>
+<blockquote>
+<p>Kubernetes Controller Manager 利用 Key pair 生成与签署 Service Account 的 tokens,而这边不能通过 CA 做认证,而是建立一组公私钥来让 API Server 与 Controller Manager 使用：</p>
+</blockquote>
+<pre><code>openssl genrsa -out ${PKI_DIR}/sa.key 2048
+openssl rsa -in ${PKI_DIR}/sa.key -pubout -out ${PKI_DIR}/sa.pub
+# 需要如下文件:
+ls ${PKI_DIR}/sa.*
+
+# 复制凭证文件至其他master节点：
+for NODE in &quot;${!otherMaster[@]}&quot;; do
+    echo &quot;--- $NODE ${otherMaster[$NODE]}---&quot;
+    for FILE in $(ls ${PKI_DIR}); do
+      scp ${PKI_DIR}/${FILE} ${otherMaster[$NODE]}:${PKI_DIR}/${FILE}
+    done
+done
+
+# 复制Kubernetes config文件至其他master节点
+for NODE in &quot;${!otherMaster[@]}&quot;; do
+    echo &quot;--- $NODE ${otherMaster[$NODE]}---&quot;
+    for FILE in admin.kubeconfig controller-manager.kubeconfig scheduler.kubeconfig; do
+      scp ${K8S_DIR}/${FILE} ${otherMaster[$NODE]}:${K8S_DIR}/${FILE}
+    done
+done</code></pre><h2 id="4-Kubernetes-Masters"><a href="#4-Kubernetes-Masters" class="headerlink" title="4. Kubernetes Masters"></a>4. Kubernetes Masters</h2><blockquote>
+<p>本节将说明如何建立与设定Kubernetes Master 角色；<br>其间会部署以下组件：</p>
+</blockquote>
+<p><strong>kubelet</strong></p>
+<ul>
+<li>负责管理容器的生命周期,定期从API Server获取节点上的预期状态(如网络、存储等等配置)资源,并让对应的容器插件(CRI、CNI 等)来达成这个状态。任何 Kubernetes 节点(node)都会拥有这个</li>
+<li>关闭只读端口，在安全端口 10250 接收 https 请求，对请求进行认证和授权，拒绝匿名访问和非授权访问</li>
+<li>使用 kubeconfig 访问 apiserver 的安全端口</li>
+</ul>
+<p><strong>kube-apiserver:</strong></p>
+<ul>
+<li>以 REST APIs 提供 Kubernetes 资源的 CRUD,如授权、认证、存取控制与 API 注册等机制</li>
+<li>关闭非安全端口,在安全端口 6443 接收 https 请求</li>
+<li>严格的认证和授权策略 (x509、token、RBAC)</li>
+<li>开启 bootstrap token 认证，支持 kubelet TLS bootstrapping</li>
+<li>使用 https 访问 kubelet、etcd，加密通信</li>
+</ul>
+<p><strong>kube-controller-manager</strong></p>
+<ul>
+<li>通过核心控制循环(Core Control Loop)监听 Kubernetes API 的资源来维护集群的状态,这些资源会被不同的控制器所管理,如 Replication Controller、Namespace Controller 等等。而这些控制器会处理着自动扩展、滚动更新等等功能</li>
+</ul>
+<p><strong>kube-scheduler</strong></p>
+<ul>
+<li>负责将一個(或多个)容器依据调度策略分配到对应节点上让容器引擎(如 Docker)执行。而调度受到 QoS 要求、软硬性约束、亲和性(Affinity)等等因素影响。</li>
+</ul>
+<p><strong>HAProxy</strong></p>
+<ul>
+<li>提供多个 API Server 的负载均衡(Load Balance),确保haproxy的端口负载到所有的apiserver的6443端口</li>
+</ul>
+<p><strong>Keepalived</strong></p>
+<ul>
+<li>提供虚拟IP位址(VIP),来让vip落在可用的master主机上供所有组件都能访问到可用的master,结合haproxy能访问到master上的apiserver的6443端口</li>
+</ul>
+<p><strong>部署与设定</strong></p>
+<ul>
+<li>所有master安装haproxy+keepalived</li>
+</ul>
+<pre><code>for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &#39;yum install haproxy keepalived -y&#39; &amp;
+done</code></pre><ul>
+<li>在k8s-m1节点下把相关配置文件配置后再分发</li>
+</ul>
+<pre><code>cd ~/k8s-manual-files/master/etc
+
+# 修改haproxy.cfg配置文件
+sed -i &#39;$r &#39;&lt;(paste &lt;( seq -f&#39;  server k8s-api-%g&#39;  ${#MasterArray[@]} ) &lt;( xargs -n1&lt;&lt;&lt;${MasterArray[@]} | sort | sed &#39;s#$#:6443  check#&#39;)) haproxy/haproxy.cfg
+
+# 修改keepalived(网卡和VIP写进去,使用下面命令)
+
+sed -ri &quot;s#\{\{ VIP \}\}#${VIP}#&quot; keepalived/*
+sed -ri &quot;s#\{\{ interface \}\}#${interface}#&quot; keepalived/keepalived.conf 
+sed -i &#39;/unicast_peer/r &#39;&lt;(xargs -n1&lt;&lt;&lt;${MasterArray[@]} | sort | sed &#39;s#^#\t#&#39;) keepalived/keepalived.conf
+
+# 分发文件
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    scp -r haproxy/ ${MasterArray[$NODE]}:/etc
+    scp -r keepalived/ ${MasterArray[$NODE]}:/etc
+    ssh ${MasterArray[$NODE]} &#39;systemctl enable --now haproxy keepalived&#39;
+done
+
+# ping下vip看看能通否
+ping $VIP</code></pre><ul>
+<li>master组件</li>
+</ul>
+<pre><code>cd ~/k8s-manual-files/master/
+etcd_servers=$( xargs -n1&lt;&lt;&lt;${MasterArray[@]} | sort | sed &#39;s#^#http://#;s#$#:2379#;$s#\n##&#39; | paste -d, -s - )
+
+# 注入VIP和etcd_servers
+sed -ri &#39;/--advertise-address/s#=.+#=&#39;&quot;$VIP&quot;&#39; \\#&#39; systemd/kube-apiserver.service
+sed -ri &#39;/--etcd-servers/s#=.+#=&#39;&quot;$etcd_servers&quot;&#39; \\#&#39; systemd/kube-apiserver.service
+
+# 修改encryption.yml
+ENCRYPT_SECRET=$( head -c 32 /dev/urandom | base64 )
+sed -ri &quot;/secret:/s#(: ).+#\1${ENCRYPT_SECRET}#&quot; encryption/config.yml
+
+# 分发文件(不想master跑pod的话就不复制kubelet的配置文件)
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &quot;mkdir -p $MANIFESTS_DIR /etc/systemd/system/kubelet.service.d /var/lib/kubelet /var/log/kubernetes&quot;
+    scp systemd/kube-*.service ${MasterArray[$NODE]}:/usr/lib/systemd/system/
+
+    scp encryption/config.yml ${MasterArray[$NODE]}:/etc/kubernetes/encryption.yml
+    scp audit/policy.yml ${MasterArray[$NODE]}:/etc/kubernetes/audit-policy.yml
+
+    scp systemd/kubelet.service ${MasterArray[$NODE]}:/lib/systemd/system/kubelet.service
+    scp systemd/10-kubelet.conf ${MasterArray[$NODE]}:/etc/systemd/system/kubelet.service.d/10-kubelet.conf
+    scp etc/kubelet/kubelet-conf.yml ${MasterArray[$NODE]}:/etc/kubernetes/kubelet-conf.yml
+done
+
+# 在k8s-m1上给所有master机器启动kubelet 服务并设置kubectl补全脚本:
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &#39;systemctl enable --now kubelet kube-apiserver kube-controller-manager kube-scheduler;
+    cp /etc/kubernetes/admin.kubeconfig ~/.kube/config;
+    kubectl completion bash &gt; /etc/bash_completion.d/kubectl&#39;
+done</code></pre><ul>
+<li>验证集群</li>
+</ul>
+<pre><code>kubectl get cs,svc,node</code></pre><ul>
+<li>建立TLS Bootstrapping RBAC 与Secret</li>
+</ul>
+<blockquote>
+<p> TLS bootstrapping通过让kubelet先使用一个预定低权限使用者连接到kube-apiserver,然后在对kube-apiserver申请凭证签署,当授权Token一致时,Node节点的kubelet凭证将由kube-apiserver动态签署提供。</p>
+</blockquote>
+<pre><code># 在k8s-m1建立一个变数来产生BOOTSTRAP_TOKEN,并建立bootstrap-kubelet.conf的Kubernetes config文件
+export TOKEN_ID=$(openssl rand 3 -hex)
+export TOKEN_SECRET=$(openssl rand 8 -hex)
+export BOOTSTRAP_TOKEN=${TOKEN_ID}.${TOKEN_SECRET}
+
+# bootstrap set cluster
+kubectl config set-cluster kubernetes \
+    --certificate-authority=${PKI_DIR}/ca.pem \
+    --embed-certs=true \
+    --server=${KUBE_APISERVER} \
+    --kubeconfig=${K8S_DIR}/bootstrap-kubelet.kubeconfig
+
+# bootstrap set credentials
+kubectl config set-credentials tls-bootstrap-token-user \
+    --token=${BOOTSTRAP_TOKEN} \
+    --kubeconfig=${K8S_DIR}/bootstrap-kubelet.kubeconfig
+
+# bootstrap set context
+kubectl config set-context tls-bootstrap-token-user@kubernetes \
+    --cluster=kubernetes \
+    --user=tls-bootstrap-token-user \
+    --kubeconfig=${K8S_DIR}/bootstrap-kubelet.kubeconfig
+
+# bootstrap use default context
+kubectl config use-context tls-bootstrap-token-user@kubernetes \
+    --kubeconfig=${K8S_DIR}/bootstrap-kubelet.kubeconfig
+
+# 在k8s-m1建立TLS bootstrap secret来提供自动签证使用：
+cd ~/k8s-manual-files/master
+
+# 注入变量
+
+sed -ri &quot;s#\{TOKEN_ID\}#${TOKEN_ID}#g&quot; resources/bootstrap-token-Secret.yml
+sed -ri &quot;/token-id/s#\S+\$#&#39;&amp;&#39;#&quot; resources/bootstrap-token-Secret.yml
+sed -ri &quot;s#\{TOKEN_SECRET\}#${TOKEN_SECRET}#g&quot; resources/bootstrap-token-Secret.yml
+kubectl apply -f resources/bootstrap-token-Secret.yml
+
+# 在k8s-m1建立 TLS Bootstrap Autoapprove RBAC来自动处理 CSR：
+kubectl apply -f resources/kubelet-bootstrap-rbac.yml
+# 建立一个 RBAC Role 来获取存取权限
+kubectl apply -f resources/apiserver-to-kubelet-rbac.yml
+# 设定master节点加上污点Taint不让pod跑在master节点上（若是master与node重合则不需如下操作）：
+kubectl taint nodes node-role.kubernetes.io/master=&quot;&quot;:NoSchedule --all
+# 若要删除对应的污点taint
+kubectl taint nodes node-role.kubernetes.io/master:NoSchedule- --all </code></pre><h2 id="5-Kubernetes-Core-Addons部署"><a href="#5-Kubernetes-Core-Addons部署" class="headerlink" title="5. Kubernetes Core Addons部署"></a>5. Kubernetes Core Addons部署</h2><blockquote>
+<p>核心插件如Kubernetes DNS和Kubernetes Proxy等插件是非常重要的</p>
+</blockquote>
+<h3 id="5-1-部署Kubernetes-Proxy"><a href="#5-1-部署Kubernetes-Proxy" class="headerlink" title="5.1 部署Kubernetes Proxy"></a>5.1 部署Kubernetes Proxy</h3><blockquote>
+<p>Kube-proxy是实现Service的关键插件,kube-proxy会在每台节点上执行,然后监听API Server的Service与Endpoint资源物件的改变,然后来依据变化执行iptables来实现网路的转发。</p>
+</blockquote>
+<pre><code># 在k8s-m1上创建kube-proxy 的 service account:
+kubectl -n kube-system create serviceaccount kube-proxy
+# 将 kube-proxy 的 serviceaccount 绑定到 clusterrole system:node-proxier 以允许 RBAC：
+kubectl create clusterrolebinding system:kube-proxy \
+        --clusterrole system:node-proxier \
+        --serviceaccount kube-system:kube-proxy
+# 创建kube-proxy的kubeconfig:
+SECRET=$(kubectl -n kube-system get sa/kube-proxy \
+    --output=jsonpath=&#39;{.secrets[0].name}&#39;)
+
+JWT_TOKEN=$(kubectl -n kube-system get secret/$SECRET \
+    --output=jsonpath=&#39;{.data.token}&#39; | base64 -d)
+
+# proxy set cluster
+kubectl config set-cluster kubernetes \
+    --certificate-authority=${PKI_DIR}/ca.pem \
+    --embed-certs=true \
+    --server=${KUBE_APISERVER} \
+    --kubeconfig=${K8S_DIR}/kube-proxy.kubeconfig
+
+# proxy set credentials
+kubectl config set-credentials kubernetes \
+    --token=${JWT_TOKEN} \
+    --kubeconfig=${K8S_DIR}/kube-proxy.kubeconfig
+
+# proxy set context
+kubectl config set-context kubernetes \
+    --cluster=kubernetes \
+    --user=kubernetes \
+    --kubeconfig=${K8S_DIR}/kube-proxy.kubeconfig
+
+# proxy set default context
+kubectl config use-context kubernetes \
+    --kubeconfig=${K8S_DIR}/kube-proxy.kubeconfig
+
+# 在k8s-m1分发kube-proxy 的 相关文件到所有节点
+cd ~/k8s-manual-files/
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    scp ${K8S_DIR}/kube-proxy.kubeconfig ${MasterArray[$NODE]}:${K8S_DIR}/kube-proxy.kubeconfig
+    scp addons/kube-proxy/kube-proxy.conf ${MasterArray[$NODE]}:/etc/kubernetes/kube-proxy.conf
+    scp addons/kube-proxy/kube-proxy.service ${MasterArray[$NODE]}:/usr/lib/systemd/system/kube-proxy.service
+done
+
+# 启动master节点的kube-proxy服务：
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+    echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+    ssh ${MasterArray[$NODE]} &#39;systemctl enable --now kube-proxy&#39;
+done
+
+# 通过ipvsadm查看proxy规则(若正常会显示相应的规则)
+ipvsadm -ln
+# 以下是输出
+IP Virtual Server version 1.2.1 (size=4096)
+Prot LocalAddress:Port Scheduler Flags
+  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
+TCP  10.96.0.1:443 rr
+  -&gt; 10.21.198.109:6443           Masq    1      2          0         
+TCP  10.96.0.10:53 rr
+  -&gt; 10.244.3.6:53                Masq    1      0          0         
+  -&gt; 10.244.4.5:53                Masq    1      0          0         
+TCP  10.102.192.184:443 rr
+  -&gt; 10.244.5.8:8443              Masq    1      0          0         
+TCP  10.110.159.20:5473 rr
+UDP  10.96.0.10:53 rr
+  -&gt; 10.244.3.6:53                Masq    1      0          0         
+  -&gt; 10.244.4.5:53                Masq    1      0          0
+
+# 验证使用ipvs模式
+curl localhost:10249/proxyMode</code></pre><h3 id="6-2-部署calico网络插件"><a href="#6-2-部署calico网络插件" class="headerlink" title="6.2 部署calico网络插件"></a>6.2 部署calico网络插件</h3><blockquote>
+<p>Calico 是一款纯 Layer 3 的网络，其好处是它整合了各种云原生平台(Docker、Mesos 与 OpenStack 等)，且 Calico 不采用 vSwitch，而是在每个 Kubernetes 节点使用 vRouter 功能，并通过 Linux Kernel 既有的 L3 forwarding 功能，而当资料中心复杂度增加时，Calico 也可以利用 BGP route reflector 來达成。<br>Calico 官方提供了 Kubernetes resources YAML 文件来快速以容器方式部署网络插件至所有节点上，因此只需要在k8s-m1使用 kubeclt 执行下面指令來建立：</p>
+</blockquote>
+<pre><code># 拉取镜像，否则需要翻墙下载镜像
+for NODE in &quot;${!MasterArray[@]}&quot;; do
+  echo &quot;--- $NODE ${MasterArray[$NODE]} ---&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker pull 172.16.24.66/k8s-v1.11.3/quay.io/calico/cni:v3.1.3&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker tag 172.16.24.66/k8s-v1.11.3/quay.io/calico/cni:v3.1.3  quay.io/calico/cni:v3.1.3&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker pull 172.16.24.66/k8s-v1.11.3/quay.io/calico/node:v3.1.3&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker tag 172.16.24.66/k8s-v1.11.3/quay.io/calico/node:v3.1.3  quay.io/calico/node:v3.1.3&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker pull 172.16.24.66/k8s-v1.11.3/quay.io/calico/ctl:v3.1.3&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker tag 172.16.24.66/k8s-v1.11.3/quay.io/calico/ctl:v3.1.3  quay.io/calico/ctl:v3.1.3&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker pull 172.16.24.66/k8s-v1.11.3/quay.io/calico/typha:v0.7.4&quot;
+  ssh ${MasterArray[$NODE]} &quot;docker tag 172.16.24.66/k8s-v1.11.3/quay.io/calico/typha:v0.7.4  quay.io/calico/typha:v0.7.4&quot;
+done
+
+# 部署
+sed -ri &quot;s#\{\{ interface \}\}#${interface}#&quot; addons/calico/v3.1/calico.yml
+kubectl apply -f addons/calico/v3.1
+# 验证
+kubectl -n kube-system get po -l k8s-app=calico-node
+kubectl -n kube-system get po -l k8s-app=calicoctl
+# 通过 kubectl exec calicoctl pod 执行命令来检查功能是否正常(此处pod名称根据自身环境里生成的calicoctl pod名称来)
+kubectl -n kube-system exec calicoctl-6dfc585667-jzlhd -- calicoctl get profiles -o wide
+# 会得到以下输出
+NAME              LABELS   
+kns.default       map[]    
+kns.kube-public   map[]    
+kns.kube-system   map[]
+# kubectl -n kube-system exec calicoctl-6dfc585667-jzlhd -- calicoctl get node -o wide
+# 会得到以下输出
+NAME     ASN         IPV4               IPV6   
+k8s-m1   (unknown)   10.21.198.106/24          
+k8s-m2   (unknown)   10.21.198.119/24          
+k8s-m3   (unknown)   10.21.198.126/24          
+k8s-n1   (unknown)   10.21.198.127/24          
+k8s-n2   (unknown)   10.21.198.134/24          
+k8s-n3   (unknown)   10.21.198.142/24</code></pre><ul>
+<li>完成后,通过检查节点是否不再是NotReady,以及 Pod 是否不再是Pending</li>
+</ul>
+<h3 id="6-3-部署KubeDNS"><a href="#6-3-部署KubeDNS" class="headerlink" title="6.3 部署KubeDNS"></a>6.3 部署KubeDNS</h3><blockquote>
+<p>Kube DNS是Kubernetes集群内部Pod之间互相沟通的重要Addon，它允许Pod可以通过Domain Name方式来连接Service，其主要由Kube DNS与Sky DNS组合而成，通过Kube DNS监听Service与Endpoint变化，来提供给Sky DNS资讯，已更新解析位址。</p>
+</blockquote>
+<pre><code># 创建KubeDNS
+kubectl apply -f addons/Kubedns/kubedns.yml 
+# 验证pod状态
+kubectl -n kube-system get pod,svc -l k8s-app=kube-dns
+# 检查集群dns是否正常
+cat&lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: default
+spec:
+  containers:
+  - name: busybox
+    image: 172.16.24.66/library/busybox:1.28
+    command:
+      - sleep
+      - &quot;3600&quot;
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+EOF
+
+kubectl exec -ti busybox -- nslookup kubernetes</code></pre><h2 id="7-Kubernets-Extra-Addons部署"><a href="#7-Kubernets-Extra-Addons部署" class="headerlink" title="7. Kubernets Extra Addons部署"></a>7. Kubernets Extra Addons部署</h2><blockquote>
+<p>本届介绍官方常用的额外Addons，比如Dashboard等（其余Addons待补充）</p>
+</blockquote>
+<h3 id="7-1-Dashboard"><a href="#7-1-Dashboard" class="headerlink" title="7.1 Dashboard"></a>7.1 Dashboard</h3><blockquote>
+<p>Dashboard是Kubernetes社区官方开发的仪表板,有了仪表板后管理者就能够通过Web-based方式来管理Kubernetes集群,除了提升管理方便,也让资源视觉化,让人更直觉看见系统资讯的呈现结果。</p>
+</blockquote>
+<ul>
+<li>部署</li>
+</ul>
+<pre><code>cd ~/k8s-manual-files
+kubectl apply -f ExtraAddons/dashboard
+# 验证
+kubectl -n kube-system get po,svc -l k8s-app=kubernetes-dashboard</code></pre><ul>
+<li>完成后,就可以通过浏览器存取Dashboard https://{YOUR_VIP}:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/</li>
+<li>获取并复制token登陆界面<pre><code>kubectl -n kube-system describe secrets | sed -rn &#39;/\sdashboard-token-/,/^token/{/^token/s#\S+\s+##p}&#39;</code></pre></li>
+</ul>
+<p><img src="2.png" alt></p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.png" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechats.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone, qq, weibo, douban"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>Reprint policy</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《高可用（离线版无etcd证书）K8S v1.12.3版本部署》
+                </span> by
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/07/11/k8s-deploy/" property="cc:attributionName"
+               rel="cc:attributionURL">
+                Eason Sun
+            </a> is licensed under a
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 International License
+            </a> 
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/2018/08/19/drone-gitlab-ci/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Drone-Gitlab-CI">
+                        
+                        <span class="card-title">Drone-Gitlab-CI</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
+docker
+docker-compose
+
+2. 编辑docker-compose.yml
+找到合适的镜像：略
+编辑docker-compose.yml
+
+vers
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Eason Sun
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/drone/" target="_blank">
+                        <span class="chip bg-color">drone</span>
+                    </a>
+                    
+                    <a href="/tags/gitlab/" target="_blank">
+                        <span class="chip bg-color">gitlab</span>
+                    </a>
+                    
+                    <a href="/tags/CICD/" target="_blank">
+                        <span class="chip bg-color">CICD</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/07/05/k8s-jenkins-concurrent/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="优化kubernetes jenkins并发">
+                        
+                        <span class="card-title">优化kubernetes jenkins并发</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            优化kubernetes jenkins并发
+执行并发任务过多时，若一次性启动过多的pod，对于资源配置一般的集群而言，jenkins会出现java.util.concurrent.**exception；
+
+解决办法：
+
+Jenkins 
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-05
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/cicd/" class="post-category" target="_blank">
+                                    cicd
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/k8s/" target="_blank">
+                        <span class="chip bg-color">k8s</span>
+                    </a>
+                    
+                    <a href="/tags/cicd/" target="_blank">
+                        <span class="chip bg-color">cicd</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="http://mreason.coding.me/" target="_blank">Eason</a>基于
+            <a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a> 的主题搭建.
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://dev.tencent.com/u/MrEason" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:easonsun_1703@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=782806166" class="tooltipped" data-tooltip="QQ联系我: 782806166" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
