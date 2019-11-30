@@ -4,15 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Django问题集锦, EasonBlog">
-    <meta name="description" content="Django问题集锦1. Not Found:/favicon.ico
-问题：
-
-&amp;quot;GET /favicon.ico HTTP/1.1&amp;quot; 404 12362
-解决：
-
-# 定位django
-pip show django">
+    <meta name="keywords" content="使用coding+hexo搭建博客, EasonBlog">
+    <meta name="description" content="基于Kubernetes优化CI/CD1. 现状分析与前景展望1.1 现状分析
+目前CI/CD主要运用的工具就是jenkins。通过jenkins pipeline调用虚拟机节点开展各种CI/CD任务，本质上其实只是通过jenkins调用虚">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +14,7 @@ pip show django">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Django问题集锦 | EasonBlog</title>
+    <title>使用coding+hexo搭建博客 | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -267,13 +261,13 @@ pip show django">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Django问题集锦
+                        使用coding+hexo搭建博客
                     </div>
                 </div>
             </div>
@@ -384,8 +378,12 @@ pip show django">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/django/" target="_blank">
-                                <span class="chip bg-color">django</span>
+                            <a href="/tags/k8s/" target="_blank">
+                                <span class="chip bg-color">k8s</span>
+                            </a>
+                        
+                            <a href="/tags/cicd/" target="_blank">
+                                <span class="chip bg-color">cicd</span>
                             </a>
                         
                     </div>
@@ -396,8 +394,8 @@ pip show django">
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/web后端/" class="post-category" target="_blank">
-                                web后端
+                            <a href="/categories/cicd/" class="post-category" target="_blank">
+                                cicd
                             </a>
                         
                     </div>
@@ -408,7 +406,7 @@ pip show django">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2017-05-29
+                    2018-06-23
                 </div>
 
                 
@@ -424,17 +422,61 @@ pip show django">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Django问题集锦"><a href="#Django问题集锦" class="headerlink" title="Django问题集锦"></a>Django问题集锦</h1><h2 id="1-Not-Found-favicon-ico"><a href="#1-Not-Found-favicon-ico" class="headerlink" title="1. Not Found:/favicon.ico"></a>1. Not Found:/favicon.ico</h2><ul>
-<li>问题：</li>
+                <h1 id="基于Kubernetes优化CI-CD"><a href="#基于Kubernetes优化CI-CD" class="headerlink" title="基于Kubernetes优化CI/CD"></a>基于Kubernetes优化CI/CD</h1><h2 id="1-现状分析与前景展望"><a href="#1-现状分析与前景展望" class="headerlink" title="1. 现状分析与前景展望"></a>1. 现状分析与前景展望</h2><h3 id="1-1-现状分析"><a href="#1-1-现状分析" class="headerlink" title="1.1 现状分析"></a>1.1 现状分析</h3><blockquote>
+<p>目前CI/CD主要运用的工具就是jenkins。通过jenkins pipeline调用虚拟机节点开展各种CI/CD任务，本质上其实只是通过jenkins调用虚拟机、运行shell或python等脚本的形式完成CI/CD的各项工作。</p>
+</blockquote>
+<p><strong>弊端：</strong></p>
+<ul>
+<li>频繁地添加虚拟机节点；</li>
+<li>虚拟机节点资源利用率有高有低，造成资源分配不均。造成有些节点空闲时间太多，而有些节点比较繁忙，磁盘经常爆满；</li>
+<li>打包、ut等操作过度依赖虚拟机节点的环境，环境一旦出现问题，需要人为从灾备机器复原环境</li>
+<li>缺乏监控告警，往往是在CI/CD环境出现问题后才进行相关的修复工作</li>
+<li>环境重建、更新、修复等操作高度耦合，更新RPM包 –&gt; 重建、更新环境</li>
 </ul>
-<pre><code>&quot;GET /favicon.ico HTTP/1.1&quot; 404 12362</code></pre><ul>
-<li>解决：</li>
+<h3 id="1-2-基于K8S搭建CI-CD平台"><a href="#1-2-基于K8S搭建CI-CD平台" class="headerlink" title="1.2 基于K8S搭建CI/CD平台"></a>1.2 基于K8S搭建CI/CD平台</h3><p><img src="1.png" alt><br><img src="2.png" alt></p>
+<p><strong>优势：</strong></p>
+<blockquote>
+<p>更快速的交付和部署；更高效的虚拟化；更轻松的迁移和扩展</p>
+</blockquote>
+<ul>
+<li>一套环境，引入所有的CI/CD工具链</li>
+<li>将jenkins节点任务优化为k8s Pod、Service服务，提高CI/CD效率</li>
+<li>仅在任务运行时开启pod，运行完成后销毁，最大化利用资源</li>
+<li>自带负载均衡与灾备</li>
+<li>通过持久化存储，更便捷地实现异地、多机等灾备方案</li>
+<li>通过k8s的各类插件，实现资源监控、日志采集，通过可视化的方式查看CI/CD的各类构建，及时定位各种可能出现的风险</li>
+<li>将CI/CD的产出统一化，其本质就是各类image</li>
+<li>目前海河项目上层已经微服务化，这为CI/CD容器化实践提供了绝佳的契机（目前的工作重点正是基于海河上层，实现CI/CD容器化）</li>
 </ul>
-<pre><code># 定位django
-pip show django
-&gt;&gt; Location: /root/.virtualenvs/django/lib/python3.7/site-packages
-# 拷贝favicon.ico至指定目录
-cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /root/.virtualenvs/django/lib/python3.7/site-packages/django/contrib/admin/static/admin/img/</code></pre>
+<h2 id="2-CI容器化"><a href="#2-CI容器化" class="headerlink" title="2. CI容器化"></a>2. CI容器化</h2><blockquote>
+<p>容器化后的CI产出分别为：code源码托管平台、ut检测、rpm包生成及构建源、海河上层项目image</p>
+</blockquote>
+<p><strong>产出：</strong></p>
+<ul>
+<li>code源码托管平台：利用k8s搭建例如gitlab、gerrit等平台进行源码管理</li>
+<li>ut检测：针对每个项目分别制作稳定的ut检测（如tox）等image</li>
+<li>rpm包生成及构建源：针对每个项目，制作符合该项目rpm构建的image，以及提供源服务的image</li>
+<li>海河上层项目image：将海河上层的各个微服务制作成镜像</li>
+</ul>
+<h2 id="3-CD容器化（当前重心）"><a href="#3-CD容器化（当前重心）" class="headerlink" title="3. CD容器化（当前重心）"></a>3. CD容器化（当前重心）</h2><blockquote>
+<p>底层openstack容器化难度大，暂不考虑。此处的CD容器化专指运行ansible脚本的机器容器化，以及<strong>上层服务通过容器的方式搭建</strong></p>
+</blockquote>
+<p><img src="3.png" alt></p>
+<p><strong>流程（特指海河上层）：</strong></p>
+<ul>
+<li>代码提交触发镜像构建</li>
+<li>根据最新镜像更新开发环境里的相关服务</li>
+<li>开发人员在此环境上进行测试</li>
+<li>测试环境会根据开发人员调试过的稳定镜像创建测试环境</li>
+<li>测试人员在测试环境中进行测试</li>
+<li>测试通过后的稳定镜像用于release，供生产环境进行部署</li>
+</ul>
+<p><strong>产出：</strong></p>
+<ul>
+<li>ansible部署放入容器：以前都是通过jenkins的一个节点运行ansible脚本，安装环境。一个虚拟机仅仅用来运行ansible脚本，造成资源浪费；且如果用同一个节点并行地安装多套环境，可能因为脚本问题造成彼此间的影响。通过一个ansible定制的docker镜像专门负责部署，可以节约资源。</li>
+<li>海河上层容器化：通过容器化的方式部署海河上层服务，快速搭建、修复、更新开发和测试环境</li>
+</ul>
+
             </div>
             <hr/>
 
@@ -592,9 +634,9 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Django问题集锦》
+                    《使用coding+hexo搭建博客》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2017/05/29/django-issues/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/06/23/k8s-cicd/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -638,34 +680,37 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2018/06/23/k8s-cicd/">
+                <a href="/2018/08/19/drone-gitlab-ci/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="使用coding+hexo搭建博客">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Drone-Gitlab-CI">
                         
-                        <span class="card-title">使用coding+hexo搭建博客</span>
+                        <span class="card-title">Drone-Gitlab-CI</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            基于Kubernetes优化CI/CD1. 现状分析与前景展望1.1 现状分析
-目前CI/CD主要运用的工具就是jenkins。通过jenkins pipeline调用虚拟机节点开展各种CI/CD任务，本质上其实只是通过jenkins调用虚
+                            Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
+docker
+docker-compose
+
+2. 编辑docker-compose.yml
+找到合适的镜像：略
+编辑docker-compose.yml
+
+vers
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-06-23
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-19
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/cicd/" class="post-category" target="_blank">
-                                    cicd
-                                </a>
-                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Eason Sun
                             
                         </span>
                     </div>
@@ -673,12 +718,16 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/k8s/" target="_blank">
-                        <span class="chip bg-color">k8s</span>
+                    <a href="/tags/drone/" target="_blank">
+                        <span class="chip bg-color">drone</span>
                     </a>
                     
-                    <a href="/tags/cicd/" target="_blank">
-                        <span class="chip bg-color">cicd</span>
+                    <a href="/tags/gitlab/" target="_blank">
+                        <span class="chip bg-color">gitlab</span>
+                    </a>
+                    
+                    <a href="/tags/CICD/" target="_blank">
+                        <span class="chip bg-color">CICD</span>
                     </a>
                     
                 </div>
@@ -692,36 +741,38 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2017/05/26/hexo-blog/">
+                <a href="/2017/05/29/django-issues/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="使用coding+hexo搭建博客">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Django问题集锦">
                         
-                        <span class="card-title">使用coding+hexo搭建博客</span>
+                        <span class="card-title">Django问题集锦</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            使用coding+hexo搭建博客
-本篇主要介绍使用腾讯coding平台，结合hexo搭建博客
+                            Django问题集锦1. Not Found:/favicon.ico
+问题：
 
-1. 创建coding账号
-注册地址：https://coding.net/register
-coding web ide：https://s
+&quot;GET /favicon.ico HTTP/1.1&quot; 404 12362
+解决：
+
+# 定位django
+pip show django
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-05-26
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-05-29
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/web前端/" class="post-category" target="_blank">
-                                    web前端
+                            <a href="/categories/web后端/" class="post-category" target="_blank">
+                                    web后端
                                 </a>
                             
                             
@@ -731,12 +782,8 @@ coding web ide：https://s
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/hexo/" target="_blank">
-                        <span class="chip bg-color">hexo</span>
-                    </a>
-                    
-                    <a href="/tags/blog/" target="_blank">
-                        <span class="chip bg-color">blog</span>
+                    <a href="/tags/django/" target="_blank">
+                        <span class="chip bg-color">django</span>
                     </a>
                     
                 </div>
