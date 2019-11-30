@@ -4,16 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Drone-Gitlab-CI, EasonBlog">
-    <meta name="description" content="Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
-docker
-docker-compose
+    <meta name="keywords" content="Pythonic语法收集, EasonBlog">
+    <meta name="description" content="Pythonic语法收集
+参考：https://foofish.net/idiomatic_part2.html
 
-2. 编辑docker-compose.yml
-找到合适的镜像：略
-编辑docker-compose.yml
-
-vers">
+1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素# 如下列表，元素为字典
+&amp;gt;&amp;gt;&amp;gt; di">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +17,7 @@ vers">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Drone-Gitlab-CI | EasonBlog</title>
+    <title>Pythonic语法收集 | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -268,13 +264,13 @@ vers">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Drone-Gitlab-CI
+                        Pythonic语法收集
                     </div>
                 </div>
             </div>
@@ -385,16 +381,8 @@ vers">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/drone/" target="_blank">
-                                <span class="chip bg-color">drone</span>
-                            </a>
-                        
-                            <a href="/tags/gitlab/" target="_blank">
-                                <span class="chip bg-color">gitlab</span>
-                            </a>
-                        
-                            <a href="/tags/CICD/" target="_blank">
-                                <span class="chip bg-color">CICD</span>
+                            <a href="/tags/python/" target="_blank">
+                                <span class="chip bg-color">python</span>
                             </a>
                         
                     </div>
@@ -402,13 +390,22 @@ vers">
                 </div>
                 <div class="col s5 right-align">
                     
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/python/" class="post-category" target="_blank">
+                                python
+                            </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
 
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2018-08-19
+                    2019-11-30
                 </div>
 
                 
@@ -424,305 +421,286 @@ vers">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Drone-Gitlab构建轻量化CICD平台"><a href="#Drone-Gitlab构建轻量化CICD平台" class="headerlink" title="Drone+Gitlab构建轻量化CICD平台"></a>Drone+Gitlab构建轻量化CICD平台</h1><h2 id="1-安装docker环境"><a href="#1-安装docker环境" class="headerlink" title="1. 安装docker环境"></a>1. 安装docker环境</h2><ul>
-<li>docker</li>
-<li>docker-compose</li>
-</ul>
-<h2 id="2-编辑docker-compose-yml"><a href="#2-编辑docker-compose-yml" class="headerlink" title="2. 编辑docker-compose.yml"></a>2. 编辑docker-compose.yml</h2><ul>
-<li>找到合适的镜像：略</li>
-<li>编辑docker-compose.yml</li>
-</ul>
-<pre><code>version: &quot;2&quot;
-
-services:
-  redis:
-    restart: always
-    container_name: drone-redis
-    image: sameersbn/redis:4.0.9-2
-    command:
-    - --loglevel warning
-    volumes:
-    - /srv/docker/gitlab/redis:/var/lib/redis:Z
-
-  postgresql:
-    restart: always
-    container_name: drone-postgresql
-    image: sameersbn/postgresql:10-2
-    volumes:
-    - /srv/docker/gitlab/postgresql:/var/lib/postgresql:Z
-    environment:
-    - DB_USER=gitlab
-    - DB_PASS=password
-    - DB_NAME=gitlabhq_production
-    - DB_EXTENSION=pg_trgm
-
-  gitlab:
-    restart: always
-    container_name: drone-gitlab
-    image: sameersbn/gitlab:12.1.6
-    depends_on:
-    - redis
-    - postgresql
-    ports:
-    - &quot;10080:80&quot;
-    - &quot;10022:22&quot;
-    volumes:
-    - /srv/docker/gitlab/gitlab:/home/git/data:Z
-    environment:
-    - DEBUG=false
-
-    - DB_ADAPTER=postgresql
-    - DB_HOST=postgresql
-    - DB_PORT=5432
-    - DB_USER=gitlab
-    - DB_PASS=password
-    - DB_NAME=gitlabhq_production
-
-    - REDIS_HOST=redis
-    - REDIS_PORT=6379
-
-    - TZ=Asia/Kolkata
-    - GITLAB_TIMEZONE=Kolkata
-
-    - GITLAB_HTTPS=false
-    - SSL_SELF_SIGNED=false
-
-    - GITLAB_HOST=10.21.198.68
-    - GITLAB_PORT=10080
-    - GITLAB_SSH_PORT=10022
-    - GITLAB_RELATIVE_URL_ROOT=
-    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
-    - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
-    - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
-
-    - GITLAB_ROOT_PASSWORD=Changeme_123
-    - GITLAB_ROOT_EMAIL=sunyan@huayun.com
-
-    - GITLAB_NOTIFY_ON_BROKEN_BUILDS=true
-    - GITLAB_NOTIFY_PUSHER=false
-
-    - GITLAB_EMAIL=notifications@example.com
-    - GITLAB_EMAIL_REPLY_TO=noreply@example.com
-    - GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com
-
-    - GITLAB_BACKUP_SCHEDULE=daily
-    - GITLAB_BACKUP_TIME=01:00
-
-    - SMTP_ENABLED=false
-    - SMTP_DOMAIN=huayun.com
-    - SMTP_HOST=smtp.huayun.com
-    - SMTP_PORT=587
-    - SMTP_USER=sunyan@huayun.com
-    - SMTP_PASS=Hi!fellow-0422
-    - SMTP_STARTTLS=true
-    - SMTP_AUTHENTICATION=login
-
-    - IMAP_ENABLED=false
-    - IMAP_HOST=imap.gmail.com
-    - IMAP_PORT=993
-    - IMAP_USER=mailer@example.com
-    - IMAP_PASS=password
-    - IMAP_SSL=true
-    - IMAP_STARTTLS=false
-
-    - OAUTH_ENABLED=false
-    - OAUTH_AUTO_SIGN_IN_WITH_PROVIDER=
-    - OAUTH_ALLOW_SSO=
-    - OAUTH_BLOCK_AUTO_CREATED_USERS=true
-    - OAUTH_AUTO_LINK_LDAP_USER=false
-    - OAUTH_AUTO_LINK_SAML_USER=false
-    - OAUTH_EXTERNAL_PROVIDERS=
-
-    - OAUTH_CAS3_LABEL=cas3
-    - OAUTH_CAS3_SERVER=
-    - OAUTH_CAS3_DISABLE_SSL_VERIFICATION=false
-    - OAUTH_CAS3_LOGIN_URL=/cas/login
-    - OAUTH_CAS3_VALIDATE_URL=/cas/p3/serviceValidate
-    - OAUTH_CAS3_LOGOUT_URL=/cas/logout
-
-    - OAUTH_GOOGLE_API_KEY=
-    - OAUTH_GOOGLE_APP_SECRET=
-    - OAUTH_GOOGLE_RESTRICT_DOMAIN=
-
-    - OAUTH_FACEBOOK_API_KEY=
-    - OAUTH_FACEBOOK_APP_SECRET=
-
-    - OAUTH_TWITTER_API_KEY=
-    - OAUTH_TWITTER_APP_SECRET=
-
-    - OAUTH_GITHUB_API_KEY=
-    - OAUTH_GITHUB_APP_SECRET=
-    - OAUTH_GITHUB_URL=
-    - OAUTH_GITHUB_VERIFY_SSL=
-
-    - OAUTH_GITLAB_API_KEY=
-    - OAUTH_GITLAB_APP_SECRET=
-
-    - OAUTH_BITBUCKET_API_KEY=
-    - OAUTH_BITBUCKET_APP_SECRET=
-
-    - OAUTH_SAML_ASSERTION_CONSUMER_SERVICE_URL=
-    - OAUTH_SAML_IDP_CERT_FINGERPRINT=
-    - OAUTH_SAML_IDP_SSO_TARGET_URL=
-    - OAUTH_SAML_ISSUER=
-    - OAUTH_SAML_LABEL=&quot;Our SAML Provider&quot;
-    - OAUTH_SAML_NAME_IDENTIFIER_FORMAT=urn:oasis:names:tc:SAML:2.0:nameid-format:transient
-    - OAUTH_SAML_GROUPS_ATTRIBUTE=
-    - OAUTH_SAML_EXTERNAL_GROUPS=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_EMAIL=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_NAME=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_USERNAME=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_FIRST_NAME=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_LAST_NAME=
-
-    - OAUTH_CROWD_SERVER_URL=
-    - OAUTH_CROWD_APP_NAME=
-    - OAUTH_CROWD_APP_PASSWORD=
-
-    - OAUTH_AUTH0_CLIENT_ID=
-    - OAUTH_AUTH0_CLIENT_SECRET=
-    - OAUTH_AUTH0_DOMAIN=
-
-    - OAUTH_AZURE_API_KEY=
-    - OAUTH_AZURE_API_SECRET=
-    - OAUTH_AZURE_TENANT_ID=
-
-  # drone server container
-  drone-server:
-    # 偷懒直接使用官方镜像，Alpine Linux编译的容器体积是最小的
-    image: drone/drone:alpine
-    container_name: drone-server  # 容器别名
-    restart: always # 每次启动Docker会自启动容器
-    ports:
-      - 8000:8000
-      - 9000:9000
-    volumes:        # 映射容器里面的目录到本机，格式：本机目录:容器目录
-      - ./drone:/var/lib/drone
-      - /var/run/docker.sock:/var/run/docker.sock 
-    restart: always
-    environment:    # 容器里面的环境变量
-      - DRONE_HOST=http://10.21.198.68:8000 # 设置Drone的域名，要和上面配置GitLab的Application时的域名保持一致
-      - DRONE_ADMIN=drone,mrsun,root    # Drone的管理员
-      - DRONE_DEBUG=true              # Debug 模式，调试的时候可以打开，默认是关闭的
-      - DRONE_OPEN=true               # 启用Drone
-      - DRONE_GITLAB=true                                                     # 启用Drone的GitLab服务，默认是关闭的
-      - DRONE_GITLAB_URL=http://10.21.198.68:10080    # 设置GitLab的域名
-      - DRONE_GITLAB_CLIENT=85a8361781b0a4cd1b586dd3f1afe4bbadbf8784b69d29a150849bd1da947b3f # GitLab的Application中的key
-      - DRONE_GITLAB_SECRET=656d7296b1d30eaa6c00d913cb001a810694d3f9fd09ac8a31ea6ac96ead76ed # GitLab的Application中的secret
-      - DRONE_SECRET=&quot;my-drone&quot;       # Drone Server和Drone Agent通信加密
-  drone-agent:
-    image: drone/agent:alpine
-    container_name: drone-agent
-    restart: always
-    depends_on:
-      - drone-server
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Drone Agent 需要用到Docker来实例化容器
-    environment:
-      - DRONE_DEBUG=true
-      - DRONE_SERVER=drone-server:9000
-      - DRONE_SECRET=&quot;my-drone&quot;</code></pre><h2 id="3-配置Gtilab"><a href="#3-配置Gtilab" class="headerlink" title="3. 配置Gtilab"></a>3. 配置Gtilab</h2><ul>
-<li><p><code>个人头像</code>–&gt;<code>settings</code>–&gt;<code>Applications</code></p>
-<ul>
-<li><code>Redirect URI</code>对应docker-compose.yml中的<code>{DRONE_HOST}/authorize</code><br><img src="sp190819_175809.png" alt></li>
-</ul>
-</li>
-<li><p><code>保存</code>：</p>
-<ul>
-<li><code>Application ID</code>对应dcoker-compose.yml中的<code>DRONE_GITLAB_CLIENT</code></li>
-<li><code>Secret</code>对应docker-compose.yml中的<code>DRONE_GITLAB_SECRET</code></li>
-</ul>
-</li>
-<li><p><code>Admin Area</code>（小扳手标识）–&gt;<code>Settings</code>–&gt;<code>Network</code>–&gt;<code>Outbound requests</code>–&gt;勾选<code>Allow requests to the local network from hooks and services</code></p>
-</li>
-</ul>
-<p><img src="sp190820_104625.png" alt></p>
-<h2 id="4-使用"><a href="#4-使用" class="headerlink" title="4. 使用"></a>4. 使用</h2><ul>
-<li>Drone平台：<code>http://{IP:port}</code></li>
-<li>第一次登录会先跳转至Gitlab初始化root账户的密码修改，其后通过root/password的方式登录，跳转到Drone平台</li>
-<li>Drone平台会自动同步Gitlab上的项目，并在drone平台上予以激活，便可通过代码提交，触发drone pipeline</li>
-<li>在项目根目录编写<code>.drone.yml</code></li>
-</ul>
-<p><strong>.drone.yml</strong></p>
-<pre><code>pipeline:
-  build:        # step name
-    image: node # use docker image
-    commands:
-      - npm install     # install node project vendor
-      - npm run build   # build static files</code></pre><p><img src="sp190820_105449.png" alt></p>
-<h2 id="5-配置nginx反向代理"><a href="#5-配置nginx反向代理" class="headerlink" title="5. 配置nginx反向代理"></a>5. 配置nginx反向代理</h2><blockquote>
-<p>总是用<code>IP:PORT</code>的方式如果觉得不方便，可以设置下nginx反向代理，但此时需要重新添加Gitlab中的application以及docker-compose.yml中的key，因为跳转会失败。</p>
+                <h1 id="Pythonic语法收集"><a href="#Pythonic语法收集" class="headerlink" title="Pythonic语法收集"></a>Pythonic语法收集</h1><blockquote>
+<p>参考：<a href="https://foofish.net/idiomatic_part2.html" target="_blank" rel="noopener">https://foofish.net/idiomatic_part2.html</a></p>
 </blockquote>
-<p><strong>vim /etc/nginx/conf.d/drone.conf</strong></p>
-<pre><code>map $http_upgrade $connection_upgrade {
-    default upgrade;
-    &#39;&#39;      close;
-}
-server {
-    listen 80;
-    # 此处替换为自己的ip
-    server_name IP-Addr;
-    set $drone_port 3800;
-    location / {
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $http_host;
-        proxy_pass http://127.0.0.1:$drone_port;
-        proxy_redirect off;
-        proxy_http_version 1.1;
-        proxy_buffering off;
-        chunked_transfer_encoding off;
-    }
-    location ~* /ws {
-        proxy_pass http://127.0.0.1:$drone_port;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection &quot;upgrade&quot;;
-        proxy_read_timeout 86400;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $http_host;
-    }
-}</code></pre><blockquote>
-<p>修改 server_name 和 $drone_port 为正确的值即可，最后记得别忘了重启 Nginx 服务。这样我们就能直接使用 <a href="http://IP-Addr" target="_blank" rel="noopener">http://IP-Addr</a> 来访问 drone 了。</p>
-</blockquote>
-<h2 id="6-推送镜像至私有仓库"><a href="#6-推送镜像至私有仓库" class="headerlink" title="6. 推送镜像至私有仓库"></a>6. 推送镜像至私有仓库</h2><ul>
-<li>编写.drone.yml</li>
+<h2 id="1-在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素"><a href="#1-在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素" class="headerlink" title="1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素"></a>1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素</h2><pre><code># 如下列表，元素为字典
+&gt;&gt;&gt; disk_li
+[{&#39;driver&#39;: &#39;Virtual disk VMware&#39;, &#39;status&#39;: &#39;running&#39;, &#39;name&#39;: &#39;sda&#39;, &#39;size&#39;: &#39;107374182400&#39;, &#39;type&#39;: &#39;HDD&#39;}]
+# 返回列表的字典元素中，符合type为&#39;SSD&#39;的元素（即字典）
+ssd_dic = next((x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;), False)
+# 此例条件不符合，返回False
+&gt;&gt;&gt; ssd_dic
+False</code></pre><blockquote>
+<p>上例中，一条语句实现了循环、判断并返回符合条件的值；<br>其中<strong>next</strong>为python内置函数，它通过调用其next ()方法从迭代器中检索下一个项目。 如果给定了默认值，则在迭代器耗尽返回此默认值，否则会引发StopIteration。 该方法可用于从文件对象读取下一个输入行；调用一次，则返回一个，注意不是返回所有符合条件的<br>语法为：<code>next(iterator[,default])</code></p>
+<ul>
+<li>iterator − 要读取行的文件对象</li>
+<li>default − 如果迭代器耗尽则返回此默认值。 如果没有给出此默认值，则抛出 StopIteration 异常；</li>
 </ul>
-<pre><code>pipeline:
-  prepare:
-    image: golang:1.10
-    group: build
-    commands:
-      - make prepare
-  build_linux_amd64:
-    image: golang:1.10
-    group: build
-    environment:
-      - GOOS=linux
-      - GOARCH=amd64
-      - CGO_ENABLED=0
-    commands:
-      - make build
-  docker_golang:
-    image: plugins/docker
-    secrets: [ docker_username, docker_password ]
-    repo: 172.16.24.66/dev/golang-http
-    registry: 172.16.24.66
-    insecure: true
-    dockerfile: Dockerfile
-    default_tags: true
-    when:
-      event: [ push, tag ]</code></pre><ul>
-<li>配置drone平台的secret</li>
+</blockquote>
+<h2 id="2-列表中返回所有符合条件的元素："><a href="#2-列表中返回所有符合条件的元素：" class="headerlink" title="2. 列表中返回所有符合条件的元素："></a>2. 列表中返回所有符合条件的元素：</h2><pre><code>[x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;]</code></pre><h2 id="3-Python多条件判断"><a href="#3-Python多条件判断" class="headerlink" title="3. Python多条件判断"></a>3. Python多条件判断</h2><blockquote>
+<p>通过<code>if all([cond1, cond2])</code>判断条件全部为真；<br><code>if any([cond1, cond2])</code>判断任一条件为真；</p>
+</blockquote>
+<pre><code>if all([sys_config in sys_type, mem_size &gt;= mem_config, ssd_count &gt;= ssd_config]):
+    return True
+else:
+    return False</code></pre><h2 id="4-simpleeval进行值判断"><a href="#4-simpleeval进行值判断" class="headerlink" title="4. simpleeval进行值判断"></a>4. simpleeval进行值判断</h2><blockquote>
+<p>simpleeval.simple_eval的格式为<code>simple_eval(&#39;定义标准&#39;，names=字典)</code><br>其中定义标准举例如下：</p>
+<ul>
+<li>“x86_64” in kernel_version</li>
+<li>int(mem_total) &gt;= 8 * 1000* 1000</li>
+</ul>
+<p>注意，上述标准中引用的变量可以是names后所引用字典的中的键</p>
+</blockquote>
+<pre><code>from ruamel.yaml import YAML
+from simpleeval import simple_eval
+
+# 读取配置文件
+config = yaml.load(open(settings.ROOT_DIR(&#39;depends/hardware_check.yml&#39;)))
+
+# 实际的配置
+    sys_index = machinfo[&#39;kernel_version&#39;].find(&#39;x86_64&#39;)
+    sys_type = machinfo[&#39;kernel_version&#39;][sys_index:]
+    mem_size = float(sizeof_fmt(float(machinfo[&#39;mem_total&#39;])))
+    disk_li = machinfo[&#39;disk_info&#39;]
+    ssd_count = len([x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;])
+    machine_keys = [&#39;os&#39;,&#39;memory_size&#39;,&#39;ssd_count&#39;]
+    machine_dic = dict(zip(machine_keys,[sys_type, round(mem_size), ssd_count]))
+
+# 比较
+for info in config_info:
+    try:
+        if not simple_eval(info[&#39;check&#39;], names=machine_dic):
+            return False
+    except SyntaxError:
+        return &quot;yaml 格式错误&quot;
+return True</code></pre><ul>
+<li>扩展simpleeval</li>
 </ul>
 <blockquote>
-<p>因为不想将镜像仓库的用户名和密码以明文的形式暴露在pipeline中，所以可以在drone平台上进行配置</p>
+<p>如simpleeval所定义的标准中，不能使用len函数，则需要扩展该函数</p>
 </blockquote>
-<p><img src="sp190822_163624.png" alt><br><img src="sp190822_163734.png" alt></p>
-<blockquote>
-<p>注意：平时需要push镜像到私有https的仓库，需要配置hosts docker相关的证书，而通过drone平台的插件则不需要，很棒！！</p>
+<pre><code>import simpleeval
+
+my_functions = simpleeval.DEFAULT_FUNTIONS.copy()
+my_functions.update(
+    len = lambda x: len(x)
+)
+
+machine_info.get(&#39;net_info&#39;)
+&gt;&gt;&gt; [{&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;172.16.29.43&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens192&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens224&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens161&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens256&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}]
+len(machine_info.get(&#39;net_info&#39;))
+&gt;&gt;&gt; 4
+
+simpleeval.EvalWithCompoundTypes(names=machine_info, functions=my_functions).eval(&#39;length(net_info) % 2 == 0&#39;)
+&gt;&gt;&gt; True
+
+# 简化版
+simpleeval.simple_eval(&quot;len(net_info) % 2 == 0&quot;, functions={&quot;len&quot;: lambda x:len(x)}, names=machine_info)
+## 其中functions可以定义为变量如my_functions，添加更加复杂的计算</code></pre><h2 id="5-使用enumerate代替for循环中的index变量访问"><a href="#5-使用enumerate代替for循环中的index变量访问" class="headerlink" title="5. 使用enumerate代替for循环中的index变量访问"></a>5. 使用enumerate代替for循环中的index变量访问</h2><pre><code># bad
+my_container = [&#39;lily&#39;, &#39;lucy&#39;, &#39;tom&#39;]
+index = 0
+for element in my_container:
+    print &#39;{} {}&#39;.format(index, element)
+    index += 1
+
+# good
+for index, element in enumerate(my_container):
+    print &#39;%d %s&#39; % (index, element)</code></pre><h2 id="6-条件判断时，避免直接和True-False-None进行比较"><a href="#6-条件判断时，避免直接和True-False-None进行比较" class="headerlink" title="6. 条件判断时，避免直接和True, False, None进行比较(==)"></a>6. 条件判断时，避免直接和True, False, None进行比较(==)</h2><pre><code># bad
+if l == []:
+    pass
+# good
+if l:    # 实际调用l.__len__() == 0
+    pass
+
+# bad
+if something == None:
+# good, None 是单例对象
+if something is None:</code></pre><h2 id="7-格式化字符时多使用format函数"><a href="#7-格式化字符时多使用format函数" class="headerlink" title="7. 格式化字符时多使用format函数"></a>7. 格式化字符时多使用format函数</h2><pre><code># bad
+name = &quot;tony&quot;
+age = 100
+str = &quot;myname : &quot; + name + &quot; my age : &quot; + str(age)
+str1 = &quot;myname : %s my age : %d&quot; % (name, age)
+# good
+str2 = &quot;myname : {} my age {}&quot;.format(name, age)</code></pre><h2 id="8-Python中使用三目运算符"><a href="#8-Python中使用三目运算符" class="headerlink" title="8. Python中使用三目运算符"></a>8. Python中使用三目运算符</h2><pre><code># bad
+a = 10
+b = 5
+if a &gt; b:
+    c = a
+else:
+    c = b
+# good
+c = a if a &gt; b else b</code></pre><h2 id="9-防御式编程EAFP-vs-LBYL"><a href="#9-防御式编程EAFP-vs-LBYL" class="headerlink" title="9. 防御式编程EAFP vs LBYL"></a>9. 防御式编程EAFP vs LBYL</h2><blockquote>
+<p>EAFP可以理解成一切按正常的逻辑编码，不用管可能出现的错误，等出了错误再说；而LBYL就是尽可能每写一行代码，都要提前考虑下当前的前置条件是否成立；<br>其实用EAFP风格的代码最大的好处是代码逻辑清晰，而LBYL会导致本来两句话说清楚的事，往往因为穿插了很多条件检查的语句使代码逻辑变得混乱。Python社区更提倡EAFP形式的。另外还有一个原因，在高并发场景下， if条件如果是个表达式，会造成一致性问题，这个时候必须用EAFP形式。这个可以参考Glow团队的技术博客<a href="http://tech.glowing.com/cn/glow-cache-structure" target="_blank" rel="noopener">Glow cache structure</a>.</p>
 </blockquote>
+<pre><code># LBYL
+def getPersonInfo(person):
+    if person == None:
+        print &#39;person must be not null!&#39;
+    print person.info
+
+# EAFP
+def getPersonInfo(person):
+    try:
+        print person.info
+    except NameError:
+        print &#39;person must be not null!&#39;</code></pre><h2 id="10-用dict对象完成switch…case…的功能"><a href="#10-用dict对象完成switch…case…的功能" class="headerlink" title="10. 用dict对象完成switch…case…的功能"></a>10. 用dict对象完成switch…case…的功能</h2><pre><code># bad
+def apply_operation(left_operand, right_operand, operator):
+    if operator == &#39;+&#39;:
+        return left_operand + right_operand
+    elif operator == &#39;-&#39;:
+        return left_operand - right_operand
+    elif operator == &#39;*&#39;:
+        return left_operand * right_operand
+    elif operator == &#39;/&#39;:
+        return left_operand / right_operand
+# good
+def apply_operation(left_operand, right_operand, operator):
+    import operator as op
+    operator_mapper = {&#39;+&#39;: op.add, &#39;-&#39;: op.sub, &#39;*&#39;: op.mul, &#39;/&#39;: op.truediv}
+    return operator_mapper[operator](left_operand, right_operand)</code></pre><h2 id="11-访问tuple的数据项时，可以用namedtuple代替index的方式访问"><a href="#11-访问tuple的数据项时，可以用namedtuple代替index的方式访问" class="headerlink" title="11. 访问tuple的数据项时，可以用namedtuple代替index的方式访问"></a>11. 访问tuple的数据项时，可以用namedtuple代替index的方式访问</h2><pre><code># bad
+rows = [(&#39;lily&#39;, 20, 2000), (&#39;lucy&#39;, 19, 2500)]
+for row in rows:
+    print &#39;{}`age is {}, salary is {} &#39;.format(row[0], row[1], row[2])
+
+# good
+from collections import  namedtuple
+Employee = namedtuple(&#39;Employee&#39;, &#39;name, age, salary&#39;)
+for row in rows:
+    employee = Employee._make(row)
+    print &#39;{}`age is {}, salary is {} &#39;.format(employee.name, employee.age, employee.salary)</code></pre><h2 id="12-用isinstance来判断对象的类型"><a href="#12-用isinstance来判断对象的类型" class="headerlink" title="12. 用isinstance来判断对象的类型"></a>12. 用isinstance来判断对象的类型</h2><pre><code># bad
+def get_size(some_object):
+    try:
+        return len(some_object)
+    except TypeError:
+        if some_object in (True, False, None):
+        return 1
+    else:
+        return int(some_object)
+
+print(get_size(&#39;hello&#39;))
+print(get_size([1, 2, 3, 4, 5]))
+print(get_size(10.0))
+
+# good
+def get_size(some_object):
+    if isinstance(some_object, (list, dict, str, tuple)):
+        return len(some_object)
+    elif isinstance(some_object, (bool, type(None))):
+        return 1
+    elif isinstance(some_object, (int, float)):
+        return int(some_object)</code></pre><h2 id="13-用with管理操作资源的上下文环境"><a href="#13-用with管理操作资源的上下文环境" class="headerlink" title="13. 用with管理操作资源的上下文环境"></a>13. 用with管理操作资源的上下文环境</h2><pre><code># bad
+class Connection(object):
+    def execute(self, sql):
+        raise Exception(&#39;ohoh, exception!&#39;)
+
+    def close(self):
+        print &#39;closed the Connection&#39;
+
+    try:
+        conn = Connection()
+        conn.execute(&#39;select * from t_users&#39;)
+    finally:
+        conn.close()
+
+# good
+class Connection(object):
+    def execute(self, sql):
+        raise Exception(&#39;ohoh, exception!&#39;)
+
+    def close(self):
+        print &#39;closed the Connection&#39;
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, errorType, errorValue, error):
+        self.close()
+
+with Connection() as conn:
+    conn.execute(&#39;select * from t_users&#39;)</code></pre><h2 id="14-使用generator返回耗费内存的对象"><a href="#14-使用generator返回耗费内存的对象" class="headerlink" title="14. 使用generator返回耗费内存的对象"></a>14. 使用generator返回耗费内存的对象</h2><pre><code># bad
+def f():
+    # ...
+    return biglist
+
+# good
+def f():
+    # ...
+    for i in biglist:
+        yield i</code></pre><h2 id="15-优雅处理字典"><a href="#15-优雅处理字典" class="headerlink" title="15. 优雅处理字典"></a>15. 优雅处理字典</h2><pre><code># 2种方式
+info = {}
+info = dict()
+
+info = {&quot;name&quot;:&quot;cold&quot;}
+# 减少一些特殊字符的输入
+info = dict(name=&quot;cold&quot;)
+
+# 使用字典的fromkeys方法可以从列表中获取元素作为键并用None或fromkeys方法的第二个参数初始化
+info = {}.fromkeys([&#39;name&#39;, &#39;blog&#39;])
+# 初始值设为&#39;linuxzen.com&#39;
+info = dict().fromkeys([&#39;name&#39;, &#39;blog&#39;], &#39;linuxzen.com&#39;)
+
+# 更优雅地更新
+info.update(name=&#39;cold&#39;, blog=&#39;www.linuxzen.com&#39;)</code></pre><h2 id="16-reduce使用"><a href="#16-reduce使用" class="headerlink" title="16. reduce使用"></a>16. reduce使用</h2><blockquote>
+<p>用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</p>
+</blockquote>
+<p><strong>求和</strong></p>
+<pre><code>from functools import reduce
+
+def add(x,y):
+    return x+y
+
+int_list = [random.randint(1,100) for i in range(10)]
+
+sum_num = reduce(add,int_list)  </code></pre><p><strong>等价于</strong></p>
+<pre><code>sum_num = 0
+for i in int_list:
+    sum_num = sum_num+i</code></pre><h2 id="17-map使用"><a href="#17-map使用" class="headerlink" title="17. map使用"></a>17. map使用</h2><blockquote>
+<p>第一个参数 function 以参数序列中的每一个元素调用 function 函数，返回包含每次 function 函数返回值的新列表。<br>主要用于构建新列表</p>
+</blockquote>
+<pre><code>def square(x) :            # 计算平方数
+     return x ** 2
+
+map(square, [1,2,3,4,5])
+&gt;&gt;&gt; [1, 4, 9, 16, 25]
+
+map(lambda x: x ** 2, [1, 2, 3, 4, 5])
+&gt;&gt;&gt; [1, 4, 9, 16, 25]
+
+map(lambda x, y: x + y, [1, 3, 5, 7, 9], [2, 4, 6, 8, 10])
+&gt;&gt;&gt; [3, 7, 11, 15, 19]
+
+# 使用列表推导的构造方式比在循环中调用 append() 来构造列表更好也更快。
+
+# 创建将0到19连接起来的字符串 (例 &quot;012..1819&quot;)
+nums = map(str, range(20))
+nums_str = &quot;&quot;.join(nums)</code></pre><h2 id="18-创建字典"><a href="#18-创建字典" class="headerlink" title="18. 创建字典"></a>18. 创建字典</h2><pre><code># 工厂方法
+items=[(&#39;name&#39;,&#39;earth&#39;),(&#39;port&#39;,&#39;80&#39;)]
+# 构造列表生成字典
+dict2=dict(items)
+# 构造元祖创建列表
+dict1=dict(([&#39;name&#39;,&#39;earth&#39;],[&#39;port&#39;,&#39;80&#39;]))
+
+# fromkeys()方法
+dict1={}.fromkeys((&#39;x&#39;,&#39;y&#39;),-1)
+dict={&#39;x&#39;:-1,&#39;y&#39;:-1}
+dict2={}.fromkeys((&#39;x&#39;,&#39;y&#39;))
+dict2={&#39;x&#39;:None, &#39;y&#39;:None}</code></pre><h2 id="19-locals迅速创建本地字典"><a href="#19-locals迅速创建本地字典" class="headerlink" title="19. locals迅速创建本地字典"></a>19. locals迅速创建本地字典</h2><blockquote>
+<p>locals() 将所有的局部变量构造成键值对，传入一个字典</p>
+</blockquote>
+<pre><code>import datetime
+current_date = datetime.datetime.now()
+# 如下的locals()字典已经自动生成一个携带局部变量的字典
+locals()
+&gt;&gt;&gt; {&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None, &#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None, &#39;__annotations__&#39;: {}, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;, &#39;datetime&#39;: &lt;module &#39;datetime&#39; from &#39;/usr/local/python3/lib/python3.7/datetime.py&#39;&gt;, &#39;current_date&#39;: datetime.datetime(2019, 11, 22, 16, 40, 26, 204733)}
+
+def current_datetime1(request):
+    current_date = datetime.datetime.now()
+    return render_to_response(&#39;current_datetime.html&#39;, locals())</code></pre><h2 id="20-is和-的使用"><a href="#20-is和-的使用" class="headerlink" title="20. is和==的使用"></a>20. is和==的使用</h2><ul>
+<li>在python中，is和==的含义是不同的</li>
+<li>is可以理解为<code>id(a) == id(b)</code>，主要判断是否指向同一个对象，即指向同一块内存空间</li>
+<li>==更多的是用来比较<strong>值是否相等</strong></li>
+</ul>
 
             </div>
             <hr/>
@@ -881,9 +859,9 @@ server {
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Drone-Gitlab-CI》
+                    《Pythonic语法收集》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/08/19/drone-gitlab-ci/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/11/30/pythonic-syntax/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -923,9 +901,10 @@ server {
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2019/11/30/pythonic-syntax/">
                     <div class="card-image">
@@ -947,9 +926,9 @@ server {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -962,6 +941,7 @@ server {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -980,34 +960,37 @@ server {
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/07/11/k8s-deploy/">
+                <a href="/2018/08/19/drone-gitlab-ci/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="高可用（离线版无etcd证书）K8S v1.12.3版本部署">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Drone-Gitlab-CI">
                         
-                        <span class="card-title">高可用（离线版无etcd证书）K8S v1.12.3版本部署</span>
+                        <span class="card-title">Drone-Gitlab-CI</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            高可用（离线版无etcd证书）K8S v1.12.3版本部署
-此版本安装不需要连外网，所有配置文件及镜像均来自内网habor：172.16.24.66;适用于3(master)+3(node)模式，以及3节点master、node重叠模式；
+                            Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
+docker
+docker-compose
+
+2. 编辑docker-compose.yml
+找到合适的镜像：略
+编辑docker-compose.yml
+
+vers
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-11
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-19
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/k8s/" class="post-category" target="_blank">
-                                    k8s
-                                </a>
-                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Eason Sun
                             
                         </span>
                     </div>
@@ -1015,8 +998,16 @@ server {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/k8s/" target="_blank">
-                        <span class="chip bg-color">k8s</span>
+                    <a href="/tags/drone/" target="_blank">
+                        <span class="chip bg-color">drone</span>
+                    </a>
+                    
+                    <a href="/tags/gitlab/" target="_blank">
+                        <span class="chip bg-color">gitlab</span>
+                    </a>
+                    
+                    <a href="/tags/CICD/" target="_blank">
+                        <span class="chip bg-color">CICD</span>
                     </a>
                     
                 </div>
