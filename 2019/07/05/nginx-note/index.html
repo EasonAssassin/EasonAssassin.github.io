@@ -644,7 +644,7 @@ location @backup {
 }</code></pre>
 <p>2）临时跳转</p>
 <pre><code class="bash">location = /test/ {
-    return 302 http://www.itcast.cn/;
+    return 302 http://www.baidu.cn/;
 }</code></pre>
 <p>3）目录列表</p>
 <pre><code class="bash">location /upload {
@@ -710,7 +710,7 @@ echo &#39;&lt;h1&gt;proxy_backend&lt;/h1&gt;&#39; &gt; /var/www/html/backend/ind
 systemctl reload nginx
 netstat -tnulp | grep nginx</code></pre>
 <p><img src="7.png" alt></p>
-<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><pre><code class="shell"># upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><h4 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h4><pre><code class="shell"># upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。
 upstream backends {
   server [域名|ip]:port;
   server [域名|ip]:port;
@@ -726,7 +726,7 @@ server {
 &quot;&quot;&quot;down：表示当前server主机暂时不参与负载均衡。backup：后备主机，当所有非backup机器出现故障或者繁忙的时候，才会请求backup机器。max_fails：允许请求的最大失败数，默认为1，配合fail_timeout一起使用.fail_timeout：经历max_fails次失败后，暂停服务的时间，默认为10s。&quot;&quot;&quot;
 #  upstream {} 和 server {} 两部分内容属于平级关系。
 # upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。</code></pre>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="8.png" alt></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p><img src="8.png" alt></p>
 <p><img src="9.png" alt></p>
 <p><img src="10.png" alt></p>
 <p><img src="11.png" alt></p>
