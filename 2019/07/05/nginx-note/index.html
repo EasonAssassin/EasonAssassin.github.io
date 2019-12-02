@@ -423,7 +423,7 @@ apt-get install nginx -y</code></pre>
 <li>检查效果</li>
 </ul>
 <pre><code class="bash">netstat -tnulp | grep nginx</code></pre>
-<p><img src="image/1.png" alt="1"></p>
+<p><img src="image/1.png" alt></p>
 <ul>
 <li>服务相关命令</li>
 </ul>
@@ -452,7 +452,7 @@ apt-get --purge remove nginx-core</code></pre>
 <ul>
 <li>访问nginx服务器</li>
 </ul>
-<p><img src="image%5C2.png" alt="2"></p>
+<p><img src="image%5C2.png" alt></p>
 <h3 id="nginx配置参数"><a href="#nginx配置参数" class="headerlink" title="nginx配置参数"></a>nginx配置参数</h3><p><strong>全局配置段</strong></p>
 <p>主要是全局性的和服务级别的属性配置（ /etc/nginx/nginx.conf ），常见的主要有以下几种设置：</p>
 <pre><code class="shell">user              # 设置使用用户(worker)
@@ -666,12 +666,12 @@ location /txt/ {                               location /txt/ {
 }                                              }
 # 效果一：访问http://localhost/txt/1.txt，nginx找/var/www/txt/1.txt文件
 # 效果二：访问http://localhost/txt/1.txt，nginx找/var/www/txt/txt/1.txt文件</code></pre>
-<h3 id="Nginx-反向代理"><a href="#Nginx-反向代理" class="headerlink" title="Nginx  反向代理"></a>Nginx  反向代理</h3><p><img src="3.png" alt="3"></p>
+<h3 id="Nginx-反向代理"><a href="#Nginx-反向代理" class="headerlink" title="Nginx  反向代理"></a>Nginx  反向代理</h3><p><img src="3.png" alt></p>
 <pre><code class="bash">location / {
     # 设定请求跳转后的地址，可以使用hostname或ip:port形式
     proxy_pass        http://localhost:8000;  
 }</code></pre>
-<p><img src="4.png" alt="4"></p>
+<p><img src="4.png" alt></p>
 <p>proxy_pass指令设置被代理服务器的地址和被映射的URI，地址可以使用主机名或IP加端口号的形式。</p>
 <pre><code class="bash">location /html/ {
     配置1：proxy_pass http://proxy.com;
@@ -687,7 +687,7 @@ server {
     proxy_pass http://172.16.179.130:9999/hello/;
   }
 }</code></pre>
-<p><img src="5.png" alt="5"></p>
+<p><img src="5.png" alt></p>
 <p>2）后端服务器的配置文件</p>
 <pre><code class="bash"># vim /etc/nginx/conf.d/backend.conf
 
@@ -699,7 +699,7 @@ server {
     try_files $uri $uri/ =404;
   }
 }</code></pre>
-<p><img src="6.png" alt="6"></p>
+<p><img src="6.png" alt></p>
 <p>3）准备后端服务文件</p>
 <pre><code class="bash"># 创建路径中的文件夹，并创建默认的index.html文件
 mkdir -p /var/www/html/backend/
@@ -709,7 +709,7 @@ echo &#39;&lt;h1&gt;proxy_backend&lt;/h1&gt;&#39; &gt; /var/www/html/backend/ind
 <pre><code class="bash">/usr/sbin/nginx -t
 systemctl reload nginx
 netstat -tnulp | grep nginx</code></pre>
-<p><img src="7.png" alt="7"></p>
+<p><img src="7.png" alt></p>
 <h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><pre><code class="shell"># upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。
 upstream backends {
   server [域名|ip]:port;
@@ -726,10 +726,10 @@ server {
 &quot;&quot;&quot;down：表示当前server主机暂时不参与负载均衡。backup：后备主机，当所有非backup机器出现故障或者繁忙的时候，才会请求backup机器。max_fails：允许请求的最大失败数，默认为1，配合fail_timeout一起使用.fail_timeout：经历max_fails次失败后，暂停服务的时间，默认为10s。&quot;&quot;&quot;
 #  upstream {} 和 server {} 两部分内容属于平级关系。
 # upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。</code></pre>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="8.png" alt="8"></p>
-<p><img src="9.png" alt="9"></p>
-<p><img src="10.png" alt="10"></p>
-<p><img src="11.png" alt="11"></p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="8.png" alt></p>
+<p><img src="9.png" alt></p>
+<p><img src="10.png" alt></p>
+<p><img src="11.png" alt></p>
 
             </div>
             <hr/>
