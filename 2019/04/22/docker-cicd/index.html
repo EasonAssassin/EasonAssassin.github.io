@@ -4,9 +4,19 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录, EasonBlog">
-    <meta name="description" content="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录
-在Vagrant中添加box时，加载目录默认在~/.vagrant.d/，具体的目录结构是C:\Users\Your Username\.vagrant.d">
+    <meta name="keywords" content="容器的CI/CD最佳实践, EasonBlog">
+    <meta name="description" content="容器的CI/CD最佳实践1. 为什么选择容器容器是软件具备了超强的可移植能力
+
+
+传统软件开发CI/CD的问题：
+打包环境
+源站管理
+依赖众多
+部署文档与交付一致性性问题
+。。。
+
+
+容器化CI/CD的好处：所谓CI/CD是通过引进前沿技术">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +24,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录 | EasonBlog</title>
+    <title>容器的CI/CD最佳实践 | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -261,13 +271,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录
+                        容器的CI/CD最佳实践
                     </div>
                 </div>
             </div>
@@ -378,8 +388,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/vagrant/" target="_blank">
-                                <span class="chip bg-color">vagrant</span>
+                            <a href="/tags/cicd/" target="_blank">
+                                <span class="chip bg-color">cicd</span>
+                            </a>
+                        
+                            <a href="/tags/docker/" target="_blank">
+                                <span class="chip bg-color">docker</span>
                             </a>
                         
                     </div>
@@ -387,13 +401,22 @@
                 </div>
                 <div class="col s5 right-align">
                     
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/cicd/" class="post-category" target="_blank">
+                                cicd
+                            </a>
+                        
+                    </div>
+                    
                 </div>
             </div>
 
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-03-11
+                    2019-04-22
                 </div>
 
                 
@@ -409,31 +432,61 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录"><a href="#Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录" class="headerlink" title="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录"></a>Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录</h1><blockquote>
-<p>在Vagrant中添加box时，加载目录默认在<code>~/.vagrant.d/</code>，具体的目录结构是<code>C:\Users\Your Username\.vagrant.d</code><br>由于是在C盘中，在一些配置不高的机子中用起Vagrant，磁盘容量会显得捉襟见肘，这时会考虑更改加载box的目录。</p>
-</blockquote>
+                <h1 id="容器的CI-CD最佳实践"><a href="#容器的CI-CD最佳实践" class="headerlink" title="容器的CI/CD最佳实践"></a>容器的CI/CD最佳实践</h1><h2 id="1-为什么选择容器"><a href="#1-为什么选择容器" class="headerlink" title="1. 为什么选择容器"></a>1. 为什么选择容器</h2><p><strong>容器是软件具备了超强的可移植能力</strong></p>
+<p><img src="1.png" alt><br><img src="2.png" alt></p>
 <ul>
-<li>永久设置用户的环境变量</li>
+<li>传统软件开发CI/CD的问题：<ul>
+<li>打包环境</li>
+<li>源站管理</li>
+<li>依赖众多</li>
+<li>部署文档与交付一致性性问题</li>
+<li>。。。</li>
 </ul>
-<pre><code>setx VAGRANT_HOME &quot;/your/path&quot;</code></pre><ul>
-<li>永久设置系统的环境变量（<strong>注意：此处需要用管理员身份打开cmd</strong>）</li>
+</li>
+<li>容器化CI/CD的好处：<strong>所谓CI/CD是通过引进前沿技术、制定公司统一规范和流程，打造高效统一的CI/CD平台，进而实现公司开发效率提升、沟通成本大幅降低的目的！</strong><ul>
+<li>有效降低开发、运维、交付等各部门的沟通成本</li>
+<li>由技术革新引发的理所当然的责任划分</li>
 </ul>
-<pre><code>setx VAGRANT_HOME &quot;/your/path&quot; -M</code></pre><ul>
-<li>临时设置环境变量 这样的方式只是临时性地将环境变量写入session,每次要打开新终端执行vagrant相关命令如重启关闭销毁等命令之前都需要敲设置一遍</li>
+</li>
 </ul>
-<pre><code>set VAGRANT_HOME=&quot;/your/path&quot;</code></pre><p><strong>实际效果如图：</strong><br><img src="1.png" alt></p>
-<blockquote>
-<p>利用vagrant启动虚拟机时，默认运行在virturlbox中，此时virtualbox会将虚拟机拷贝到C盘相关目录下，非常占用C盘空间</p>
-</blockquote>
+<p><strong>如需全面系统地学习了解容器生态、原理，自行阅读：</strong><br>每天五分钟玩转容器技术系列：<a href="https://www.cnblogs.com/CloudMan6/tag/Docker/default.html?page=10" target="_blank" rel="noopener">https://www.cnblogs.com/CloudMan6/tag/Docker/default.html?page=10</a></p>
+<h2 id="2-最佳实践"><a href="#2-最佳实践" class="headerlink" title="2. 最佳实践"></a>2. 最佳实践</h2><h3 id="2-1-单个容器–Dockerfile"><a href="#2-1-单个容器–Dockerfile" class="headerlink" title="2.1 单个容器–Dockerfile"></a>2.1 单个容器–Dockerfile</h3><ul>
+<li><code>docker commit</code> VS <code>Dockerfile</code> ：<strong>重视结果</strong> VS <strong>重视过程</strong></li>
+<li>示例1：官方Nginx Dockerfile  <a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></li>
+<li>示例2：jenkins配置容器为节点 <a href="http://172.16.29.144/view/T002/job/A-Docker-Demo/" target="_blank" rel="noopener">http://172.16.29.144/view/T002/job/A-Docker-Demo/</a></li>
+<li>示例3：drone平台配置容器作为插件进行CI/CD  </li>
+<li>示例4：<ul>
+<li>华云镜像制作规范：<a href="http://confluence.chinac.com/pages/viewpage.action?pageId=57377284" target="_blank" rel="noopener">http://confluence.chinac.com/pages/viewpage.action?pageId=57377284</a></li>
+<li>华云镜像仓库规范：<a href="http://confluence.chinac.com/pages/viewpage.action?pageId=59113793" target="_blank" rel="noopener">http://confluence.chinac.com/pages/viewpage.action?pageId=59113793</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-多个容器–docker-compose-yml"><a href="#2-2-多个容器–docker-compose-yml" class="headerlink" title="2.2 多个容器–docker-compose.yml"></a>2.2 多个容器–docker-compose.yml</h3><p>示例：快速搭建简易的CI/CD平台—Drone</p>
 <ul>
-<li>把C:\Users\testUser下的VirtualBox VMs和.VirtualBox两个文件夹拷贝到E:\VirtualBox\下</li>
-<li>打开VirtualBox管理器，管理-&gt;全局设定-&gt;常规-&gt;默认虚拟电脑位置修改成E:\VirtualBox\VirtualBox VMs</li>
+<li>redis</li>
+<li>postgresql</li>
+<li>gitlab</li>
+<li>drone-server</li>
+<li>drone-agent</li>
 </ul>
-<p><img src="2.png" alt></p>
-<ul>
-<li>如果以前有其他虚拟机资源，需要设置相关的存储路径，新开的虚机则会从新的存储位置开始</li>
+<h3 id="2-3-分布式多容器–容器编排引擎k8s"><a href="#2-3-分布式多容器–容器编排引擎k8s" class="headerlink" title="2.3 分布式多容器–容器编排引擎k8s"></a>2.3 分布式多容器–容器编排引擎k8s</h3><ul>
+<li>示例1：docker调用k8s</li>
 </ul>
-<p><img src="3.png" alt></p>
+<p>二进制安装kubectl：<a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank" rel="noopener">https://kubernetes.io/docs/tasks/tools/install-kubectl/</a></p>
+<pre><code># 直接拉取kubectl镜像
+docker pull k3integrations/kubectl</code></pre><ul>
+<li>示例2：jenkins调用k8s <a href="http://172.16.29.144/view/T007/job/T007-archeros-build-front/" target="_blank" rel="noopener">http://172.16.29.144/view/T007/job/T007-archeros-build-front/</a></li>
+</ul>
+<h3 id="2-4-容器管理平台–Rancher"><a href="#2-4-容器管理平台–Rancher" class="headerlink" title="2.4 容器管理平台–Rancher"></a>2.4 容器管理平台–Rancher</h3><ul>
+<li>一键部署：</li>
+</ul>
+<pre><code># server搭建
+docker run -d --restart=always -p 8080:8080 rancher/server
+
+# worker/agent部署
+docker run -d --privileged --restart=unless-stopped --net=host -v /etc/kubernetes:/etc/kubernetes -v /var/run:/var/run rancher/rancher-agent:v2.2.8 --server https://10.21.53.123 --token pqsf6gxmzhgdbvpq6jm7d2fwgp22fdv6xkgqp4822f4nngzz58w87c --ca-checksum 04933253d15be46154f891d755d67dbacc34c2ccc9dbf7fcc80705d9d716c2bf --worker</code></pre><ul>
+<li>通过rancher一键部署k8s</li>
+</ul>
 
             </div>
             <hr/>
@@ -592,9 +645,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录》
+                    《容器的CI/CD最佳实践》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/03/11/vagrant-path-win/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/04/22/docker-cicd/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -638,42 +691,35 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2019/04/22/docker-cicd/">
+                <a href="/2019/11/30/pythonic-syntax/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="容器的CI/CD最佳实践">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Pythonic语法收集">
                         
-                        <span class="card-title">容器的CI/CD最佳实践</span>
+                        <span class="card-title">Pythonic语法收集</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            容器的CI/CD最佳实践1. 为什么选择容器容器是软件具备了超强的可移植能力
+                            Pythonic语法收集
+参考：https://foofish.net/idiomatic_part2.html
 
-
-传统软件开发CI/CD的问题：
-打包环境
-源站管理
-依赖众多
-部署文档与交付一致性性问题
-。。。
-
-
-容器化CI/CD的好处：所谓CI/CD是通过引进前沿技术
+1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素# 如下列表，元素为字典
+&gt;&gt;&gt; di
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-22
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
                         </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/cicd/" class="post-category" target="_blank">
-                                    cicd
+                            <a href="/categories/python/" class="post-category" target="_blank">
+                                    python
                                 </a>
                             
                             
@@ -683,12 +729,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/cicd/" target="_blank">
-                        <span class="chip bg-color">cicd</span>
-                    </a>
-                    
-                    <a href="/tags/docker/" target="_blank">
-                        <span class="chip bg-color">docker</span>
+                    <a href="/tags/python/" target="_blank">
+                        <span class="chip bg-color">python</span>
                     </a>
                     
                 </div>
@@ -702,32 +744,25 @@
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/08/19/drone-gitlab-ci/">
+                <a href="/2019/03/11/vagrant-path-win/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Drone-Gitlab-CI">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录">
                         
-                        <span class="card-title">Drone-Gitlab-CI</span>
+                        <span class="card-title">Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
-docker
-docker-compose
-
-2. 编辑docker-compose.yml
-找到合适的镜像：略
-编辑docker-compose.yml
-
-vers
+                            Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录
+在Vagrant中添加box时，加载目录默认在~/.vagrant.d/，具体的目录结构是C:\Users\Your Username\.vagrant.d
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-19
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-11
                             </span>
                         <span class="publish-author">
                             
@@ -740,16 +775,8 @@ vers
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/drone/" target="_blank">
-                        <span class="chip bg-color">drone</span>
-                    </a>
-                    
-                    <a href="/tags/gitlab/" target="_blank">
-                        <span class="chip bg-color">gitlab</span>
-                    </a>
-                    
-                    <a href="/tags/CICD/" target="_blank">
-                        <span class="chip bg-color">CICD</span>
+                    <a href="/tags/vagrant/" target="_blank">
+                        <span class="chip bg-color">vagrant</span>
                     </a>
                     
                 </div>
