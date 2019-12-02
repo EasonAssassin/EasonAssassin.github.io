@@ -4,9 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="基于Kubernetes优化CI/CD, EasonBlog">
-    <meta name="description" content="基于Kubernetes优化CI/CD1. 现状分析与前景展望1.1 现状分析
-目前CI/CD主要运用的工具就是jenkins。通过jenkins pipeline调用虚拟机节点开展各种CI/CD任务，本质上其实只是通过jenkins调用虚">
+    <meta name="keywords" content="Tmux最常用命令, EasonBlog">
+    <meta name="description" content="Tmux最常用命令
+参考：http://www.ruanyifeng.com/blog/2019/10/tmux.html会话与窗口可以”解绑”：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话”绑定”其他窗口
+
+# 创">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +16,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>基于Kubernetes优化CI/CD | EasonBlog</title>
+    <title>Tmux最常用命令 | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -261,13 +263,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        基于Kubernetes优化CI/CD
+                        Tmux最常用命令
                     </div>
                 </div>
             </div>
@@ -378,12 +380,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/k8s/" target="_blank">
-                                <span class="chip bg-color">k8s</span>
-                            </a>
-                        
-                            <a href="/tags/cicd/" target="_blank">
-                                <span class="chip bg-color">cicd</span>
+                            <a href="/tags/tmux/" target="_blank">
+                                <span class="chip bg-color">tmux</span>
                             </a>
                         
                     </div>
@@ -394,8 +392,8 @@
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/cicd/" class="post-category" target="_blank">
-                                cicd
+                            <a href="/categories/tmux/" class="post-category" target="_blank">
+                                tmux
                             </a>
                         
                     </div>
@@ -406,7 +404,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2018-06-23
+                    2018-05-23
                 </div>
 
                 
@@ -422,61 +420,36 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="基于Kubernetes优化CI-CD"><a href="#基于Kubernetes优化CI-CD" class="headerlink" title="基于Kubernetes优化CI/CD"></a>基于Kubernetes优化CI/CD</h1><h2 id="1-现状分析与前景展望"><a href="#1-现状分析与前景展望" class="headerlink" title="1. 现状分析与前景展望"></a>1. 现状分析与前景展望</h2><h3 id="1-1-现状分析"><a href="#1-1-现状分析" class="headerlink" title="1.1 现状分析"></a>1.1 现状分析</h3><blockquote>
-<p>目前CI/CD主要运用的工具就是jenkins。通过jenkins pipeline调用虚拟机节点开展各种CI/CD任务，本质上其实只是通过jenkins调用虚拟机、运行shell或python等脚本的形式完成CI/CD的各项工作。</p>
+                <h1 id="Tmux最常用命令"><a href="#Tmux最常用命令" class="headerlink" title="Tmux最常用命令"></a>Tmux最常用命令</h1><blockquote>
+<p>参考：<a href="http://www.ruanyifeng.com/blog/2019/10/tmux.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/10/tmux.html</a><br>会话与窗口可以”解绑”：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话”绑定”其他窗口</p>
 </blockquote>
-<p><strong>弊端：</strong></p>
-<ul>
-<li>频繁地添加虚拟机节点；</li>
-<li>虚拟机节点资源利用率有高有低，造成资源分配不均。造成有些节点空闲时间太多，而有些节点比较繁忙，磁盘经常爆满；</li>
-<li>打包、ut等操作过度依赖虚拟机节点的环境，环境一旦出现问题，需要人为从灾备机器复原环境</li>
-<li>缺乏监控告警，往往是在CI/CD环境出现问题后才进行相关的修复工作</li>
-<li>环境重建、更新、修复等操作高度耦合，更新RPM包 –&gt; 重建、更新环境</li>
-</ul>
-<h3 id="1-2-基于K8S搭建CI-CD平台"><a href="#1-2-基于K8S搭建CI-CD平台" class="headerlink" title="1.2 基于K8S搭建CI/CD平台"></a>1.2 基于K8S搭建CI/CD平台</h3><p><img src="1.png" alt><br><img src="2.png" alt></p>
-<p><strong>优势：</strong></p>
-<blockquote>
-<p>更快速的交付和部署；更高效的虚拟化；更轻松的迁移和扩展</p>
-</blockquote>
-<ul>
-<li>一套环境，引入所有的CI/CD工具链</li>
-<li>将jenkins节点任务优化为k8s Pod、Service服务，提高CI/CD效率</li>
-<li>仅在任务运行时开启pod，运行完成后销毁，最大化利用资源</li>
-<li>自带负载均衡与灾备</li>
-<li>通过持久化存储，更便捷地实现异地、多机等灾备方案</li>
-<li>通过k8s的各类插件，实现资源监控、日志采集，通过可视化的方式查看CI/CD的各类构建，及时定位各种可能出现的风险</li>
-<li>将CI/CD的产出统一化，其本质就是各类image</li>
-<li>目前海河项目上层已经微服务化，这为CI/CD容器化实践提供了绝佳的契机（目前的工作重点正是基于海河上层，实现CI/CD容器化）</li>
-</ul>
-<h2 id="2-CI容器化"><a href="#2-CI容器化" class="headerlink" title="2. CI容器化"></a>2. CI容器化</h2><blockquote>
-<p>容器化后的CI产出分别为：code源码托管平台、ut检测、rpm包生成及构建源、海河上层项目image</p>
-</blockquote>
-<p><strong>产出：</strong></p>
-<ul>
-<li>code源码托管平台：利用k8s搭建例如gitlab、gerrit等平台进行源码管理</li>
-<li>ut检测：针对每个项目分别制作稳定的ut检测（如tox）等image</li>
-<li>rpm包生成及构建源：针对每个项目，制作符合该项目rpm构建的image，以及提供源服务的image</li>
-<li>海河上层项目image：将海河上层的各个微服务制作成镜像</li>
-</ul>
-<h2 id="3-CD容器化（当前重心）"><a href="#3-CD容器化（当前重心）" class="headerlink" title="3. CD容器化（当前重心）"></a>3. CD容器化（当前重心）</h2><blockquote>
-<p>底层openstack容器化难度大，暂不考虑。此处的CD容器化专指运行ansible脚本的机器容器化，以及<strong>上层服务通过容器的方式搭建</strong></p>
-</blockquote>
-<p><img src="3.png" alt></p>
-<p><strong>流程：</strong></p>
-<ul>
-<li>代码提交触发镜像构建</li>
-<li>根据最新镜像更新开发环境里的相关服务</li>
-<li>开发人员在此环境上进行测试</li>
-<li>测试环境会根据开发人员调试过的稳定镜像创建测试环境</li>
-<li>测试人员在测试环境中进行测试</li>
-<li>测试通过后的稳定镜像用于release，供生产环境进行部署</li>
-</ul>
-<p><strong>产出：</strong></p>
-<ul>
-<li>ansible部署放入容器：以前都是通过jenkins的一个节点运行ansible脚本，安装环境。一个虚拟机仅仅用来运行ansible脚本，造成资源浪费；且如果用同一个节点并行地安装多套环境，可能因为脚本问题造成彼此间的影响。通过一个ansible定制的docker镜像专门负责部署，可以节约资源。</li>
-<li>海河上层容器化：通过容器化的方式部署海河上层服务，快速搭建、修复、更新开发和测试环境</li>
-</ul>
+<pre><code># 创建无名会话
+tmux
+# 创建有名会话
+tmux new -s eason
+# 查看会话
+tmux ls
+# 会话退出并关闭会话
+ctrl + d
+# 退出会话，但不关闭
+ctrl + b  d
+# 进入某个会话
+tmux a -t 0
+tmux a -t eason
 
+# 上下切屏
+ctrl + b &quot;
+# 左右切屏
+ctrl + b %
+# 光标切换屏幕
+ctrl + b  方向键
+# 调整窗口大小（只可以调整左右，不能调整上下）
+ctrl + b  ctrl 方向键
+
+# 关闭当前窗口
+ctrl + b x
+# 关闭全部窗口
+tmux kill-server</code></pre>
             </div>
             <hr/>
 
@@ -634,9 +607,9 @@
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《基于Kubernetes优化CI/CD》
+                    《Tmux最常用命令》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/06/23/k8s-cicd/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/05/23/tmux-cmd/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -680,29 +653,25 @@
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2018/07/05/k8s-jenkins-concurrent/">
+                <a href="/2018/06/23/k8s-cicd/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="优化kubernetes jenkins并发">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="基于Kubernetes优化CI/CD">
                         
-                        <span class="card-title">优化kubernetes jenkins并发</span>
+                        <span class="card-title">基于Kubernetes优化CI/CD</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            优化kubernetes jenkins并发
-执行并发任务过多时，若一次性启动过多的pod，对于资源配置一般的集群而言，jenkins会出现java.util.concurrent.**exception；
-
-解决办法：
-
-Jenkins 
+                            基于Kubernetes优化CI/CD1. 现状分析与前景展望1.1 现状分析
+目前CI/CD主要运用的工具就是jenkins。通过jenkins pipeline调用虚拟机节点开展各种CI/CD任务，本质上其实只是通过jenkins调用虚
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-05
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2018-06-23
                         </span>
                         <span class="publish-author">
                             
@@ -738,34 +707,38 @@ Jenkins
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/05/23/tmux-cmd/">
+                <a href="/2017/05/29/django-issues/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Tmux最常用命令">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Django问题集锦">
                         
-                        <span class="card-title">Tmux最常用命令</span>
+                        <span class="card-title">Django问题集锦</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Tmux最常用命令
-参考：http://www.ruanyifeng.com/blog/2019/10/tmux.html会话与窗口可以”解绑”：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话”绑定”其他窗口
+                            Django问题集锦1. Not Found:/favicon.ico
+问题：
 
-# 创
+&quot;GET /favicon.ico HTTP/1.1&quot; 404 12362
+解决：
+
+# 定位django
+pip show django
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-05-23
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2017-05-29
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/tmux/" class="post-category" target="_blank">
-                                    tmux
+                            <a href="/categories/web后端/" class="post-category" target="_blank">
+                                    web后端
                                 </a>
                             
                             
@@ -775,8 +748,8 @@ Jenkins
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/tmux/" target="_blank">
-                        <span class="chip bg-color">tmux</span>
+                    <a href="/tags/django/" target="_blank">
+                        <span class="chip bg-color">django</span>
                     </a>
                     
                 </div>
