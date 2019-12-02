@@ -458,7 +458,64 @@ cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /ro
 <blockquote>
 <p>上述解决方法治标不治本，甚至有些情况下不起作用。因为sqlite本身就不支持高并发，所以最佳的方法就是减少并发，从代码层面进行优化。</p>
 </blockquote>
+<h2 id="3-Django2-2以上针对Sqlite3版本不匹配"><a href="#3-Django2-2以上针对Sqlite3版本不匹配" class="headerlink" title="3. Django2.2以上针对Sqlite3版本不匹配"></a>3. Django2.2以上针对Sqlite3版本不匹配</h2><blockquote>
+<p>参考：<a href="https://mudew.com/20190417/Django2-2%E4%BB%A5%E4%B8%8A%E9%92%88%E5%AF%B9Sqlite3%E7%89%88%E6%9C%AC%E4%B8%8D%E5%8C%B9%E9%85%8D/" target="_blank" rel="noopener">https://mudew.com/20190417/Django2-2%E4%BB%A5%E4%B8%8A%E9%92%88%E5%AF%B9Sqlite3%E7%89%88%E6%9C%AC%E4%B8%8D%E5%8C%B9%E9%85%8D/</a></p>
+</blockquote>
+<p><strong>下载最新版（CentOS）</strong></p>
+<pre><code>wget http://www.sqlite.org/2019/sqlite-autoconf-3280000.tar.gz
+tar -zxvf sqlite-autoconf-3280000.tar.gz
+cd sqlite-autoconf-3280000
+# 通过which sqlite3查看预安装的目录
+mv -v /usr/bin/sqlite3 /usr/bin/sqlite3.7.17
+cp -v sqlite3 /usr/bin
+# 共享库，注意要查看自己机器的sqlite共享库位置。可以将如下内容写入~/.bashrc
+export LD_LIBRARY_PATH=&quot;/usr/bin/lib&quot;
+# 进入交互式python查看对应版本
+import sqlite3
+sqlite3.sqlite_version</code></pre><h2 id="4-django搜索模块的顺序"><a href="#4-django搜索模块的顺序" class="headerlink" title="4. django搜索模块的顺序"></a>4. django搜索模块的顺序</h2><blockquote>
+<p>django中使用sys, os模块来导入自定义的app，并改变python解释器默认的import顺序，来实现自定义模块的查找</p>
+</blockquote>
+<pre><code>import sys
+import os
 
+pwd = os.path.dirname(os.path.realpath(__file__))
+parent_path = os.path.dirname(pwd)
+sys.path.append(parent_path)
+print(sys.path)</code></pre><ul>
+<li>输出如下：</li>
+</ul>
+<pre><code>[&#39;&#39;, &#39;/root/.virtualenvs/django/lib/python37.zip&#39;, &#39;/root/.virtualenvs/django/lib/python3.7&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/lib-dynload&#39;, &#39;/usr/local/python3/lib/python3.7&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages&#39;, &#39;/myshare/MxShop&#39;]</code></pre><ul>
+<li>进行如下操作后，import优先级发生改变</li>
+</ul>
+<pre><code>os.environ.setdefault(&quot;DJANGO_SETTINGS_MODULE&quot;, &quot;MxShop.settings&quot;)
+
+import django
+django.setup()
+
+## django.setup()源码如下：
+def setup(set_prefix=True):
+    &quot;&quot;&quot;
+    Configure the settings (this happens as a side effect of accessing the
+    first setting), configure logging and populate the app registry.
+    Set the thread-local urlresolvers script prefix if `set_prefix` is True.
+    &quot;&quot;&quot;
+    from django.apps import apps
+    from django.conf import settings
+    from django.urls import set_script_prefix
+    from django.utils.log import configure_logging
+
+    configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+    if set_prefix:
+        set_script_prefix(
+            &#39;/&#39; if settings.FORCE_SCRIPT_NAME is None else settings.FORCE_SCRIPT_NAME
+        )
+    apps.populate(settings.INSTALLED_APPS)</code></pre><ul>
+<li>输出如下：</li>
+</ul>
+<pre><code>[&#39;/myshare/MxShop/extra_apps&#39;, &#39;/myshare/MxShop/apps&#39;, &#39;/myshare/MxShop&#39;, &#39;&#39;, &#39;/root/.virtualenvs/django/lib/python37.zip&#39;, &#39;/root/.virtualenvs/django/lib/python3.7&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/lib-dynload&#39;, &#39;/usr/local/python3/lib/python3.7&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages&#39;, &#39;/myshare/MxShop&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;, &#39;/root/.virtualenvs/django/lib/python3.7/site-packages/odf&#39;]</code></pre><blockquote>
+<p>此时便可以使用当前django项目下的各种模块，进行相关的测试操作了</p>
+</blockquote>
+<pre><code>from goods.models import Goods, GoodsCategory, GoodsImage</code></pre>
             </div>
             <hr/>
 

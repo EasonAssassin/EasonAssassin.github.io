@@ -4,12 +4,16 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Pythonic语法收集, EasonBlog">
-    <meta name="description" content="Pythonic语法收集
-参考：https://foofish.net/idiomatic_part2.html
+    <meta name="keywords" content="WSGI接口, EasonBlog">
+    <meta name="description" content="WSGI接口
+web应用的本质：
+浏览器发送一个http请求
+服务器收到请求，生成一个HTML文档
+服务器把HTML文档作为HTTP相应的BODY发送给浏览器
+浏览器收到HTTP相应，从HTTP body去除HTML文档并显示
 
-1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素# 如下列表，元素为字典
-&amp;gt;&amp;gt;&amp;gt; di">
+
+最简单的">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +21,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Pythonic语法收集 | EasonBlog</title>
+    <title>WSGI接口 | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -264,13 +268,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Pythonic语法收集
+                        WSGI接口
                     </div>
                 </div>
             </div>
@@ -381,8 +385,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/python/" target="_blank">
-                                <span class="chip bg-color">python</span>
+                            <a href="/tags/WSGI/" target="_blank">
+                                <span class="chip bg-color">WSGI</span>
                             </a>
                         
                     </div>
@@ -390,22 +394,13 @@
                 </div>
                 <div class="col s5 right-align">
                     
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/python/" class="post-category" target="_blank">
-                                python
-                            </a>
-                        
-                    </div>
-                    
                 </div>
             </div>
 
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-11-30
+                    2019-06-15
                 </div>
 
                 
@@ -421,286 +416,50 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Pythonic语法收集"><a href="#Pythonic语法收集" class="headerlink" title="Pythonic语法收集"></a>Pythonic语法收集</h1><blockquote>
-<p>参考：<a href="https://foofish.net/idiomatic_part2.html" target="_blank" rel="noopener">https://foofish.net/idiomatic_part2.html</a></p>
-</blockquote>
-<h2 id="1-在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素"><a href="#1-在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素" class="headerlink" title="1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素"></a>1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素</h2><pre><code># 如下列表，元素为字典
-&gt;&gt;&gt; disk_li
-[{&#39;driver&#39;: &#39;Virtual disk VMware&#39;, &#39;status&#39;: &#39;running&#39;, &#39;name&#39;: &#39;sda&#39;, &#39;size&#39;: &#39;107374182400&#39;, &#39;type&#39;: &#39;HDD&#39;}]
-# 返回列表的字典元素中，符合type为&#39;SSD&#39;的元素（即字典）
-ssd_dic = next((x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;), False)
-# 此例条件不符合，返回False
-&gt;&gt;&gt; ssd_dic
-False</code></pre><blockquote>
-<p>上例中，一条语句实现了循环、判断并返回符合条件的值；<br>其中<strong>next</strong>为python内置函数，它通过调用其next ()方法从迭代器中检索下一个项目。 如果给定了默认值，则在迭代器耗尽返回此默认值，否则会引发StopIteration。 该方法可用于从文件对象读取下一个输入行；调用一次，则返回一个，注意不是返回所有符合条件的<br>语法为：<code>next(iterator[,default])</code></p>
-<ul>
-<li>iterator − 要读取行的文件对象</li>
-<li>default − 如果迭代器耗尽则返回此默认值。 如果没有给出此默认值，则抛出 StopIteration 异常；</li>
+                <h1 id="WSGI接口"><a href="#WSGI接口" class="headerlink" title="WSGI接口"></a>WSGI接口</h1><ul>
+<li>web应用的本质：<ul>
+<li>浏览器发送一个http请求</li>
+<li>服务器收到请求，生成一个HTML文档</li>
+<li>服务器把HTML文档作为HTTP相应的BODY发送给浏览器</li>
+<li>浏览器收到HTTP相应，从HTTP body去除HTML文档并显示</li>
 </ul>
-</blockquote>
-<h2 id="2-列表中返回所有符合条件的元素："><a href="#2-列表中返回所有符合条件的元素：" class="headerlink" title="2. 列表中返回所有符合条件的元素："></a>2. 列表中返回所有符合条件的元素：</h2><pre><code>[x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;]</code></pre><h2 id="3-Python多条件判断"><a href="#3-Python多条件判断" class="headerlink" title="3. Python多条件判断"></a>3. Python多条件判断</h2><blockquote>
-<p>通过<code>if all([cond1, cond2])</code>判断条件全部为真；<br><code>if any([cond1, cond2])</code>判断任一条件为真；</p>
-</blockquote>
-<pre><code>if all([sys_config in sys_type, mem_size &gt;= mem_config, ssd_count &gt;= ssd_config]):
-    return True
-else:
-    return False</code></pre><h2 id="4-simpleeval进行值判断"><a href="#4-simpleeval进行值判断" class="headerlink" title="4. simpleeval进行值判断"></a>4. simpleeval进行值判断</h2><blockquote>
-<p>simpleeval.simple_eval的格式为<code>simple_eval(&#39;定义标准&#39;，names=字典)</code><br>其中定义标准举例如下：</p>
-<ul>
-<li>“x86_64” in kernel_version</li>
-<li>int(mem_total) &gt;= 8 * 1000* 1000</li>
+</li>
+<li>最简单的web应用就是先把HTML用文件保存好，用一个线程的HTTP服务器软件，接收用户请求，从文件中读取HTML，返回。Apache、Nginx、Lighttpd等常见的静态服务器就是做这件事情的</li>
+<li>如果要动态生成HTML，就要把上述步骤自己来实现。不过，接收HTTP请求、解析HTTP请求、发送HTTP相应都是苦力活，如果自己来写这些底层代码，开没开始写动态HTML，就需要花很长时间去读HTTP规范</li>
+<li>正确的做法是底层代码由专门的服务器软件实现，我们用Python专注于生成HTML文档。需要一个统一的接口，让我们可以专心用Python编写web业务。</li>
+<li>这个接口就是WSGI：Web Server Gateway Interface</li>
+<li>wsgi接口的定义非常简单，只要Web开发者实现一个函数，就可以相应HTTP请求。</li>
 </ul>
-<p>注意，上述标准中引用的变量可以是names后所引用字典的中的键</p>
-</blockquote>
-<pre><code>from ruamel.yaml import YAML
-from simpleeval import simple_eval
-
-# 读取配置文件
-config = yaml.load(open(settings.ROOT_DIR(&#39;depends/hardware_check.yml&#39;)))
-
-# 实际的配置
-    sys_index = machinfo[&#39;kernel_version&#39;].find(&#39;x86_64&#39;)
-    sys_type = machinfo[&#39;kernel_version&#39;][sys_index:]
-    mem_size = float(sizeof_fmt(float(machinfo[&#39;mem_total&#39;])))
-    disk_li = machinfo[&#39;disk_info&#39;]
-    ssd_count = len([x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;])
-    machine_keys = [&#39;os&#39;,&#39;memory_size&#39;,&#39;ssd_count&#39;]
-    machine_dic = dict(zip(machine_keys,[sys_type, round(mem_size), ssd_count]))
-
-# 比较
-for info in config_info:
-    try:
-        if not simple_eval(info[&#39;check&#39;], names=machine_dic):
-            return False
-    except SyntaxError:
-        return &quot;yaml 格式错误&quot;
-return True</code></pre><ul>
-<li>扩展simpleeval</li>
+<pre><code>def application(environ, start_response):
+    start_response(&#39;200 OK&#39;, [(&#39;Content-Type&#39;, &#39;text/html&#39;)])
+    return [b&#39;&lt;h1&gt;Hello, web!&lt;/h1&gt;&#39;]</code></pre><ul>
+<li>上面的application()函数就是符合WSGI标准的一个HTTP处理函数，它接收两个参数：<ul>
+<li>environ：一个包含所有HTTP请求信息的dict对象；</li>
+<li>start_response：一个发送HTTP相应的函数。发送HTTP相应的Header，注意Header只能发送一次，只能调用一次start_response()函数</li>
 </ul>
-<blockquote>
-<p>如simpleeval所定义的标准中，不能使用len函数，则需要扩展该函数</p>
-</blockquote>
-<pre><code>import simpleeval
-
-my_functions = simpleeval.DEFAULT_FUNTIONS.copy()
-my_functions.update(
-    len = lambda x: len(x)
-)
-
-machine_info.get(&#39;net_info&#39;)
-&gt;&gt;&gt; [{&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;172.16.29.43&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens192&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens224&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens161&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens256&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}]
-len(machine_info.get(&#39;net_info&#39;))
-&gt;&gt;&gt; 4
-
-simpleeval.EvalWithCompoundTypes(names=machine_info, functions=my_functions).eval(&#39;length(net_info) % 2 == 0&#39;)
-&gt;&gt;&gt; True
-
-# 简化版
-simpleeval.simple_eval(&quot;len(net_info) % 2 == 0&quot;, functions={&quot;len&quot;: lambda x:len(x)}, names=machine_info)
-## 其中functions可以定义为变量如my_functions，添加更加复杂的计算</code></pre><h2 id="5-使用enumerate代替for循环中的index变量访问"><a href="#5-使用enumerate代替for循环中的index变量访问" class="headerlink" title="5. 使用enumerate代替for循环中的index变量访问"></a>5. 使用enumerate代替for循环中的index变量访问</h2><pre><code># bad
-my_container = [&#39;lily&#39;, &#39;lucy&#39;, &#39;tom&#39;]
-index = 0
-for element in my_container:
-    print &#39;{} {}&#39;.format(index, element)
-    index += 1
-
-# good
-for index, element in enumerate(my_container):
-    print &#39;%d %s&#39; % (index, element)</code></pre><h2 id="6-条件判断时，避免直接和True-False-None进行比较"><a href="#6-条件判断时，避免直接和True-False-None进行比较" class="headerlink" title="6. 条件判断时，避免直接和True, False, None进行比较(==)"></a>6. 条件判断时，避免直接和True, False, None进行比较(==)</h2><pre><code># bad
-if l == []:
-    pass
-# good
-if l:    # 实际调用l.__len__() == 0
-    pass
-
-# bad
-if something == None:
-# good, None 是单例对象
-if something is None:</code></pre><h2 id="7-格式化字符时多使用format函数"><a href="#7-格式化字符时多使用format函数" class="headerlink" title="7. 格式化字符时多使用format函数"></a>7. 格式化字符时多使用format函数</h2><pre><code># bad
-name = &quot;tony&quot;
-age = 100
-str = &quot;myname : &quot; + name + &quot; my age : &quot; + str(age)
-str1 = &quot;myname : %s my age : %d&quot; % (name, age)
-# good
-str2 = &quot;myname : {} my age {}&quot;.format(name, age)</code></pre><h2 id="8-Python中使用三目运算符"><a href="#8-Python中使用三目运算符" class="headerlink" title="8. Python中使用三目运算符"></a>8. Python中使用三目运算符</h2><pre><code># bad
-a = 10
-b = 5
-if a &gt; b:
-    c = a
-else:
-    c = b
-# good
-c = a if a &gt; b else b</code></pre><h2 id="9-防御式编程EAFP-vs-LBYL"><a href="#9-防御式编程EAFP-vs-LBYL" class="headerlink" title="9. 防御式编程EAFP vs LBYL"></a>9. 防御式编程EAFP vs LBYL</h2><blockquote>
-<p>EAFP可以理解成一切按正常的逻辑编码，不用管可能出现的错误，等出了错误再说；而LBYL就是尽可能每写一行代码，都要提前考虑下当前的前置条件是否成立；<br>其实用EAFP风格的代码最大的好处是代码逻辑清晰，而LBYL会导致本来两句话说清楚的事，往往因为穿插了很多条件检查的语句使代码逻辑变得混乱。Python社区更提倡EAFP形式的。另外还有一个原因，在高并发场景下， if条件如果是个表达式，会造成一致性问题，这个时候必须用EAFP形式。这个可以参考Glow团队的技术博客<a href="http://tech.glowing.com/cn/glow-cache-structure" target="_blank" rel="noopener">Glow cache structure</a>.</p>
-</blockquote>
-<pre><code># LBYL
-def getPersonInfo(person):
-    if person == None:
-        print &#39;person must be not null!&#39;
-    print person.info
-
-# EAFP
-def getPersonInfo(person):
-    try:
-        print person.info
-    except NameError:
-        print &#39;person must be not null!&#39;</code></pre><h2 id="10-用dict对象完成switch…case…的功能"><a href="#10-用dict对象完成switch…case…的功能" class="headerlink" title="10. 用dict对象完成switch…case…的功能"></a>10. 用dict对象完成switch…case…的功能</h2><pre><code># bad
-def apply_operation(left_operand, right_operand, operator):
-    if operator == &#39;+&#39;:
-        return left_operand + right_operand
-    elif operator == &#39;-&#39;:
-        return left_operand - right_operand
-    elif operator == &#39;*&#39;:
-        return left_operand * right_operand
-    elif operator == &#39;/&#39;:
-        return left_operand / right_operand
-# good
-def apply_operation(left_operand, right_operand, operator):
-    import operator as op
-    operator_mapper = {&#39;+&#39;: op.add, &#39;-&#39;: op.sub, &#39;*&#39;: op.mul, &#39;/&#39;: op.truediv}
-    return operator_mapper[operator](left_operand, right_operand)</code></pre><h2 id="11-访问tuple的数据项时，可以用namedtuple代替index的方式访问"><a href="#11-访问tuple的数据项时，可以用namedtuple代替index的方式访问" class="headerlink" title="11. 访问tuple的数据项时，可以用namedtuple代替index的方式访问"></a>11. 访问tuple的数据项时，可以用namedtuple代替index的方式访问</h2><pre><code># bad
-rows = [(&#39;lily&#39;, 20, 2000), (&#39;lucy&#39;, 19, 2500)]
-for row in rows:
-    print &#39;{}`age is {}, salary is {} &#39;.format(row[0], row[1], row[2])
-
-# good
-from collections import  namedtuple
-Employee = namedtuple(&#39;Employee&#39;, &#39;name, age, salary&#39;)
-for row in rows:
-    employee = Employee._make(row)
-    print &#39;{}`age is {}, salary is {} &#39;.format(employee.name, employee.age, employee.salary)</code></pre><h2 id="12-用isinstance来判断对象的类型"><a href="#12-用isinstance来判断对象的类型" class="headerlink" title="12. 用isinstance来判断对象的类型"></a>12. 用isinstance来判断对象的类型</h2><pre><code># bad
-def get_size(some_object):
-    try:
-        return len(some_object)
-    except TypeError:
-        if some_object in (True, False, None):
-        return 1
-    else:
-        return int(some_object)
-
-print(get_size(&#39;hello&#39;))
-print(get_size([1, 2, 3, 4, 5]))
-print(get_size(10.0))
-
-# good
-def get_size(some_object):
-    if isinstance(some_object, (list, dict, str, tuple)):
-        return len(some_object)
-    elif isinstance(some_object, (bool, type(None))):
-        return 1
-    elif isinstance(some_object, (int, float)):
-        return int(some_object)</code></pre><h2 id="13-用with管理操作资源的上下文环境"><a href="#13-用with管理操作资源的上下文环境" class="headerlink" title="13. 用with管理操作资源的上下文环境"></a>13. 用with管理操作资源的上下文环境</h2><pre><code># bad
-class Connection(object):
-    def execute(self, sql):
-        raise Exception(&#39;ohoh, exception!&#39;)
-
-    def close(self):
-        print &#39;closed the Connection&#39;
-
-    try:
-        conn = Connection()
-        conn.execute(&#39;select * from t_users&#39;)
-    finally:
-        conn.close()
-
-# good
-class Connection(object):
-    def execute(self, sql):
-        raise Exception(&#39;ohoh, exception!&#39;)
-
-    def close(self):
-        print &#39;closed the Connection&#39;
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, errorType, errorValue, error):
-        self.close()
-
-with Connection() as conn:
-    conn.execute(&#39;select * from t_users&#39;)</code></pre><h2 id="14-使用generator返回耗费内存的对象"><a href="#14-使用generator返回耗费内存的对象" class="headerlink" title="14. 使用generator返回耗费内存的对象"></a>14. 使用generator返回耗费内存的对象</h2><pre><code># bad
-def f():
-    # ...
-    return biglist
-
-# good
-def f():
-    # ...
-    for i in biglist:
-        yield i</code></pre><h2 id="15-优雅处理字典"><a href="#15-优雅处理字典" class="headerlink" title="15. 优雅处理字典"></a>15. 优雅处理字典</h2><pre><code># 2种方式
-info = {}
-info = dict()
-
-info = {&quot;name&quot;:&quot;cold&quot;}
-# 减少一些特殊字符的输入
-info = dict(name=&quot;cold&quot;)
-
-# 使用字典的fromkeys方法可以从列表中获取元素作为键并用None或fromkeys方法的第二个参数初始化
-info = {}.fromkeys([&#39;name&#39;, &#39;blog&#39;])
-# 初始值设为&#39;linuxzen.com&#39;
-info = dict().fromkeys([&#39;name&#39;, &#39;blog&#39;], &#39;linuxzen.com&#39;)
-
-# 更优雅地更新
-info.update(name=&#39;cold&#39;, blog=&#39;www.linuxzen.com&#39;)</code></pre><h2 id="16-reduce使用"><a href="#16-reduce使用" class="headerlink" title="16. reduce使用"></a>16. reduce使用</h2><blockquote>
-<p>用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</p>
-</blockquote>
-<p><strong>求和</strong></p>
-<pre><code>from functools import reduce
-
-def add(x,y):
-    return x+y
-
-int_list = [random.randint(1,100) for i in range(10)]
-
-sum_num = reduce(add,int_list)  </code></pre><p><strong>等价于</strong></p>
-<pre><code>sum_num = 0
-for i in int_list:
-    sum_num = sum_num+i</code></pre><h2 id="17-map使用"><a href="#17-map使用" class="headerlink" title="17. map使用"></a>17. map使用</h2><blockquote>
-<p>第一个参数 function 以参数序列中的每一个元素调用 function 函数，返回包含每次 function 函数返回值的新列表。<br>主要用于构建新列表</p>
-</blockquote>
-<pre><code>def square(x) :            # 计算平方数
-     return x ** 2
-
-map(square, [1,2,3,4,5])
-&gt;&gt;&gt; [1, 4, 9, 16, 25]
-
-map(lambda x: x ** 2, [1, 2, 3, 4, 5])
-&gt;&gt;&gt; [1, 4, 9, 16, 25]
-
-map(lambda x, y: x + y, [1, 3, 5, 7, 9], [2, 4, 6, 8, 10])
-&gt;&gt;&gt; [3, 7, 11, 15, 19]
-
-# 使用列表推导的构造方式比在循环中调用 append() 来构造列表更好也更快。
-
-# 创建将0到19连接起来的字符串 (例 &quot;012..1819&quot;)
-nums = map(str, range(20))
-nums_str = &quot;&quot;.join(nums)</code></pre><h2 id="18-创建字典"><a href="#18-创建字典" class="headerlink" title="18. 创建字典"></a>18. 创建字典</h2><pre><code># 工厂方法
-items=[(&#39;name&#39;,&#39;earth&#39;),(&#39;port&#39;,&#39;80&#39;)]
-# 构造列表生成字典
-dict2=dict(items)
-# 构造元祖创建列表
-dict1=dict(([&#39;name&#39;,&#39;earth&#39;],[&#39;port&#39;,&#39;80&#39;]))
-
-# fromkeys()方法
-dict1={}.fromkeys((&#39;x&#39;,&#39;y&#39;),-1)
-dict={&#39;x&#39;:-1,&#39;y&#39;:-1}
-dict2={}.fromkeys((&#39;x&#39;,&#39;y&#39;))
-dict2={&#39;x&#39;:None, &#39;y&#39;:None}</code></pre><h2 id="19-locals迅速创建本地字典"><a href="#19-locals迅速创建本地字典" class="headerlink" title="19. locals迅速创建本地字典"></a>19. locals迅速创建本地字典</h2><blockquote>
-<p>locals() 将所有的局部变量构造成键值对，传入一个字典</p>
-</blockquote>
-<pre><code>import datetime
-current_date = datetime.datetime.now()
-# 如下的locals()字典已经自动生成一个携带局部变量的字典
-locals()
-&gt;&gt;&gt; {&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None, &#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None, &#39;__annotations__&#39;: {}, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;, &#39;datetime&#39;: &lt;module &#39;datetime&#39; from &#39;/usr/local/python3/lib/python3.7/datetime.py&#39;&gt;, &#39;current_date&#39;: datetime.datetime(2019, 11, 22, 16, 40, 26, 204733)}
-
-def current_datetime1(request):
-    current_date = datetime.datetime.now()
-    return render_to_response(&#39;current_datetime.html&#39;, locals())</code></pre><h2 id="20-is和-的使用"><a href="#20-is和-的使用" class="headerlink" title="20. is和==的使用"></a>20. is和==的使用</h2><ul>
-<li>在python中，is和==的含义是不同的</li>
-<li>is可以理解为<code>id(a) == id(b)</code>，主要判断是否指向同一个对象，即指向同一块内存空间</li>
-<li>==更多的是用来比较<strong>值是否相等</strong></li>
+</li>
 </ul>
+<p><strong>environ</strong></p>
+<pre><code>{&#39;XDG_SESSION_ID&#39;: &#39;3&#39;, &#39;VIRTUALENVWRAPPER_SCRIPT&#39;: &#39;/usr/bin/virtualenvwrapper.sh&#39;, &#39;VIRTUALENVWRAPPER_PROJECT_FILENAME&#39;: &#39;.project&#39;, &#39;HOSTNAME&#39;: &#39;blueking&#39;, &#39;TERM&#39;: &#39;xterm&#39;, &#39;SHELL&#39;: &#39;/bin/bash&#39;, &#39;HISTSIZE&#39;: &#39;1000&#39;, &#39;SSH_CLIENT&#39;: &#39;10.21.53.140 2395 22&#39;, &#39;OLDPWD&#39;: &#39;/myshare/mysite&#39;, &#39;SSH_TTY&#39;: &#39;/dev/pts/1&#39;, &#39;USER&#39;: &#39;root&#39;, &#39;LD_LIBRARY_PATH&#39;: &#39;/usr/bin/lib&#39;, &#39;LS_COLORS&#39;: &#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:&#39;, &#39;PYENV_VIRTUALENV_INIT&#39;: &#39;1&#39;, &#39;VIRTUAL_ENV&#39;: &#39;/root/.virtualenvs/django&#39;, &#39;WORKON_HOME&#39;: &#39;/root/.virtualenvs&#39;, &#39;MAIL&#39;: &#39;/var/spool/mail/root&#39;, &#39;PATH&#39;: &#39;/root/.virtualenvs/django/bin:/root/.pyenv/plugins/pyenv-virtualenv/shims:/root/.pyenv/shims:/root/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/local/go/bin:/root/bin&#39;, &#39;VIRTUALENVWRAPPER_HOOK_DIR&#39;: &#39;/root/.virtualenvs&#39;, &#39;PWD&#39;: &#39;/myshare/mysite/demo&#39;, &#39;LANG&#39;: &#39;en_US.UTF-8&#39;, &#39;PS1&#39;: &#39;(django) [\\u@\\h \\W]\\$ &#39;, &#39;HISTCONTROL&#39;: &#39;ignoredups&#39;, &#39;PYENV_SHELL&#39;: &#39;bash&#39;, &#39;SHLVL&#39;: &#39;1&#39;, &#39;HOME&#39;: &#39;/root&#39;, &#39;GOROOT&#39;: &#39;/usr/local/go&#39;, &#39;LOGNAME&#39;: &#39;root&#39;, &#39;SSH_CONNECTION&#39;: &#39;10.21.53.140 2395 10.21.53.123 22&#39;, &#39;GOPATH&#39;: &#39;/root/applications/go&#39;, &#39;LESSOPEN&#39;: &#39;||/usr/bin/lesspipe.sh %s&#39;, &#39;VIRTUALENVWRAPPER_WORKON_CD&#39;: &#39;1&#39;, &#39;XDG_RUNTIME_DIR&#39;: &#39;/run/user/0&#39;, &#39;_&#39;: &#39;/root/.virtualenvs/django/bin/python&#39;, &#39;SERVER_NAME&#39;: &#39;localhost.localdomain&#39;, &#39;GATEWAY_INTERFACE&#39;: &#39;CGI/1.1&#39;, &#39;SERVER_PORT&#39;: &#39;8000&#39;, &#39;REMOTE_HOST&#39;: &#39;&#39;, &#39;CONTENT_LENGTH&#39;: &#39;&#39;, &#39;SCRIPT_NAME&#39;: &#39;&#39;, &#39;SERVER_PROTOCOL&#39;: &#39;HTTP/1.1&#39;, &#39;SERVER_SOFTWARE&#39;: &#39;WSGIServer/0.2&#39;, &#39;REQUEST_METHOD&#39;: &#39;GET&#39;, &#39;PATH_INFO&#39;: &#39;/Michal&#39;, &#39;QUERY_STRING&#39;: &#39;&#39;, &#39;REMOTE_ADDR&#39;: &#39;10.21.53.140&#39;, &#39;CONTENT_TYPE&#39;: &#39;text/plain&#39;, &#39;HTTP_ACCEPT&#39;: &#39;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#39;, &#39;HTTP_ACCEPT_LANGUAGE&#39;: &#39;zh-CN&#39;, &#39;HTTP_UPGRADE_INSECURE_REQUESTS&#39;: &#39;1&#39;, &#39;HTTP_USER_AGENT&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18362&#39;, &#39;HTTP_ACCEPT_ENCODING&#39;: &#39;gzip, deflate&#39;, &#39;HTTP_HOST&#39;: &#39;10.21.53.123:8000&#39;, &#39;HTTP_CONNECTION&#39;: &#39;Keep-Alive&#39;, &#39;HTTP_COOKIE&#39;: &#39;csrftoken=5VqyBegn44PZJBHLHdvppgjlnEFOKJ5lVCe4pDPjUCL23HS3A1igl7qEzXQZMt65; sessionid=sd1ur3iadh21w64qa81esgktfjlijb33&#39;, &#39;wsgi.input&#39;: &lt;_io.BufferedReader name=4&gt;, &#39;wsgi.errors&#39;: &lt;_io.TextIOWrapper name=&#39;&lt;stderr&gt;&#39; mode=&#39;w&#39; encoding=&#39;UTF-8&#39;&gt;, &#39;wsgi.version&#39;: (1, 0), &#39;wsgi.run_once&#39;: False, &#39;wsgi.url_scheme&#39;: &#39;http&#39;, &#39;wsgi.multithread&#39;: True, &#39;wsgi.multiprocess&#39;: False, &#39;wsgi.file_wrapper&#39;: &lt;class &#39;wsgiref.util.FileWrapper&#39;&gt;}</code></pre><ul>
+<li>application()函数必须由WSGI服务器来调用</li>
+<li>Python内置了一个WSGI服务器，这个模块叫wsgiref，它是用纯Python编写的WSGI服务器的参考实现。</li>
+</ul>
+<p><strong>hello.py</strong></p>
+<pre><code>def application(environ, start_response):
+    start_response(&#39;200 OK&#39;, [(&#39;Content-Type&#39;, &#39;text/html&#39;)])
+    body = &#39;&lt;h1&gt;Hello, %s!&lt;/h1&gt;&#39; % (environ[&#39;PATH_INFO&#39;][1:] or &#39;web&#39;)
+    return [body.encode(&#39;utf-8&#39;)]</code></pre><p><strong>server.py</strong></p>
+<pre><code># 从wsgiref模块导入:
+from wsgiref.simple_server import make_server
+# 导入我们自己编写的application函数:
+from hello import application
+# 创建一个服务器，IP地址为空，端口是8000，处理函数是application:
+httpd = make_server(&#39;&#39;, 8000, application)
+print(&#39;Serving HTTP on port 8000...&#39;)
+# 开始监听HTTP请求:
+httpd.serve_forever()</code></pre><p><code>python server.py</code></p>
+<p><img src="1.png" alt><br><img src="2.png" alt></p>
+<p><strong>小结：</strong>无论多么复杂的Web应用程序，入口都是一个WSGI处理函数。HTTP请求的所有输入信息都可以通过environ获得，HTTP响应的输出都可以通过start_response()加上函数返回值作为Body。<br>复杂的Web应用程序，光靠一个WSGI函数来处理还是太底层了，我们需要在WSGI之上再抽象出Web框架，进一步简化Web开发。</p>
 
             </div>
             <hr/>
@@ -859,9 +618,9 @@ def current_datetime1(request):
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Pythonic语法收集》
+                    《WSGI接口》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/11/30/pythonic-syntax/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/06/15/WSGI-interface/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -901,10 +660,9 @@ def current_datetime1(request):
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
                 <a href="/2019/11/30/pythonic-syntax/">
                     <div class="card-image">
@@ -926,9 +684,9 @@ def current_datetime1(request):
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -941,7 +699,6 @@ def current_datetime1(request):
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -960,37 +717,44 @@ def current_datetime1(request):
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/06/15/WSGI-interface/">
+                <a href="/2019/04/22/docker-cicd/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="WSGI接口">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="容器的CI/CD最佳实践">
                         
-                        <span class="card-title">WSGI接口</span>
+                        <span class="card-title">容器的CI/CD最佳实践</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            WSGI接口
-web应用的本质：
-浏览器发送一个http请求
-服务器收到请求，生成一个HTML文档
-服务器把HTML文档作为HTTP相应的BODY发送给浏览器
-浏览器收到HTTP相应，从HTTP body去除HTML文档并显示
+                            容器的CI/CD最佳实践1. 为什么选择容器容器是软件具备了超强的可移植能力
 
 
-最简单的
+传统软件开发CI/CD的问题：
+打包环境
+源站管理
+依赖众多
+部署文档与交付一致性性问题
+。。。
+
+
+容器化CI/CD的好处：所谓CI/CD是通过引进前沿技术
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-15
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-22
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Eason Sun
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/cicd/" class="post-category" target="_blank">
+                                    cicd
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -998,8 +762,12 @@ web应用的本质：
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/WSGI/" target="_blank">
-                        <span class="chip bg-color">WSGI</span>
+                    <a href="/tags/cicd/" target="_blank">
+                        <span class="chip bg-color">cicd</span>
+                    </a>
+                    
+                    <a href="/tags/docker/" target="_blank">
+                        <span class="chip bg-color">docker</span>
                     </a>
                     
                 </div>
