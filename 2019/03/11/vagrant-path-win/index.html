@@ -4,16 +4,9 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Drone-Gitlab-CI, EasonBlog">
-    <meta name="description" content="Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
-docker
-docker-compose
-
-2. 编辑docker-compose.yml
-找到合适的镜像：略
-编辑docker-compose.yml
-
-vers">
+    <meta name="keywords" content="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录, EasonBlog">
+    <meta name="description" content="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录
+在Vagrant中添加box时，加载目录默认在~/.vagrant.d/，具体的目录结构是C:\Users\Your Username\.vagrant.d">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +14,7 @@ vers">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Drone-Gitlab-CI | EasonBlog</title>
+    <title>Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录 | EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -268,13 +261,13 @@ vers">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Drone-Gitlab-CI
+                        Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录
                     </div>
                 </div>
             </div>
@@ -385,16 +378,8 @@ vers">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/drone/" target="_blank">
-                                <span class="chip bg-color">drone</span>
-                            </a>
-                        
-                            <a href="/tags/gitlab/" target="_blank">
-                                <span class="chip bg-color">gitlab</span>
-                            </a>
-                        
-                            <a href="/tags/CICD/" target="_blank">
-                                <span class="chip bg-color">CICD</span>
+                            <a href="/tags/vagrant/" target="_blank">
+                                <span class="chip bg-color">vagrant</span>
                             </a>
                         
                     </div>
@@ -408,7 +393,7 @@ vers">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2018-08-19
+                    2019-03-11
                 </div>
 
                 
@@ -424,305 +409,31 @@ vers">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Drone-Gitlab构建轻量化CICD平台"><a href="#Drone-Gitlab构建轻量化CICD平台" class="headerlink" title="Drone+Gitlab构建轻量化CICD平台"></a>Drone+Gitlab构建轻量化CICD平台</h1><h2 id="1-安装docker环境"><a href="#1-安装docker环境" class="headerlink" title="1. 安装docker环境"></a>1. 安装docker环境</h2><ul>
-<li>docker</li>
-<li>docker-compose</li>
-</ul>
-<h2 id="2-编辑docker-compose-yml"><a href="#2-编辑docker-compose-yml" class="headerlink" title="2. 编辑docker-compose.yml"></a>2. 编辑docker-compose.yml</h2><ul>
-<li>找到合适的镜像：略</li>
-<li>编辑docker-compose.yml</li>
-</ul>
-<pre><code>version: &quot;2&quot;
-
-services:
-  redis:
-    restart: always
-    container_name: drone-redis
-    image: sameersbn/redis:4.0.9-2
-    command:
-    - --loglevel warning
-    volumes:
-    - /srv/docker/gitlab/redis:/var/lib/redis:Z
-
-  postgresql:
-    restart: always
-    container_name: drone-postgresql
-    image: sameersbn/postgresql:10-2
-    volumes:
-    - /srv/docker/gitlab/postgresql:/var/lib/postgresql:Z
-    environment:
-    - DB_USER=gitlab
-    - DB_PASS=password
-    - DB_NAME=gitlabhq_production
-    - DB_EXTENSION=pg_trgm
-
-  gitlab:
-    restart: always
-    container_name: drone-gitlab
-    image: sameersbn/gitlab:12.1.6
-    depends_on:
-    - redis
-    - postgresql
-    ports:
-    - &quot;10080:80&quot;
-    - &quot;10022:22&quot;
-    volumes:
-    - /srv/docker/gitlab/gitlab:/home/git/data:Z
-    environment:
-    - DEBUG=false
-
-    - DB_ADAPTER=postgresql
-    - DB_HOST=postgresql
-    - DB_PORT=5432
-    - DB_USER=gitlab
-    - DB_PASS=password
-    - DB_NAME=gitlabhq_production
-
-    - REDIS_HOST=redis
-    - REDIS_PORT=6379
-
-    - TZ=Asia/Kolkata
-    - GITLAB_TIMEZONE=Kolkata
-
-    - GITLAB_HTTPS=false
-    - SSL_SELF_SIGNED=false
-
-    - GITLAB_HOST=10.21.198.68
-    - GITLAB_PORT=10080
-    - GITLAB_SSH_PORT=10022
-    - GITLAB_RELATIVE_URL_ROOT=
-    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
-    - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
-    - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
-
-    - GITLAB_ROOT_PASSWORD=Changeme_123
-    - GITLAB_ROOT_EMAIL=sunyan@huayun.com
-
-    - GITLAB_NOTIFY_ON_BROKEN_BUILDS=true
-    - GITLAB_NOTIFY_PUSHER=false
-
-    - GITLAB_EMAIL=notifications@example.com
-    - GITLAB_EMAIL_REPLY_TO=noreply@example.com
-    - GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com
-
-    - GITLAB_BACKUP_SCHEDULE=daily
-    - GITLAB_BACKUP_TIME=01:00
-
-    - SMTP_ENABLED=false
-    - SMTP_DOMAIN=huayun.com
-    - SMTP_HOST=smtp.huayun.com
-    - SMTP_PORT=587
-    - SMTP_USER=sunyan@huayun.com
-    - SMTP_PASS=Hi!fellow-0422
-    - SMTP_STARTTLS=true
-    - SMTP_AUTHENTICATION=login
-
-    - IMAP_ENABLED=false
-    - IMAP_HOST=imap.gmail.com
-    - IMAP_PORT=993
-    - IMAP_USER=mailer@example.com
-    - IMAP_PASS=password
-    - IMAP_SSL=true
-    - IMAP_STARTTLS=false
-
-    - OAUTH_ENABLED=false
-    - OAUTH_AUTO_SIGN_IN_WITH_PROVIDER=
-    - OAUTH_ALLOW_SSO=
-    - OAUTH_BLOCK_AUTO_CREATED_USERS=true
-    - OAUTH_AUTO_LINK_LDAP_USER=false
-    - OAUTH_AUTO_LINK_SAML_USER=false
-    - OAUTH_EXTERNAL_PROVIDERS=
-
-    - OAUTH_CAS3_LABEL=cas3
-    - OAUTH_CAS3_SERVER=
-    - OAUTH_CAS3_DISABLE_SSL_VERIFICATION=false
-    - OAUTH_CAS3_LOGIN_URL=/cas/login
-    - OAUTH_CAS3_VALIDATE_URL=/cas/p3/serviceValidate
-    - OAUTH_CAS3_LOGOUT_URL=/cas/logout
-
-    - OAUTH_GOOGLE_API_KEY=
-    - OAUTH_GOOGLE_APP_SECRET=
-    - OAUTH_GOOGLE_RESTRICT_DOMAIN=
-
-    - OAUTH_FACEBOOK_API_KEY=
-    - OAUTH_FACEBOOK_APP_SECRET=
-
-    - OAUTH_TWITTER_API_KEY=
-    - OAUTH_TWITTER_APP_SECRET=
-
-    - OAUTH_GITHUB_API_KEY=
-    - OAUTH_GITHUB_APP_SECRET=
-    - OAUTH_GITHUB_URL=
-    - OAUTH_GITHUB_VERIFY_SSL=
-
-    - OAUTH_GITLAB_API_KEY=
-    - OAUTH_GITLAB_APP_SECRET=
-
-    - OAUTH_BITBUCKET_API_KEY=
-    - OAUTH_BITBUCKET_APP_SECRET=
-
-    - OAUTH_SAML_ASSERTION_CONSUMER_SERVICE_URL=
-    - OAUTH_SAML_IDP_CERT_FINGERPRINT=
-    - OAUTH_SAML_IDP_SSO_TARGET_URL=
-    - OAUTH_SAML_ISSUER=
-    - OAUTH_SAML_LABEL=&quot;Our SAML Provider&quot;
-    - OAUTH_SAML_NAME_IDENTIFIER_FORMAT=urn:oasis:names:tc:SAML:2.0:nameid-format:transient
-    - OAUTH_SAML_GROUPS_ATTRIBUTE=
-    - OAUTH_SAML_EXTERNAL_GROUPS=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_EMAIL=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_NAME=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_USERNAME=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_FIRST_NAME=
-    - OAUTH_SAML_ATTRIBUTE_STATEMENTS_LAST_NAME=
-
-    - OAUTH_CROWD_SERVER_URL=
-    - OAUTH_CROWD_APP_NAME=
-    - OAUTH_CROWD_APP_PASSWORD=
-
-    - OAUTH_AUTH0_CLIENT_ID=
-    - OAUTH_AUTH0_CLIENT_SECRET=
-    - OAUTH_AUTH0_DOMAIN=
-
-    - OAUTH_AZURE_API_KEY=
-    - OAUTH_AZURE_API_SECRET=
-    - OAUTH_AZURE_TENANT_ID=
-
-  # drone server container
-  drone-server:
-    # 偷懒直接使用官方镜像，Alpine Linux编译的容器体积是最小的
-    image: drone/drone:alpine
-    container_name: drone-server  # 容器别名
-    restart: always # 每次启动Docker会自启动容器
-    ports:
-      - 8000:8000
-      - 9000:9000
-    volumes:        # 映射容器里面的目录到本机，格式：本机目录:容器目录
-      - ./drone:/var/lib/drone
-      - /var/run/docker.sock:/var/run/docker.sock 
-    restart: always
-    environment:    # 容器里面的环境变量
-      - DRONE_HOST=http://10.21.198.68:8000 # 设置Drone的域名，要和上面配置GitLab的Application时的域名保持一致
-      - DRONE_ADMIN=drone,mrsun,root    # Drone的管理员
-      - DRONE_DEBUG=true              # Debug 模式，调试的时候可以打开，默认是关闭的
-      - DRONE_OPEN=true               # 启用Drone
-      - DRONE_GITLAB=true                                                     # 启用Drone的GitLab服务，默认是关闭的
-      - DRONE_GITLAB_URL=http://10.21.198.68:10080    # 设置GitLab的域名
-      - DRONE_GITLAB_CLIENT=85a8361781b0a4cd1b586dd3f1afe4bbadbf8784b69d29a150849bd1da947b3f # GitLab的Application中的key
-      - DRONE_GITLAB_SECRET=656d7296b1d30eaa6c00d913cb001a810694d3f9fd09ac8a31ea6ac96ead76ed # GitLab的Application中的secret
-      - DRONE_SECRET=&quot;my-drone&quot;       # Drone Server和Drone Agent通信加密
-  drone-agent:
-    image: drone/agent:alpine
-    container_name: drone-agent
-    restart: always
-    depends_on:
-      - drone-server
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Drone Agent 需要用到Docker来实例化容器
-    environment:
-      - DRONE_DEBUG=true
-      - DRONE_SERVER=drone-server:9000
-      - DRONE_SECRET=&quot;my-drone&quot;</code></pre><h2 id="3-配置Gtilab"><a href="#3-配置Gtilab" class="headerlink" title="3. 配置Gtilab"></a>3. 配置Gtilab</h2><ul>
-<li><p><code>个人头像</code>–&gt;<code>settings</code>–&gt;<code>Applications</code></p>
+                <h1 id="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录"><a href="#Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录" class="headerlink" title="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录"></a>Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录</h1><blockquote>
+<p>在Vagrant中添加box时，加载目录默认在<code>~/.vagrant.d/</code>，具体的目录结构是<code>C:\Users\Your Username\.vagrant.d</code><br>由于是在C盘中，在一些配置不高的机子中用起Vagrant，磁盘容量会显得捉襟见肘，这时会考虑更改加载box的目录。</p>
+</blockquote>
 <ul>
-<li><code>Redirect URI</code>对应docker-compose.yml中的<code>{DRONE_HOST}/authorize</code><br><img src="sp190819_175809.png" alt></li>
+<li>永久设置用户的环境变量</li>
 </ul>
-</li>
-<li><p><code>保存</code>：</p>
+<pre><code>setx VAGRANT_HOME &quot;/your/path&quot;</code></pre><ul>
+<li>永久设置系统的环境变量（<strong>注意：此处需要用管理员身份打开cmd</strong>）</li>
+</ul>
+<pre><code>setx VAGRANT_HOME &quot;/your/path&quot; -M</code></pre><ul>
+<li>临时设置环境变量 这样的方式只是临时性地将环境变量写入session,每次要打开新终端执行vagrant相关命令如重启关闭销毁等命令之前都需要敲设置一遍</li>
+</ul>
+<pre><code>set VAGRANT_HOME=&quot;/your/path&quot;</code></pre><p><strong>实际效果如图：</strong><br><img src="1.png" alt></p>
+<blockquote>
+<p>利用vagrant启动虚拟机时，默认运行在virturlbox中，此时virtualbox会将虚拟机拷贝到C盘相关目录下，非常占用C盘空间</p>
+</blockquote>
 <ul>
-<li><code>Application ID</code>对应dcoker-compose.yml中的<code>DRONE_GITLAB_CLIENT</code></li>
-<li><code>Secret</code>对应docker-compose.yml中的<code>DRONE_GITLAB_SECRET</code></li>
+<li>把C:\Users\testUser下的VirtualBox VMs和.VirtualBox两个文件夹拷贝到E:\VirtualBox\下</li>
+<li>打开VirtualBox管理器，管理-&gt;全局设定-&gt;常规-&gt;默认虚拟电脑位置修改成E:\VirtualBox\VirtualBox VMs</li>
 </ul>
-</li>
-<li><p><code>Admin Area</code>（小扳手标识）–&gt;<code>Settings</code>–&gt;<code>Network</code>–&gt;<code>Outbound requests</code>–&gt;勾选<code>Allow requests to the local network from hooks and services</code></p>
-</li>
+<p><img src="2.png" alt></p>
+<ul>
+<li>如果以前有其他虚拟机资源，需要设置相关的存储路径，新开的虚机则会从新的存储位置开始</li>
 </ul>
-<p><img src="sp190820_104625.png" alt></p>
-<h2 id="4-使用"><a href="#4-使用" class="headerlink" title="4. 使用"></a>4. 使用</h2><ul>
-<li>Drone平台：<code>http://{IP:port}</code></li>
-<li>第一次登录会先跳转至Gitlab初始化root账户的密码修改，其后通过root/password的方式登录，跳转到Drone平台</li>
-<li>Drone平台会自动同步Gitlab上的项目，并在drone平台上予以激活，便可通过代码提交，触发drone pipeline</li>
-<li>在项目根目录编写<code>.drone.yml</code></li>
-</ul>
-<p><strong>.drone.yml</strong></p>
-<pre><code>pipeline:
-  build:        # step name
-    image: node # use docker image
-    commands:
-      - npm install     # install node project vendor
-      - npm run build   # build static files</code></pre><p><img src="sp190820_105449.png" alt></p>
-<h2 id="5-配置nginx反向代理"><a href="#5-配置nginx反向代理" class="headerlink" title="5. 配置nginx反向代理"></a>5. 配置nginx反向代理</h2><blockquote>
-<p>总是用<code>IP:PORT</code>的方式如果觉得不方便，可以设置下nginx反向代理，但此时需要重新添加Gitlab中的application以及docker-compose.yml中的key，因为跳转会失败。</p>
-</blockquote>
-<p><strong>vim /etc/nginx/conf.d/drone.conf</strong></p>
-<pre><code>map $http_upgrade $connection_upgrade {
-    default upgrade;
-    &#39;&#39;      close;
-}
-server {
-    listen 80;
-    # 此处替换为自己的ip
-    server_name IP-Addr;
-    set $drone_port 3800;
-    location / {
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $http_host;
-        proxy_pass http://127.0.0.1:$drone_port;
-        proxy_redirect off;
-        proxy_http_version 1.1;
-        proxy_buffering off;
-        chunked_transfer_encoding off;
-    }
-    location ~* /ws {
-        proxy_pass http://127.0.0.1:$drone_port;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection &quot;upgrade&quot;;
-        proxy_read_timeout 86400;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $http_host;
-    }
-}</code></pre><blockquote>
-<p>修改 server_name 和 $drone_port 为正确的值即可，最后记得别忘了重启 Nginx 服务。这样我们就能直接使用 <a href="http://IP-Addr" target="_blank" rel="noopener">http://IP-Addr</a> 来访问 drone 了。</p>
-</blockquote>
-<h2 id="6-推送镜像至私有仓库"><a href="#6-推送镜像至私有仓库" class="headerlink" title="6. 推送镜像至私有仓库"></a>6. 推送镜像至私有仓库</h2><ul>
-<li>编写.drone.yml</li>
-</ul>
-<pre><code>pipeline:
-  prepare:
-    image: golang:1.10
-    group: build
-    commands:
-      - make prepare
-  build_linux_amd64:
-    image: golang:1.10
-    group: build
-    environment:
-      - GOOS=linux
-      - GOARCH=amd64
-      - CGO_ENABLED=0
-    commands:
-      - make build
-  docker_golang:
-    image: plugins/docker
-    secrets: [ docker_username, docker_password ]
-    repo: 172.16.24.66/dev/golang-http
-    registry: 172.16.24.66
-    insecure: true
-    dockerfile: Dockerfile
-    default_tags: true
-    when:
-      event: [ push, tag ]</code></pre><ul>
-<li>配置drone平台的secret</li>
-</ul>
-<blockquote>
-<p>因为不想将镜像仓库的用户名和密码以明文的形式暴露在pipeline中，所以可以在drone平台上进行配置</p>
-</blockquote>
-<p><img src="sp190822_163624.png" alt><br><img src="sp190822_163734.png" alt></p>
-<blockquote>
-<p>注意：平时需要push镜像到私有https的仓库，需要配置hosts docker相关的证书，而通过drone平台的插件则不需要，很棒！！</p>
-</blockquote>
+<p><img src="3.png" alt></p>
 
             </div>
             <hr/>
@@ -881,9 +592,9 @@ server {
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Drone-Gitlab-CI》
+                    《Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2018/08/19/drone-gitlab-ci/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/03/11/vagrant-path-win/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -927,30 +638,37 @@ server {
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2019/03/11/vagrant-path-win/">
+                <a href="/2019/11/30/pythonic-syntax/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Pythonic语法收集">
                         
-                        <span class="card-title">Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录</span>
+                        <span class="card-title">Pythonic语法收集</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Windows下修改VagrantBox加载目录以及VirturlBox虚拟机目录
-在Vagrant中添加box时，加载目录默认在~/.vagrant.d/，具体的目录结构是C:\Users\Your Username\.vagrant.d
+                            Pythonic语法收集
+参考：https://foofish.net/idiomatic_part2.html
+
+1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素# 如下列表，元素为字典
+&gt;&gt;&gt; di
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-11
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Eason Sun
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/python/" class="post-category" target="_blank">
+                                    python
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -958,8 +676,8 @@ server {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/vagrant/" target="_blank">
-                        <span class="chip bg-color">vagrant</span>
+                    <a href="/tags/python/" target="_blank">
+                        <span class="chip bg-color">python</span>
                     </a>
                     
                 </div>
@@ -973,34 +691,37 @@ server {
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2018/07/11/k8s-deploy/">
+                <a href="/2018/08/19/drone-gitlab-ci/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="高可用（离线版无etcd证书）K8S v1.12.3版本部署">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Drone-Gitlab-CI">
                         
-                        <span class="card-title">高可用（离线版无etcd证书）K8S v1.12.3版本部署</span>
+                        <span class="card-title">Drone-Gitlab-CI</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            高可用（离线版无etcd证书）K8S v1.12.3版本部署
-此版本安装不需要连外网，所有配置文件及镜像均来自内网habor：172.16.24.66;适用于3(master)+3(node)模式，以及3节点master、node重叠模式；
+                            Drone+Gitlab构建轻量化CICD平台1. 安装docker环境
+docker
+docker-compose
+
+2. 编辑docker-compose.yml
+找到合适的镜像：略
+编辑docker-compose.yml
+
+vers
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-07-11
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2018-08-19
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/k8s/" class="post-category" target="_blank">
-                                    k8s
-                                </a>
-                            
+                            <i class="fa fa-user fa-fw"></i>
+                            Eason Sun
                             
                         </span>
                     </div>
@@ -1008,8 +729,16 @@ server {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/k8s/" target="_blank">
-                        <span class="chip bg-color">k8s</span>
+                    <a href="/tags/drone/" target="_blank">
+                        <span class="chip bg-color">drone</span>
+                    </a>
+                    
+                    <a href="/tags/gitlab/" target="_blank">
+                        <span class="chip bg-color">gitlab</span>
+                    </a>
+                    
+                    <a href="/tags/CICD/" target="_blank">
+                        <span class="chip bg-color">CICD</span>
                     </a>
                     
                 </div>
