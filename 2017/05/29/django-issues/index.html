@@ -434,7 +434,31 @@ pip show django">
 pip show django
 &gt;&gt; Location: /root/.virtualenvs/django/lib/python3.7/site-packages
 # 拷贝favicon.ico至指定目录
-cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /root/.virtualenvs/django/lib/python3.7/site-packages/django/contrib/admin/static/admin/img/</code></pre>
+cp -a ./extra_apps/rest_framework/static/rest_framework/docs/img/favicon.ico /root/.virtualenvs/django/lib/python3.7/site-packages/django/contrib/admin/static/admin/img/</code></pre><h2 id="2-sqlite3-database-locked"><a href="#2-sqlite3-database-locked" class="headerlink" title="2. sqlite3 database locked"></a>2. sqlite3 database locked</h2><blockquote>
+<p>参考：<a href="https://docs.djangoproject.com/en/dev/ref/databases/#database-is-locked-errors" target="_blank" rel="noopener">https://docs.djangoproject.com/en/dev/ref/databases/#database-is-locked-errors</a><br>参考：<a href="https://blog.csdn.net/u013690521/article/details/38776709" target="_blank" rel="noopener">https://blog.csdn.net/u013690521/article/details/38776709</a><br>SQLite is meant to be a lightweight database, and thus can’t support a high level of concurrency. OperationalError: database is locked errors indicate that your application is experiencing more concurrency than sqlite can handle in default configuration. This error means that one thread or process has an exclusive lock on the database connection and another thread timed out waiting for the lock the be released.<br>Python’s SQLite wrapper has a default timeout value that determines how long the second thread is allowed to wait on the lock before it times out and raises the OperationalError: database is locked error.<br>If you’re getting this error, you can solve it by:</p>
+<ul>
+<li>Switching to another database backend. At a certain point SQLite becomes too “lite” for real-world applications, and these sorts of concurrency errors indicate you’ve reached that point.</li>
+<li>Rewriting your code to reduce concurrency and ensure that database transactions are short-lived.</li>
+<li>Increase the default timeout value by setting the timeout database option:</li>
+</ul>
+</blockquote>
+<pre><code>DATABASES = {
+    &#39;default&#39;: {
+        &#39;ENGINE&#39;: &#39;django.db.backends.sqlite3&#39;, # Add &#39;postgresql_psycopg2&#39;, &#39;postgresql&#39;, &#39;mysql&#39;, &#39;sqlite3&#39; or &#39;oracle&#39;.
+        &#39;NAME&#39;:   os.path.join(YOUR_DIR,&#39;data.db&#39;),      # Or path to database file if using sqlite3.
+        &#39;USER&#39;: &#39;&#39;,                      # Not used with sqlite3.
+        &#39;PASSWORD&#39;: &#39;&#39;,                  # Not used with sqlite3.
+        &#39;HOST&#39;: &#39;&#39;,                      # Set to empty string for localhost. Not used with sqlite3.
+        &#39;PORT&#39;: &#39;&#39;,                      # Set to empty string for default. Not used with sqlite3.
+      &#39;OPTIONS&#39;: {
+        &#39;timeout&#39;: 20,
+    }
+    }
+}</code></pre><p><strong>最优解决：</strong></p>
+<blockquote>
+<p>上述解决方法治标不治本，甚至有些情况下不起作用。因为sqlite本身就不支持高并发，所以最佳的方法就是减少并发，从代码层面进行优化。</p>
+</blockquote>
+
             </div>
             <hr/>
 
