@@ -4,12 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Pythonic语法收集, EasonBlog">
-    <meta name="description" content="Pythonic语法收集
-参考：https://foofish.net/idiomatic_part2.html
+    <meta name="keywords" content="EasonBlog">
+    <meta name="description" content="Nginx安装
+安装Nginx
 
-1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素# 如下列表，元素为字典
-&amp;gt;&amp;gt;&amp;gt; di">
+#  nginx 所需的依赖包
+apt-get install -y build-essential libssl-dev libtool libpcre3 libpcre3-dev make openss">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Pythonic语法收集 | EasonBlog</title>
+    <title>EasonBlog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -264,13 +264,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Pythonic语法收集
+                        
                     </div>
                 </div>
             </div>
@@ -379,25 +379,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/python/" target="_blank">
-                                <span class="chip bg-color">python</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fa fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/python/" class="post-category" target="_blank">
-                                python
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -405,7 +392,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2019-11-30
+                    2019-12-02
                 </div>
 
                 
@@ -421,286 +408,324 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Pythonic语法收集"><a href="#Pythonic语法收集" class="headerlink" title="Pythonic语法收集"></a>Pythonic语法收集</h1><blockquote>
-<p>参考：<a href="https://foofish.net/idiomatic_part2.html" target="_blank" rel="noopener">https://foofish.net/idiomatic_part2.html</a></p>
-</blockquote>
-<h2 id="1-在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素"><a href="#1-在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素" class="headerlink" title="1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素"></a>1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素</h2><pre><code># 如下列表，元素为字典
-&gt;&gt;&gt; disk_li
-[{&#39;driver&#39;: &#39;Virtual disk VMware&#39;, &#39;status&#39;: &#39;running&#39;, &#39;name&#39;: &#39;sda&#39;, &#39;size&#39;: &#39;107374182400&#39;, &#39;type&#39;: &#39;HDD&#39;}]
-# 返回列表的字典元素中，符合type为&#39;SSD&#39;的元素（即字典）
-ssd_dic = next((x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;), False)
-# 此例条件不符合，返回False
-&gt;&gt;&gt; ssd_dic
-False</code></pre><blockquote>
-<p>上例中，一条语句实现了循环、判断并返回符合条件的值；<br>其中<strong>next</strong>为python内置函数，它通过调用其next ()方法从迭代器中检索下一个项目。 如果给定了默认值，则在迭代器耗尽返回此默认值，否则会引发StopIteration。 该方法可用于从文件对象读取下一个输入行；调用一次，则返回一个，注意不是返回所有符合条件的<br>语法为：<code>next(iterator[,default])</code></p>
+                <h3 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a>Nginx安装</h3><ul>
+<li>安装Nginx</li>
+</ul>
+<pre><code class="bash">#  nginx 所需的依赖包
+apt-get install -y build-essential libssl-dev libtool libpcre3 libpcre3-dev make openssl zlib1g-dev
+#  安装nginx
+apt-get install nginx -y</code></pre>
 <ul>
-<li>iterator − 要读取行的文件对象</li>
-<li>default − 如果迭代器耗尽则返回此默认值。 如果没有给出此默认值，则抛出 StopIteration 异常；</li>
+<li>检查效果</li>
 </ul>
-</blockquote>
-<h2 id="2-列表中返回所有符合条件的元素："><a href="#2-列表中返回所有符合条件的元素：" class="headerlink" title="2. 列表中返回所有符合条件的元素："></a>2. 列表中返回所有符合条件的元素：</h2><pre><code>[x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;]</code></pre><h2 id="3-Python多条件判断"><a href="#3-Python多条件判断" class="headerlink" title="3. Python多条件判断"></a>3. Python多条件判断</h2><blockquote>
-<p>通过<code>if all([cond1, cond2])</code>判断条件全部为真；<br><code>if any([cond1, cond2])</code>判断任一条件为真；</p>
-</blockquote>
-<pre><code>if all([sys_config in sys_type, mem_size &gt;= mem_config, ssd_count &gt;= ssd_config]):
-    return True
-else:
-    return False</code></pre><h2 id="4-simpleeval进行值判断"><a href="#4-simpleeval进行值判断" class="headerlink" title="4. simpleeval进行值判断"></a>4. simpleeval进行值判断</h2><blockquote>
-<p>simpleeval.simple_eval的格式为<code>simple_eval(&#39;定义标准&#39;，names=字典)</code><br>其中定义标准举例如下：</p>
+<pre><code class="bash">netstat -tnulp | grep nginx</code></pre>
+<p><img src="image/1.png" alt="1"></p>
 <ul>
-<li>“x86_64” in kernel_version</li>
-<li>int(mem_total) &gt;= 8 * 1000* 1000</li>
+<li>服务相关命令</li>
 </ul>
-<p>注意，上述标准中引用的变量可以是names后所引用字典的中的键</p>
-</blockquote>
-<pre><code>from ruamel.yaml import YAML
-from simpleeval import simple_eval
+<pre><code class="bash"># 启动nginx服务(start   stop)
+systemctl start|stop|reload|... nginx
+/etc/init.d/nginx start|stop|reload|...
+/usr/sbin/nginx ... -s stop|reload
 
-# 读取配置文件
-config = yaml.load(open(settings.ROOT_DIR(&#39;depends/hardware_check.yml&#39;)))
+# 查看信息
+nginx -V 
+nginx -v
 
-# 实际的配置
-    sys_index = machinfo[&#39;kernel_version&#39;].find(&#39;x86_64&#39;)
-    sys_type = machinfo[&#39;kernel_version&#39;][sys_index:]
-    mem_size = float(sizeof_fmt(float(machinfo[&#39;mem_total&#39;])))
-    disk_li = machinfo[&#39;disk_info&#39;]
-    ssd_count = len([x for x in disk_li if x[&#39;type&#39;] == &#39;SSD&#39;])
-    machine_keys = [&#39;os&#39;,&#39;memory_size&#39;,&#39;ssd_count&#39;]
-    machine_dic = dict(zip(machine_keys,[sys_type, round(mem_size), ssd_count]))
-
-# 比较
-for info in config_info:
-    try:
-        if not simple_eval(info[&#39;check&#39;], names=machine_dic):
-            return False
-    except SyntaxError:
-        return &quot;yaml 格式错误&quot;
-return True</code></pre><ul>
-<li>扩展simpleeval</li>
+# 检查配置文件
+nginx -t                 # 检查默认配置文件
+nginx -t -c file.conf    # 指定配置文件进行检查</code></pre>
+<ul>
+<li>移除相关命令</li>
 </ul>
+<pre><code class="bash"># 查看和nginx相关软件
+dpkg --get-selections|grep nginx
+
+# 移除nginx，包括相关文件
+apt-get --purge remove nginx
+apt-get --purge remove nginx-common
+apt-get --purge remove nginx-core</code></pre>
+<ul>
+<li>访问nginx服务器</li>
+</ul>
+<p><img src="image%5C2.png" alt="2"></p>
+<h3 id="nginx配置参数"><a href="#nginx配置参数" class="headerlink" title="nginx配置参数"></a>nginx配置参数</h3><p><strong>全局配置段</strong></p>
+<p>主要是全局性的和服务级别的属性配置（ /etc/nginx/nginx.conf ），常见的主要有以下几种设置：</p>
+<pre><code class="shell">user              # 设置使用用户(worker)
+worker_processes  # 进行增大并发连接数的处理 跟cpu保持一致 八核设置八个
+pid               # nginx服务启动时候pid
+events                      # 定义事件相关的属性
+    worker_connections      # 一个进程允许处理的最大连接数
+    use                     # 定义使用的内核模型</code></pre>
+<p><strong>http配置段</strong></p>
+<p>主要配置server通用的一些配置：</p>
+<pre><code class="shell">include mime.types;                       # 文件扩展名与文件类型映射表
+default_type application/octet-stream;    # 默认文件类型
+sendfile on;                              # 开启高效文件传输模式。
+autoindex on;                             # 开启目录列表访问，合适下载服务器，默认关闭。
+tcp_nopush on;                            # 防止网络阻塞
+tcp_nodelay on;                           # 防止网络阻塞
+keepalive_timeout 120;                    # 长连接超时时间，单位是秒
+gzip on;                                  # 开启gzip压缩输出</code></pre>
+<p><strong>server配置段</strong></p>
+<pre><code class="bash">server {
+    listen &lt;ip&gt;:&lt;port&gt;;  #  127.0.0.1::8080
+    server_name &lt;主机域名&gt;; # localhost
+    ...
+}</code></pre>
+<p>注：server配置段最重要的属性是listen和server_name，它们都是用于匹配并处理请求的。</p>
+<p>1、listen属性</p>
+<p>作用：定义server监听的ip和port，当ip和port匹配时候才进行下一步匹配。</p>
+<table>
+<thead>
+<tr>
+<th>形式</th>
+<th>描述</th>
+<th>示例</th>
+<th>完整示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ip:port</td>
+<td>地址精确表示样式</td>
+<td>listen 10.10.10.10:99</td>
+<td>listen 10.10.10.10:99</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>自动监听 ip:80地址</td>
+<td>listen 10.10.10.10</td>
+<td>listen 10.10.10.10:80</td>
+</tr>
+<tr>
+<td>port</td>
+<td>自动监听 全地址:port</td>
+<td>listen 99或 [::]:99</td>
+<td>listen 0.0.0.0:99</td>
+</tr>
+<tr>
+<td>default_server</td>
+<td>自动使用默认的地址</td>
+<td>listen default_server</td>
+<td>listen localhost:80</td>
+</tr>
+</tbody></table>
+<p>匹配原则：首先将所有样式补全成ip:port，然后匹配，如果匹配server多，那么接着使用server_name匹配。</p>
+<p>2、server_name属性</p>
+<p>作用：定义server监听的域名，当域名匹配时候才进行下一步操作。</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>完整样式</th>
+<th>前缀正则样式</th>
+<th>后缀正则样式</th>
+<th>禁止非法域名或IP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>形式</td>
+<td><code>www.example.com</code></td>
+<td>*.example.com</td>
+<td><a href="http://www.example" target="_blank" rel="noopener">www.example</a>.*</td>
+<td>_</td>
+</tr>
+</tbody></table>
+<p>使用原则：</p>
 <blockquote>
-<p>如simpleeval所定义的标准中，不能使用len函数，则需要扩展该函数</p>
+<p>优先使用完整样式，然后使用前缀正则样式，最后使用后缀正则样式，如果正则样式相同的时候，匹配最长，否则就走非法规则。 非法域名/IP，表示请求到该主机上一个不存在的IP或者域名。</p>
 </blockquote>
-<pre><code>import simpleeval
-
-my_functions = simpleeval.DEFAULT_FUNTIONS.copy()
-my_functions.update(
-    len = lambda x: len(x)
-)
-
-machine_info.get(&#39;net_info&#39;)
-&gt;&gt;&gt; [{&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;172.16.29.43&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens192&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens224&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens161&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}, {&#39;gateway&#39;: &#39;172.16.29.1&#39;, &#39;speed&#39;: &#39;10000Mb/s&#39;, &#39;ip&#39;: &#39;&#39;, &#39;driver&#39;: &#39;vmxnet3&#39;, &#39;status&#39;: &#39;up&#39;, &#39;name&#39;: &#39;ens256&#39;, &#39;subnet_mask&#39;: &#39;24&#39;}]
-len(machine_info.get(&#39;net_info&#39;))
-&gt;&gt;&gt; 4
-
-simpleeval.EvalWithCompoundTypes(names=machine_info, functions=my_functions).eval(&#39;length(net_info) % 2 == 0&#39;)
-&gt;&gt;&gt; True
-
-# 简化版
-simpleeval.simple_eval(&quot;len(net_info) % 2 == 0&quot;, functions={&quot;len&quot;: lambda x:len(x)}, names=machine_info)
-## 其中functions可以定义为变量如my_functions，添加更加复杂的计算</code></pre><h2 id="5-使用enumerate代替for循环中的index变量访问"><a href="#5-使用enumerate代替for循环中的index变量访问" class="headerlink" title="5. 使用enumerate代替for循环中的index变量访问"></a>5. 使用enumerate代替for循环中的index变量访问</h2><pre><code># bad
-my_container = [&#39;lily&#39;, &#39;lucy&#39;, &#39;tom&#39;]
-index = 0
-for element in my_container:
-    print &#39;{} {}&#39;.format(index, element)
-    index += 1
-
-# good
-for index, element in enumerate(my_container):
-    print &#39;%d %s&#39; % (index, element)</code></pre><h2 id="6-条件判断时，避免直接和True-False-None进行比较"><a href="#6-条件判断时，避免直接和True-False-None进行比较" class="headerlink" title="6. 条件判断时，避免直接和True, False, None进行比较(==)"></a>6. 条件判断时，避免直接和True, False, None进行比较(==)</h2><pre><code># bad
-if l == []:
-    pass
-# good
-if l:    # 实际调用l.__len__() == 0
-    pass
-
-# bad
-if something == None:
-# good, None 是单例对象
-if something is None:</code></pre><h2 id="7-格式化字符时多使用format函数"><a href="#7-格式化字符时多使用format函数" class="headerlink" title="7. 格式化字符时多使用format函数"></a>7. 格式化字符时多使用format函数</h2><pre><code># bad
-name = &quot;tony&quot;
-age = 100
-str = &quot;myname : &quot; + name + &quot; my age : &quot; + str(age)
-str1 = &quot;myname : %s my age : %d&quot; % (name, age)
-# good
-str2 = &quot;myname : {} my age {}&quot;.format(name, age)</code></pre><h2 id="8-Python中使用三目运算符"><a href="#8-Python中使用三目运算符" class="headerlink" title="8. Python中使用三目运算符"></a>8. Python中使用三目运算符</h2><pre><code># bad
-a = 10
-b = 5
-if a &gt; b:
-    c = a
-else:
-    c = b
-# good
-c = a if a &gt; b else b</code></pre><h2 id="9-防御式编程EAFP-vs-LBYL"><a href="#9-防御式编程EAFP-vs-LBYL" class="headerlink" title="9. 防御式编程EAFP vs LBYL"></a>9. 防御式编程EAFP vs LBYL</h2><blockquote>
-<p>EAFP可以理解成一切按正常的逻辑编码，不用管可能出现的错误，等出了错误再说；而LBYL就是尽可能每写一行代码，都要提前考虑下当前的前置条件是否成立；<br>其实用EAFP风格的代码最大的好处是代码逻辑清晰，而LBYL会导致本来两句话说清楚的事，往往因为穿插了很多条件检查的语句使代码逻辑变得混乱。Python社区更提倡EAFP形式的。另外还有一个原因，在高并发场景下， if条件如果是个表达式，会造成一致性问题，这个时候必须用EAFP形式。这个可以参考Glow团队的技术博客<a href="http://tech.glowing.com/cn/glow-cache-structure" target="_blank" rel="noopener">Glow cache structure</a>.</p>
+<p>3、root属性</p>
+<p>作用：定义客户端请求的html文件所在目录路径。<br>表现形式：root /var/www/html;</p>
+<p>4、index属性</p>
+<p>作用：定义客户端请求时默认返回的文件。<br>表现形式：index index.html index.htm index.nginx-debian.html;</p>
+<p><strong>location配置段</strong></p>
+<p>location主要是根据server匹配到的请求路径去处理和响应。</p>
+<p>前提： 根据请求完整url，获取uri(即：除了域名(IP)、Port和路径参数之外的部分)，用于location匹配。</p>
+<pre><code class="bash"># optional_modifier是匹配条件，location_match是匹配的样式，{}是要执行的操作。
+location optional_modifier location_match {
+    # 执行操作...
+}</code></pre>
+<p>1）匹配规则</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>含义</th>
+<th>匹配方式</th>
+<th>优先级</th>
+<th>样式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>= /路径</td>
+<td>精确匹配</td>
+<td>前缀</td>
+<td>1</td>
+<td>location = /image {}</td>
+</tr>
+<tr>
+<td>^~</td>
+<td>优先匹配</td>
+<td>前缀</td>
+<td>2</td>
+<td>location ^~ /page {}</td>
+</tr>
+<tr>
+<td>~</td>
+<td>普通正则-大小写敏感</td>
+<td>正则符号</td>
+<td>3</td>
+<td>location ~ .(jpe?g)$ {}</td>
+</tr>
+<tr>
+<td>~*</td>
+<td>普通正则-大小写不敏感</td>
+<td>正则符号</td>
+<td>3</td>
+<td>location ~* .(jpe?g)$ {}</td>
+</tr>
+<tr>
+<td>空 /</td>
+<td>通用匹配</td>
+<td>前缀</td>
+<td>4</td>
+<td>location / {}</td>
+</tr>
+<tr>
+<td>空 &lt;路径&gt;</td>
+<td>前缀匹配</td>
+<td>前缀</td>
+<td>*</td>
+<td>location /index {}</td>
+</tr>
+</tbody></table>
+<p>优先级：精确匹配&gt;location 完整路径&gt;优先匹配&gt;正则匹配&gt;location 部分路径&gt;通用匹配</p>
+<p>2、location核心动作</p>
+<p>1）指令语法</p>
+<pre><code class="shell">try_files file ... uri
+try_files file ... =code</code></pre>
+<p>作用：响应时按顺序查找file，找到则返回file内容，否则的话进行内部重定向(uri)或返回状态码(code)。</p>
+<p>2）常见示例</p>
+<pre><code class="bash"># 如果能找到指定的uri那么就返回相应的内容，否则的话返回错误状态码404
+location / {
+    try_files $uri $uri/ =404;
+}
+# 如果能找到指定的文件1/2.html那么就返回相应的内容，否则的话返回6.html文件内容
+location / {
+    try_files 1.html 2.html /6.html;
+}
+# 如果能找到指定的uri那么就返回相应的内容，否则的话就内部重定向到后端名称为@backup的location
+location / {
+    try_files $uri @backup;
+}
+location @backup {
+    # ...do something
+}</code></pre>
+<blockquote>
+<p>注意：如果最后一个地址是一个uri的话，那么这个uri必须是存在的，否则的话就出事了。</p>
 </blockquote>
-<pre><code># LBYL
-def getPersonInfo(person):
-    if person == None:
-        print &#39;person must be not null!&#39;
-    print person.info
+<p><strong>location常见操作</strong></p>
+<p>在location内部常用的功能属性非常多，常见的基本属性、临时跳转、目录列表等。</p>
+<p>1）基本属性</p>
+<pre><code class="bash">location / {
+    # 指定响应请求的文件所在路径
+    root /var/www/html;
+    # 指定响应请求的默认文件名称
+    index index.php index.html index.htm;
+    # 指定响应请求的文件浏览器缓存过期时间，一般用于静态文件
+    expires 7d;        
+    # 如果root指定的路径下有查找的文件，就返回，否则报404                    
+    try_files $uri $uri/ =404;                
+}</code></pre>
+<p>2）临时跳转</p>
+<pre><code class="bash">location = /test/ {
+    return 302 http://www.itcast.cn/;
+}</code></pre>
+<p>3）目录列表</p>
+<pre><code class="bash">location /upload {
+    # 指定查看文件列表路径(绝对路径)
+    alias /var/www/upload/;
+    # 开启目录自动索引
+    autoindex on;   
+    # 默认on，显示文件确切大小(bytes)。off表示显示文件的大概大小(kB/MB/...)                  
+    autoindex_exact_size off;
+    # 默认off，显示的文件时间为GMT时间。on表示显示文件的服务器时间
+    autoindex_localtime on;  
+}</code></pre>
+<p>备注说明：</p>
+<pre><code class="shell"># root 表示 location 匹配内容的相对路径
+# alias 表示 一个绝对路径
+效果一：                                         效果二：
+location /txt/ {                               location /txt/ {
+    alias /var/www/txt/;                            root /var/www/txt/;
+}                                              }
+# 效果一：访问http://localhost/txt/1.txt，nginx找/var/www/txt/1.txt文件
+# 效果二：访问http://localhost/txt/1.txt，nginx找/var/www/txt/txt/1.txt文件</code></pre>
+<h3 id="Nginx-反向代理"><a href="#Nginx-反向代理" class="headerlink" title="Nginx  反向代理"></a>Nginx  反向代理</h3><p><img src="3.png" alt="3"></p>
+<pre><code class="bash">location / {
+    # 设定请求跳转后的地址，可以使用hostname或ip:port形式
+    proxy_pass        http://localhost:8000;  
+}</code></pre>
+<p><img src="4.png" alt="4"></p>
+<p>proxy_pass指令设置被代理服务器的地址和被映射的URI，地址可以使用主机名或IP加端口号的形式。</p>
+<pre><code class="bash">location /html/ {
+    配置1：proxy_pass http://proxy.com;
+    配置2：proxy_pass http://proxy.com/;
+}</code></pre>
+<h3 id="nginx反向代理实践"><a href="#nginx反向代理实践" class="headerlink" title="nginx反向代理实践"></a>nginx反向代理实践</h3><p>1）代理服务器的配置文件</p>
+<pre><code class="bash"># vim /etc/nginx/conf.d/proxy.conf
 
-# EAFP
-def getPersonInfo(person):
-    try:
-        print person.info
-    except NameError:
-        print &#39;person must be not null!&#39;</code></pre><h2 id="10-用dict对象完成switch…case…的功能"><a href="#10-用dict对象完成switch…case…的功能" class="headerlink" title="10. 用dict对象完成switch…case…的功能"></a>10. 用dict对象完成switch…case…的功能</h2><pre><code># bad
-def apply_operation(left_operand, right_operand, operator):
-    if operator == &#39;+&#39;:
-        return left_operand + right_operand
-    elif operator == &#39;-&#39;:
-        return left_operand - right_operand
-    elif operator == &#39;*&#39;:
-        return left_operand * right_operand
-    elif operator == &#39;/&#39;:
-        return left_operand / right_operand
-# good
-def apply_operation(left_operand, right_operand, operator):
-    import operator as op
-    operator_mapper = {&#39;+&#39;: op.add, &#39;-&#39;: op.sub, &#39;*&#39;: op.mul, &#39;/&#39;: op.truediv}
-    return operator_mapper[operator](left_operand, right_operand)</code></pre><h2 id="11-访问tuple的数据项时，可以用namedtuple代替index的方式访问"><a href="#11-访问tuple的数据项时，可以用namedtuple代替index的方式访问" class="headerlink" title="11. 访问tuple的数据项时，可以用namedtuple代替index的方式访问"></a>11. 访问tuple的数据项时，可以用namedtuple代替index的方式访问</h2><pre><code># bad
-rows = [(&#39;lily&#39;, 20, 2000), (&#39;lucy&#39;, 19, 2500)]
-for row in rows:
-    print &#39;{}`age is {}, salary is {} &#39;.format(row[0], row[1], row[2])
+server {
+  listen 172.16.179.130:8888;
 
-# good
-from collections import  namedtuple
-Employee = namedtuple(&#39;Employee&#39;, &#39;name, age, salary&#39;)
-for row in rows:
-    employee = Employee._make(row)
-    print &#39;{}`age is {}, salary is {} &#39;.format(employee.name, employee.age, employee.salary)</code></pre><h2 id="12-用isinstance来判断对象的类型"><a href="#12-用isinstance来判断对象的类型" class="headerlink" title="12. 用isinstance来判断对象的类型"></a>12. 用isinstance来判断对象的类型</h2><pre><code># bad
-def get_size(some_object):
-    try:
-        return len(some_object)
-    except TypeError:
-        if some_object in (True, False, None):
-        return 1
-    else:
-        return int(some_object)
+  location / {
+    proxy_pass http://172.16.179.130:9999/hello/;
+  }
+}</code></pre>
+<p><img src="5.png" alt="5"></p>
+<p>2）后端服务器的配置文件</p>
+<pre><code class="bash"># vim /etc/nginx/conf.d/backend.conf
 
-print(get_size(&#39;hello&#39;))
-print(get_size([1, 2, 3, 4, 5]))
-print(get_size(10.0))
+server {
+  listen 172.16.179.130:9999;
 
-# good
-def get_size(some_object):
-    if isinstance(some_object, (list, dict, str, tuple)):
-        return len(some_object)
-    elif isinstance(some_object, (bool, type(None))):
-        return 1
-    elif isinstance(some_object, (int, float)):
-        return int(some_object)</code></pre><h2 id="13-用with管理操作资源的上下文环境"><a href="#13-用with管理操作资源的上下文环境" class="headerlink" title="13. 用with管理操作资源的上下文环境"></a>13. 用with管理操作资源的上下文环境</h2><pre><code># bad
-class Connection(object):
-    def execute(self, sql):
-        raise Exception(&#39;ohoh, exception!&#39;)
+  location /hello/ {
+    alias /var/www/html/backend/;
+    try_files $uri $uri/ =404;
+  }
+}</code></pre>
+<p><img src="6.png" alt="6"></p>
+<p>3）准备后端服务文件</p>
+<pre><code class="bash"># 创建路径中的文件夹，并创建默认的index.html文件
+mkdir -p /var/www/html/backend/
+# 写入数据
+echo &#39;&lt;h1&gt;proxy_backend&lt;/h1&gt;&#39; &gt; /var/www/html/backend/index.html</code></pre>
+<p>4）检查nginx配置后重载服务</p>
+<pre><code class="bash">/usr/sbin/nginx -t
+systemctl reload nginx
+netstat -tnulp | grep nginx</code></pre>
+<p><img src="7.png" alt="7"></p>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><pre><code class="shell"># upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。
+upstream backends {
+  server [域名|ip]:port;
+  server [域名|ip]:port;
+  server [域名|ip]:port;
+  ...
+}
 
-    def close(self):
-        print &#39;closed the Connection&#39;
-
-    try:
-        conn = Connection()
-        conn.execute(&#39;select * from t_users&#39;)
-    finally:
-        conn.close()
-
-# good
-class Connection(object):
-    def execute(self, sql):
-        raise Exception(&#39;ohoh, exception!&#39;)
-
-    def close(self):
-        print &#39;closed the Connection&#39;
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, errorType, errorValue, error):
-        self.close()
-
-with Connection() as conn:
-    conn.execute(&#39;select * from t_users&#39;)</code></pre><h2 id="14-使用generator返回耗费内存的对象"><a href="#14-使用generator返回耗费内存的对象" class="headerlink" title="14. 使用generator返回耗费内存的对象"></a>14. 使用generator返回耗费内存的对象</h2><pre><code># bad
-def f():
-    # ...
-    return biglist
-
-# good
-def f():
-    # ...
-    for i in biglist:
-        yield i</code></pre><h2 id="15-优雅处理字典"><a href="#15-优雅处理字典" class="headerlink" title="15. 优雅处理字典"></a>15. 优雅处理字典</h2><pre><code># 2种方式
-info = {}
-info = dict()
-
-info = {&quot;name&quot;:&quot;cold&quot;}
-# 减少一些特殊字符的输入
-info = dict(name=&quot;cold&quot;)
-
-# 使用字典的fromkeys方法可以从列表中获取元素作为键并用None或fromkeys方法的第二个参数初始化
-info = {}.fromkeys([&#39;name&#39;, &#39;blog&#39;])
-# 初始值设为&#39;linuxzen.com&#39;
-info = dict().fromkeys([&#39;name&#39;, &#39;blog&#39;], &#39;linuxzen.com&#39;)
-
-# 更优雅地更新
-info.update(name=&#39;cold&#39;, blog=&#39;www.linuxzen.com&#39;)</code></pre><h2 id="16-reduce使用"><a href="#16-reduce使用" class="headerlink" title="16. reduce使用"></a>16. reduce使用</h2><blockquote>
-<p>用传给 reduce 中的函数 function（有两个参数）先对集合中的第 1、2 个元素进行操作，得到的结果再与第三个数据用 function 函数运算，最后得到一个结果。</p>
-</blockquote>
-<p><strong>求和</strong></p>
-<pre><code>from functools import reduce
-
-def add(x,y):
-    return x+y
-
-int_list = [random.randint(1,100) for i in range(10)]
-
-sum_num = reduce(add,int_list)  </code></pre><p><strong>等价于</strong></p>
-<pre><code>sum_num = 0
-for i in int_list:
-    sum_num = sum_num+i</code></pre><h2 id="17-map使用"><a href="#17-map使用" class="headerlink" title="17. map使用"></a>17. map使用</h2><blockquote>
-<p>第一个参数 function 以参数序列中的每一个元素调用 function 函数，返回包含每次 function 函数返回值的新列表。<br>主要用于构建新列表</p>
-</blockquote>
-<pre><code>def square(x) :            # 计算平方数
-     return x ** 2
-
-map(square, [1,2,3,4,5])
-&gt;&gt;&gt; [1, 4, 9, 16, 25]
-
-map(lambda x: x ** 2, [1, 2, 3, 4, 5])
-&gt;&gt;&gt; [1, 4, 9, 16, 25]
-
-map(lambda x, y: x + y, [1, 3, 5, 7, 9], [2, 4, 6, 8, 10])
-&gt;&gt;&gt; [3, 7, 11, 15, 19]
-
-# 使用列表推导的构造方式比在循环中调用 append() 来构造列表更好也更快。
-
-# 创建将0到19连接起来的字符串 (例 &quot;012..1819&quot;)
-nums = map(str, range(20))
-nums_str = &quot;&quot;.join(nums)</code></pre><h2 id="18-创建字典"><a href="#18-创建字典" class="headerlink" title="18. 创建字典"></a>18. 创建字典</h2><pre><code># 工厂方法
-items=[(&#39;name&#39;,&#39;earth&#39;),(&#39;port&#39;,&#39;80&#39;)]
-# 构造列表生成字典
-dict2=dict(items)
-# 构造元祖创建列表
-dict1=dict(([&#39;name&#39;,&#39;earth&#39;],[&#39;port&#39;,&#39;80&#39;]))
-
-# fromkeys()方法
-dict1={}.fromkeys((&#39;x&#39;,&#39;y&#39;),-1)
-dict={&#39;x&#39;:-1,&#39;y&#39;:-1}
-dict2={}.fromkeys((&#39;x&#39;,&#39;y&#39;))
-dict2={&#39;x&#39;:None, &#39;y&#39;:None}</code></pre><h2 id="19-locals迅速创建本地字典"><a href="#19-locals迅速创建本地字典" class="headerlink" title="19. locals迅速创建本地字典"></a>19. locals迅速创建本地字典</h2><blockquote>
-<p>locals() 将所有的局部变量构造成键值对，传入一个字典</p>
-</blockquote>
-<pre><code>import datetime
-current_date = datetime.datetime.now()
-# 如下的locals()字典已经自动生成一个携带局部变量的字典
-locals()
-&gt;&gt;&gt; {&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: None, &#39;__package__&#39;: None, &#39;__loader__&#39;: &lt;class &#39;_frozen_importlib.BuiltinImporter&#39;&gt;, &#39;__spec__&#39;: None, &#39;__annotations__&#39;: {}, &#39;__builtins__&#39;: &lt;module &#39;builtins&#39; (built-in)&gt;, &#39;datetime&#39;: &lt;module &#39;datetime&#39; from &#39;/usr/local/python3/lib/python3.7/datetime.py&#39;&gt;, &#39;current_date&#39;: datetime.datetime(2019, 11, 22, 16, 40, 26, 204733)}
-
-def current_datetime1(request):
-    current_date = datetime.datetime.now()
-    return render_to_response(&#39;current_datetime.html&#39;, locals())</code></pre><h2 id="20-is和-的使用"><a href="#20-is和-的使用" class="headerlink" title="20. is和==的使用"></a>20. is和==的使用</h2><ul>
-<li>在python中，is和==的含义是不同的</li>
-<li>is可以理解为<code>id(a) == id(b)</code>，主要判断是否指向同一个对象，即指向同一块内存空间</li>
-<li>==更多的是用来比较<strong>值是否相等</strong></li>
-</ul>
+server {
+  location / {
+    proxy_pass http://backends;
+  }
+}
+&quot;&quot;&quot;down：表示当前server主机暂时不参与负载均衡。backup：后备主机，当所有非backup机器出现故障或者繁忙的时候，才会请求backup机器。max_fails：允许请求的最大失败数，默认为1，配合fail_timeout一起使用.fail_timeout：经历max_fails次失败后，暂停服务的时间，默认为10s。&quot;&quot;&quot;
+#  upstream {} 和 server {} 两部分内容属于平级关系。
+# upstream主要是定义一个后端服务器地址的列表，每个后端服务器使用一个server命令表示。</code></pre>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="8.png" alt="8"></p>
+<p><img src="9.png" alt="9"></p>
+<p><img src="10.png" alt="10"></p>
+<p><img src="11.png" alt="11"></p>
 
             </div>
             <hr/>
@@ -859,9 +884,9 @@ def current_datetime1(request):
             <br/>
             <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
                   property="dct:title" rel="dct:type">
-                    《Pythonic语法收集》
+                    《》
                 </span> by
-            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/11/30/pythonic-syntax/" property="cc:attributionName"
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/2019/12/02/nginx-note/" property="cc:attributionName"
                rel="cc:attributionURL">
                 Eason Sun
             </a> is licensed under a
@@ -901,9 +926,10 @@ def current_datetime1(request):
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2019/12/02/nginx-note/">
                     <div class="card-image">
@@ -925,9 +951,9 @@ apt-get install -y build-essential libssl-dev libtool libpcre3 libpcre3-dev make
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-user fa-fw"></i>
@@ -936,6 +962,7 @@ apt-get install -y build-essential libssl-dev libtool libpcre3 libpcre3-dev make
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -946,37 +973,37 @@ apt-get install -y build-essential libssl-dev libtool libpcre3 libpcre3-dev make
                 Next&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/06/15/WSGI-interface/">
+                <a href="/2019/11/30/pythonic-syntax/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="WSGI接口">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Pythonic语法收集">
                         
-                        <span class="card-title">WSGI接口</span>
+                        <span class="card-title">Pythonic语法收集</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            WSGI接口
-web应用的本质：
-浏览器发送一个http请求
-服务器收到请求，生成一个HTML文档
-服务器把HTML文档作为HTTP相应的BODY发送给浏览器
-浏览器收到HTTP相应，从HTTP body去除HTML文档并显示
+                            Pythonic语法收集
+参考：https://foofish.net/idiomatic_part2.html
 
-
-最简单的
+1. 在列表中查找属性等于某个值的对象，即返回符合条件的列表中的元素# 如下列表，元素为字典
+&gt;&gt;&gt; di
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-15
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            Eason Sun
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/python/" class="post-category" target="_blank">
+                                    python
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -984,8 +1011,8 @@ web应用的本质：
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/WSGI/" target="_blank">
-                        <span class="chip bg-color">WSGI</span>
+                    <a href="/tags/python/" target="_blank">
+                        <span class="chip bg-color">python</span>
                     </a>
                     
                 </div>
