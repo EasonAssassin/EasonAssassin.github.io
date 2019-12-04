@@ -8,9 +8,9 @@
     <meta name="description" content="优化kubernetes jenkins并发
 执行并发任务过多时，若一次性启动过多的pod，对于资源配置一般的集群而言，jenkins会出现java.util.concurrent.**exception；
 
-解决办法：
+网上参考的解决办法：
 
-Jenkins ">
+Jen">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -429,14 +429,14 @@ Jenkins ">
                 <h1 id="优化kubernetes-jenkins并发"><a href="#优化kubernetes-jenkins并发" class="headerlink" title="优化kubernetes jenkins并发"></a>优化kubernetes jenkins并发</h1><blockquote>
 <p>执行并发任务过多时，若一次性启动过多的pod，对于资源配置一般的集群而言，jenkins会出现<code>java.util.concurrent.**exception</code>；</p>
 </blockquote>
-<p><strong>解决办法：</strong></p>
+<p><strong>网上参考的解决办法：</strong></p>
 <ul>
 <li>Jenkins throttling plugin</li>
 <li>Changing Jenkins configuration to limit the concurrent build execution</li>
 <li>Using jenkins proxy</li>
 </ul>
-<blockquote>
-<p>上述三个方法都没有实际操作成功过；<br>以下是通过控制循环，达到控制并发数的脚本：</p>
+<h2 id="1-通过列表控制"><a href="#1-通过列表控制" class="headerlink" title="1. 通过列表控制"></a>1. 通过列表控制</h2><blockquote>
+<p>上述三个方法都没有实际操作成功过；<br>以下是通过控制循环，达到控制并发数的脚本；<br>原理是将一个大列表通过groovy切片的方法，将大列表中每3个元素构成一个整体小列表，放入到一个新生成的大大列表里；<br>通过for循环，从大大列表里取出小列表；<br>通过collectEntries循环小列表，将其中的3个元素构造buildMap，进行并发任务，最终实现每次并发数为3的job；<br>如果需要调整并发数，只需控制小列表里面元素的数量即可，如并发数5的列表为<code>pairs.collate(5)</code></p>
 </blockquote>
 <pre><code>pipeline {
   agent {
@@ -470,9 +470,65 @@ Jenkins ">
       }
     }
   }
-}</code></pre><blockquote>
-<p>上述方法原理是将一个大列表通过groovy切片的方法，将大列表中每3个元素构成一个整体小列表，放入到一个新生成的大大列表里；<br>通过for循环，从大大列表里取出小列表；<br>通过collectEntries循环小列表，将其中的3个元素构造buildMap，进行并发任务，最终实现每次并发数为3的job；<br>如果需要调整并发数，只需控制小列表里面元素的数量即可，如并发数5的列表为<code>pairs.collate(5)</code></p>
+}</code></pre><h2 id="2-通过队列控制"><a href="#2-通过队列控制" class="headerlink" title="2. 通过队列控制"></a>2. 通过队列控制</h2><blockquote>
+<p>上述方法通过构建列表，切割成指定元素个数的小列表，每次并发小列表里面的job。该方法的缺点在于，如果各个job完成的时间不同，则必须等到时间最长的那个job结束，才能运行下一次并发。如此一来，可能在某一时刻，jenkins只运行了一个job。<br>资源有限的情况下，如何保证同一时刻jenkins的并发数？即如何保证同一时刻，jenkins始终只运行指定数量的jenkins job？<br>以下这种方法最有效，通过构建java的LinkedBlockingDeque类，指定队列的容量。队列有空闲式，其他job获取资源，得到执行；获取不到资源的job，则阻塞运行。<br>参考：<a href="http://www.lujun.org.cn/?p=4025" target="_blank" rel="noopener">http://www.lujun.org.cn/?p=4025</a></p>
 </blockquote>
+<p><strong>如下是jenkinsfile</strong></p>
+<pre><code>pipeline {
+  agent {
+    label &#39;master&#39;
+  }
+  options {
+    retry(0)
+    timestamps()
+  }
+  stages {
+    stage(&#39;Test&#39;) {
+      steps {
+        script {
+            def branches = [:]
+            MAX_CONCURRENT = 2
+            //创建fifo
+            latch = new java.util.concurrent.LinkedBlockingDeque(MAX_CONCURRENT)
+
+            //往fifo中，填入最大个数元素
+            for(int i=0; i&lt;MAX_CONCURRENT; i++)
+                latch.offer(&quot;$i&quot;)
+            def job_list = [
+                &quot;T001-A-Example&quot;,
+                &quot;T002-A-Example&quot;,
+                &quot;T003-A-Example&quot;,
+                &quot;T004-A-Example&quot;,
+                &quot;T005-A-Example&quot;,
+                &quot;T006-A-Example&quot;
+            ]
+            for(int i=0; i&lt;job_list.size(); i++) {
+                def name = job_list[i]
+                branches[name] = {
+                    def thing = null
+                    waitUntil {
+                        //获取一个资源
+                        thing = latch.pollFirst();
+                        return thing != null;
+                    }
+                    try {
+                        //执行job
+                        build(job: name, propagate: false)
+                    }
+                    finally {
+                        //释放一个资源
+                        latch.offer(thing)
+                    }        
+                }
+            }
+            timestamps {
+                parallel branches
+            }
+        }
+      }
+    }
+  }
+}</code></pre><p><strong>效果：</strong>本例中，特意设定了T002的job时间为10s，T005的job时间为20s，其他的job时间为2s，并发数为2。T002优先运行结束，此时发现队列有空闲，故而不断切换时间为2秒的其他job。最终实现同一时刻，总有2个job在运行中。</p>
 
             </div>
             <hr/>
